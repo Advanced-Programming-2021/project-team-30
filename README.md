@@ -3,5 +3,5 @@
 
 ### Team Members:
 - Nima Rezaei 99101632
-- Student2 99100000
+- Arya Tamkhisha 99105323
 - Bozorgmehr Zia 99100422
