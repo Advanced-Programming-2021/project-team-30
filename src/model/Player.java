@@ -1,6 +1,7 @@
 package model;
 
 import model.board.Board;
+import model.cards.Card;
 
 import java.util.ArrayList;
 

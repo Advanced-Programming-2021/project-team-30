@@ -1,6 +1,6 @@
 package model.board;
 
-import model.Card;
+import model.cards.Card;
 
 public class FieldZone extends Board{
     private Card field;
