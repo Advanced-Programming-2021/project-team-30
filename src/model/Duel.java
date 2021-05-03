@@ -53,6 +53,12 @@ public class Duel{
 	}
 	
 
+	private void draw(){
+		Card drawn = this.deck[this.current_player][0];
+		this.deck.remove(0);
+		this.hand[this.current_player].add(drawn);
+	}
+
 
 	public bool check_players(){
 		;

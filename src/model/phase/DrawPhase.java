@@ -1,11 +1,8 @@
 package model.phase;
+import model.Card;
 
 public class DrawPhase extends Phases {
 	public void run(){
-		
-	}
-
-	public void draw(){
-		duel.
+		duel.draw();
 	}
 }
