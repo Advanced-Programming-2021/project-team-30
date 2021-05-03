@@ -1,4 +1,5 @@
 package model.phase;
 
-public class DrawPhase {
+public class DrawPhase implements Phases {
+	
 }
