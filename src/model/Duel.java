@@ -1,7 +1,7 @@
 package model;
 import model.board.Board;
 import model.phase.Phases;
-import model.Card;
+import model.cards.*;
 import model.Player;
 
 

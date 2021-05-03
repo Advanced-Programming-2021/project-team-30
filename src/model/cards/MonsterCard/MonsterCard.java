@@ -42,7 +42,7 @@ public class MonsterCard extends Card {
         // ??
     }
     public void set() {
-
+        // ??
     }
 
     public void flip() {
