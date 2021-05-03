@@ -12,7 +12,7 @@ public class Phases{
 	private MainPhase2 mainPhase2;
 
 
-	public Phases(Duel duel){
+	public Phases(Duel dssuel){
 		this.duel = duel;
 		this.drawPhase = new drawPhase();
 		this.standByPhase = new standByPhase();

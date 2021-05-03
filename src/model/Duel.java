@@ -14,7 +14,7 @@ public class Duel{
 	private Board[] board = new Board[2];
 
 	private int current_player = 0;
-	private Phases[] phase = {new Phases(player[1]), new Phases(player[2])};
+	private Phases phase = new Phases(this);
 	
 	public Duel(Player player1, Player player2){
 		
@@ -41,18 +41,18 @@ public class Duel{
 
 		while(check_players()){
 
-			turn(player[this.current_player]);
+			this.turn();
 			this.current_player = 1 - this.current_player;
 		
 		}
 	}
 
 	
-	private void turn(Player player){
-		Phases myPhase = phase[this.current_player];
-		myPhase.run();
+	private void turn(){
+		this.phase.run();
 	}
 	
+
 
 	public bool check_players(){
 		;
