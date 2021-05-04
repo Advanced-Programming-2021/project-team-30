@@ -1,5 +1,10 @@
 package model.cards.nonMonsterCard.Trap;
 
-public class ContinuousTrap {
+import model.Event;
 
+public class ContinuousTrap extends Trap{
+    private Event event , trigger ;
+    public void activate() {
+
+    }
 }
