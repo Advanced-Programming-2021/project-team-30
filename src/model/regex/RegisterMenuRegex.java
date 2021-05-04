@@ -25,6 +25,6 @@ public class RegisterMenuRegex {
             "\\s*user login -u \\s*(?<username>.*)\\s* -p \\s*(?<password>.*)\\s*",
             "\\s*user login -p \\s*(?<password>.*)\\s* -u \\s*(?<username>.*)\\s*"
     };
-    public static String logout = "\\s*user logout\\s*";
+
 
 }

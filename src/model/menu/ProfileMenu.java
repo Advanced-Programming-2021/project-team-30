@@ -22,7 +22,7 @@ public class ProfileMenu {
     }
 
     public ProfileMenu(){
-        Player player = Player.getPlayerByUsername(MainMenu.getCurrentUser());
+        Player player = MainMenu.getCurrentUser();
         if (player != null)
             setCurrentPlayer(player);
 

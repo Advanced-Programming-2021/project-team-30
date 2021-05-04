@@ -11,10 +11,10 @@ public class DeckMenuResponse {
     }
     public static String deckActivated = "deck activated successfully";
     public static String cardAdded = "card added to deck successfully";
-    public static String CardDoesNotExist(String cardName){
+    public static String cardDoesNotExist(String cardName){
         return "Card with name " + cardName + " does not exist";
     }
-    public static String mainDEckFull = "main deck is full";
+    public static String mainDeckFull = "main deck is full";
     public static String sideDeckFull = "side deck is full";
     public static String cards3InDeck(String cardName, String deckName){
         return "there are already three cards with name " + cardName + "in deck " + deckName;

@@ -41,7 +41,7 @@ public class RegisterMenu {
                 Main.outputToUser(RegisterMenuResponse.notMatch);
             else{
                 Controller.currentMenu = Menu.MAIN;
-                MainMenu.setCurrentUser(username);
+                MainMenu.setCurrentUser(player);
                 Main.outputToUser(RegisterMenuResponse.userLoggedIn);
             }
         }

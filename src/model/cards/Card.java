@@ -1,5 +1,7 @@
 package model.cards;
 import java.lang.String;
+import java.util.regex.Matcher;
+
 public class Card {
     protected boolean isInGraveyard = false ;
     protected Type cardType ;
@@ -48,4 +50,11 @@ public class Card {
     public void addQuantity() {
         quantity++ ;
     }
+    public static void showCard(Matcher matcher){
+        if (matcher.find()){
+            String cardName = matcher.group("cardName");
+        }
+    }
+
+
 }

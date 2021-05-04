@@ -1,6 +1,15 @@
 package model.response;
 
 public class DuelMenuResponse {
+    public static String noPlayer = "there is no player with this username";
+    public static String hasNoActiveDeck(String username){
+        return username + " has no active deck";
+    }
+    public static String hasInvalidDeck(String username){
+        return username + "’s deck is invalid";
+    }
+    public static String invalidRound = "number of rounds is not supported";
+
     public static String invalidSelection = "invalid selection";
     public static String cardSelected = "card selected";
     public static String noCardFound = "no card found in the given position";

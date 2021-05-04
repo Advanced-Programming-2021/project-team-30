@@ -4,6 +4,8 @@ import model.phase.Phases;
 import model.cards.*;
 import model.Player;
 
+import java.util.ArrayList;
+
 
 public class Duel{
 	private Player[] player = new Player[2];
@@ -13,8 +15,9 @@ public class Duel{
 	private ArrayList<Card> chain = new ArrayList<Card>();
 	private Board[] board = new Board[2];
 
-	private int current_player = 0;
+	private int current_player = 0, current_phase = 0;
 	private Phases phase = new Phases(this);
+	private boolean didItSummon;
 	
 	public Duel(Player player1, Player player2){
 		
@@ -24,8 +27,8 @@ public class Duel{
 		for(int i = 0; i < 2; i++){
 			Player myPlayer = players[i];
 			this.player[i] = myPlayer;
-			this.deck[i] = myPlayer.getDeck();
-			this.board[i] = new Board(myPlayer);
+			this.deck[i] = myPlayer.getActiveDeck().getAllCards();
+			this.board[i] = new Board(this, myPlayer);
 		}
 	}
 
@@ -36,6 +39,13 @@ public class Duel{
 		// here we design the next rounds
 	}
 
+	public int numberOfCardsInHand(){
+		return this.hand[this.current_player].size();
+	}
+
+	public int numberOfCardInDeck(){
+		return this.hand[this.current_player].size();
+	}
 	
 	private void round(){
 
@@ -47,11 +57,21 @@ public class Duel{
 		}
 	}
 
-	
-	private void turn(){
-		this.phase.run();
+	private void selectCard(int location, String type){
+		this.board.selectCard(location, type);
 	}
 	
+	private void turn(){
+		// basic initialization
+		this.current_phase = 0;
+		this.didItSummon = False;
+		this.phase.run();
+		// waits for the input
+	}
+
+	private void nextPhase(){
+
+	}
 
 	private void draw(){
 		Card drawn = this.deck[this.current_player][0];
@@ -59,8 +79,36 @@ public class Duel{
 		this.hand[this.current_player].add(drawn);
 	}
 
+	public Card getSelectedCard(){
+		return this.board[this.current_player].getSelectedCard();
+	}
 
-	public bool check_players(){
+	public void summon(){
+
+		if(this.getSelectedCard() == null)
+			return;// message: no card is selected yet
+
+		//if(card is not monster or cannot do normal summon)return;// message: you can't summon this card
+
+		if(this.current_phase != 2 && this.current_phase != 4)
+			return;// message: action not allowed in this phase
+
+		if(this.monstersInField() == 5)return; //message: monster card zone is full
+
+		if(this.didItSummon)return;//message:you already summoned/set on this turn
+		this.didItSummon = true;
+		this.board[this.current_player].summonFromHand();
+	}
+
+	public void removeFromHand(int location){
+		this.hand.remove(location);
+	}
+
+	public int monstersInField(){
+		return this.board.monstersInField();
+	}
+
+	public boolean check_players(){
 		;
 	}
 

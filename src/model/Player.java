@@ -1,6 +1,7 @@
 package model;
 
 import model.board.Board;
+import model.cards.Card;
 
 import java.util.ArrayList;
 
@@ -14,6 +15,7 @@ public class Player {
     private Board board;
     private ArrayList<Deck> decks;
     private ArrayList<Card> cards;
+    private Deck activeDeck;
     public Player(String username, String password, String nickname){
         setUsername(username);
         setPassword(password);
@@ -63,8 +65,59 @@ public class Player {
         this.money = money;
     }
 
+    public void setActiveDeck(Deck activeDeck) {
+        getDecks().remove(activeDeck);
+        this.activeDeck = activeDeck;
+    }
+
+    public Deck getActiveDeck() {
+        return activeDeck;
+    }
+
+    public Board getBoard() {
+        return board;
+    }
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
+    public ArrayList<Deck> getDecks() {
+        return decks;
+    }
+    public void addCards(ArrayList<Card> cards){
+        getCards().addAll(cards);
+    }
+    public void addCard(Card card){
+        getCards().add(card);
+    }
+    public void removeFromCards(Card card){
+        getCards().remove(card);
+    }
+    public void addToDecks(Deck deck){
+        getDecks().add(deck);
+    }
+    public void removeFromDecks(Deck deck){
+        getDecks().remove(deck);
+        addCards(deck.getMainDeck());
+    }
+
     public static ArrayList<Player> getPlayers() {
         return players;
+    }
+    public Deck getPlayerDeckByName(String deckName){
+        for (Deck deck : getDecks()) {
+            if (deck.getName().equals(deckName))
+                return deck;
+        }
+        return null;
+    }
+    public Card getPlayerCardByName(String cardName){
+        for (Card card : getCards()) {
+            if (card.getName().equals(cardName))
+                return card;
+        }
+        return null;
     }
 
     public static Player getPlayerByUsername(String username){
@@ -81,11 +134,10 @@ public class Player {
         }
         return null;
     }
+
     public void showDecks(){
 
     }
 
-    public Board getBoard() {
-        return board;
-    }
+
 }
