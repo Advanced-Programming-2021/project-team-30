@@ -6,7 +6,7 @@ public class Card {
     protected Attribute status ;
     protected int price , speed , cardNumber , quantity ;
     protected String name , details ;
-    public void Card(String name , int price ,String details) {
+    public Card(String name , int price ,String details) {
         setDetails(details);
         setName(name);
         setPrice(price);
