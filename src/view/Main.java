@@ -5,18 +5,17 @@ import controller.Controller;
 import java.util.Scanner;
 
 public class Main {
-    private static Controller controller = new Controller();
+    public static Scanner scanner = new Scanner(System.in);
+    public static void outputToUser(String output) {
+        System.out.println(output);
+    }
+    public static String getInput(){
+        return scanner.nextLine();
+    }
 
     public static void main(String[] args) {
-        getInput();
-    }
-    public static void getInput(){
-        Scanner scanner = new Scanner(System.in);
-        while (true){
-            String command = scanner.nextLine();
-            if (controller.run(command))
-                break;
-        }
+        Controller controller = new Controller();
+        controller.run();
     }
 
 }

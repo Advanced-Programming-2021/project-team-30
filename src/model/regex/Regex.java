@@ -8,4 +8,13 @@ public class Regex {
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(input);
     }
+    public static Matcher getCommandMatcherRegexes(String input, String[] regexes){
+        for (String regex : regexes) {
+            if (input.matches(regex)) {
+                Pattern pattern = Pattern.compile(regex);
+                return pattern.matcher(input);
+            }
+        }
+        return null;
+    }
 }

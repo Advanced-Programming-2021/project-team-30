@@ -7,5 +7,8 @@ public class ImportExportMenu {
     public void read(){
 
     }
+    public void run(String command){
+
+    }
 
 }

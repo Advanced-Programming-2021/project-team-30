@@ -6,8 +6,7 @@ import java.util.regex.Matcher;
 
 public class ShopMenu {
     public Player player;
-    public ShopMenu(Player currentPlayer){
-        player = currentPlayer;
+    public ShopMenu(){
     }
     private void buy(Matcher matcher){
 

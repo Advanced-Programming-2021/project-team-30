@@ -1,5 +1,11 @@
 package model.menu;
 
+import controller.Controller;
+import model.Menu;
+import model.response.MainMenuResponse;
+import model.response.RegisterMenuResponse;
+import view.Main;
+
 import java.util.regex.Matcher;
 
 public class MainMenu {
@@ -19,6 +25,9 @@ public class MainMenu {
     }
 
     private void logout(){
+        MainMenu.setCurrentUser("");
+        Controller.currentMenu = Menu.REGISTER;
+        Main.outputToUser(RegisterMenuResponse.userLoggedOut);
 
     }
 
