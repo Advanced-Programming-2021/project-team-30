@@ -1,11 +1,10 @@
 package model.menu;
 
 import model.Deck;
+import model.Duel;
 import model.Player;
-import model.board.Board;
 import model.regex.DuelMenuRegex;
 import model.regex.Regex;
-import model.response.DeckMenuResponse;
 import model.response.DuelMenuResponse;
 import model.response.MenuResponse;
 import view.Main;
@@ -39,6 +38,7 @@ public class DuelMenu {
                 else if (round != 1 && round != 3)
                     Main.outputToUser(DuelMenuResponse.invalidRound);
                 else
+                    new Duel(currentPlayer, opponentPlayer);
 
             }
 
