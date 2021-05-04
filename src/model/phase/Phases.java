@@ -10,6 +10,8 @@ public class Phases{
 	private MainPhase1 mainPhase1;
 	private BattlePhase battlePhase;
 	private MainPhase2 mainPhase2;
+	private Phases[] phases = {null, null, null, null, null};
+	private String message = null;
 
 
 	public Phases(Duel duel){
@@ -19,15 +21,30 @@ public class Phases{
 		this.mainPhase1 = new mainPhase1();
 		this.battlePhase = new battlePhase();
 		this.mainPhase2 = new mainPhase2();
+
+		this.phases[0] = this.drawPhase;
+		this.phases[1] = this.standByPhase;
+		this.phases[2] = this.mainPhase1;
+		this.phases[3] = this.battlePhase;
+		this.phases[4] = this.mainPhase2;
+		
 	}
 
 
 	public void run(){
 
-		drawPhase.run();
-		standByPhase.run();
-		mainPhase1.run();
-		battlePhase.run();
-		mainPhase2.run();
+		for(Phases phase: this.phases){
+			//message: "phase:" phase.name() + '\n';
+			if(phase.getMessage() != null);//message: phase.getMessage();
+			phase.run();
+		}
+	}
+
+	public getMessage(){
+		return this.message;
+	}
+
+	public setMessage(String message){
+		this.message = message;
 	}
 }

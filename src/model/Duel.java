@@ -15,8 +15,6 @@ public class Duel{
 
 	private int current_player = 0;
 	private Phases phase = new Phases(this);
-	private Card selectedCard = null;
-	private int selectedCardLocation;
 	
 	public Duel(Player player1, Player player2){
 		
@@ -42,6 +40,9 @@ public class Duel{
 		return this.hand[this.current_player].size();
 	}
 
+	public int numberOfCardInDeck(){
+		return this.hand[this.current_player].size();
+	}
 	
 	private void round(){
 
@@ -53,7 +54,9 @@ public class Duel{
 		}
 	}
 
-	private void selectCard(String type, )
+	private void selectCard(int location, String type){
+		this.board.selectCard(location, type);
+	}
 	
 	private void turn(){
 		this.phase.run();
@@ -66,6 +69,9 @@ public class Duel{
 		this.hand[this.current_player].add(drawn);
 	}
 
+	public Card getSelectedCard(){
+		return this.board[this.current_player].getSelectedCard();
+	}
 
 	public bool check_players(){
 		;

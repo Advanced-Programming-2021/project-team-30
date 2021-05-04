@@ -13,6 +13,12 @@ public class Board {
 	private MonsterPlayGround monsterPlayGround;
 	private SpellTrapPlayGround spellTrapPlayGround;
 	private Card selectedCard = null;
+	public static String[] selectCardOptions = 
+	{"monsterGround",
+	 "spellTrapGround",
+	 "handGround",
+	 "fieldGround",
+ 	 "graveYardGround"};
 
     
 	public Board(Duel duel, Player player){
@@ -27,48 +33,50 @@ public class Board {
 
 
 	public void selectCard(int location, String from){
-		enum selectType{
-			monsterGround,
-			spellTrapGround,
-			handGround,
-			fieldGround,
-			graveYardGround
-		}
-
 		if(location < 0) return;//message: invalid input
 
 		switch(from){
 			
-			case monsterGround:
+			case selectCardOptions[0]:
 				if(location > 4) return;//message: invalid input
 				this.selected = this.monsterPlayGround.search(locaion);
 				if(this.selected == null); //message: no card found in the given position
 
-			case spellTrapGround:
+			case selectCardOptions[1]:
 				if(location > 4) return;//message: invalid input
 				this.selected = this.spellTrapPlayGround.search(location);
 				if(this.selected == null); //message: no card found in the given position
 
-			case handGround:
+			case selectCardOptions[2]:
 				if(location >= board.hand.getSize()) return;//message: invalid input
 				this.selected = this.hand.search(location);
 
-			/*case fieldGround:
+			/*case selectCardOptions[3]:
 
-			case graveYardGround:
+			case selectCardOptions[4]:
 
 			not sure if needed, putting it here so we decide later
 			*/
+
 			default:
 				return;//message: invalid input
 		}
 	}
 
 
-	public void selectTrapSpellCard(int location){}
+	public void deselect(){
+		if(this.selectedCard == null) return;//message: no card is selected yet
+		this.selectedCard = null;
+		//message: card deselected
+	}
+
+	public void getSelectedCard(){
+		return this.selectedCard;
+	}
+
 
 	public void attack(int defenderLocation){
-
+		if(this.selectedCard == null)return;//message:
 	}
 
     public void show() {
