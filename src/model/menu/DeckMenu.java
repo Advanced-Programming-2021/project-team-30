@@ -9,8 +9,7 @@ public class DeckMenu {
     public Player player;
     public Deck mainDeck;
     public Deck sideDeck;
-    public DeckMenu(Player currentPlayer){
-        player = currentPlayer;
+    public DeckMenu(){
     }
     private void createDeck(Matcher matcher){
 

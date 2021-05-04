@@ -1,7 +1,6 @@
 package model;
 
 import model.board.Board;
-import model.cards.Card;
 
 import java.util.ArrayList;
 
@@ -75,12 +74,12 @@ public class Player {
         }
         return null;
     }
-    public boolean doesPlayerExist(String nickname){
+    public static Player getPlayerByNickname(String nickname){
         for (Player player : getPlayers()) {
             if (player.getNickname().equals(nickname))
-                return true;
+                return player;
         }
-        return false;
+        return null;
     }
     public void showDecks(){
 
