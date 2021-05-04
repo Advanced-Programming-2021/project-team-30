@@ -13,8 +13,9 @@ public class Duel{
 	private ArrayList<Card> chain = new ArrayList<Card>();
 	private Board[] board = new Board[2];
 
-	private int current_player = 0;
+	private int current_player = 0, current_phase = 0;
 	private Phases phase = new Phases(this);
+	private bool didItSummon;
 	
 	public Duel(Player player1, Player player2){
 		
@@ -59,9 +60,16 @@ public class Duel{
 	}
 	
 	private void turn(){
+		// basic initialization
+		this.current_phase = 0;
+		this.didItSummon = False;
 		this.phase.run();
+		// waits for the input
 	}
-	
+
+	private void nextPhase(){
+
+	}
 
 	private void draw(){
 		Card drawn = this.deck[this.current_player][0];
@@ -71,6 +79,31 @@ public class Duel{
 
 	public Card getSelectedCard(){
 		return this.board[this.current_player].getSelectedCard();
+	}
+
+	public void summon(){
+
+		if(this.getSelectedCard() == null)
+			return;// message: no card is selected yet
+
+		//if(card is not monster or cannot do normal summon)return;// message: you can't summon this card
+
+		if(this.current_phase != 2 && this.current_phase != 4)
+			return;// message: action not allowed in this phase
+
+		if(this.monstersInField() == 5)return; //message: monster card zone is full
+
+		if(this.didItSummon)return;//message:you already summoned/set on this turn
+		this.didItSummon=True;
+		this.board[this.current_player].summonFromHand();
+	}
+
+	public void removeFromHand(int location){
+		this.hand.remove(location);
+	}
+
+	public int monstersInField(){
+		return this.board.monstersInField();
 	}
 
 	public bool check_players(){

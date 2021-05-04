@@ -13,6 +13,7 @@ public class Board {
 	private MonsterPlayGround monsterPlayGround;
 	private SpellTrapPlayGround spellTrapPlayGround;
 	private Card selectedCard = null;
+	private int selectedCardLocation = null;
 	public static String[] selectCardOptions = 
 	{"monsterGround",
 	 "spellTrapGround",
@@ -61,19 +62,30 @@ public class Board {
 			default:
 				return;//message: invalid input
 		}
+		this.location = location;
 	}
 
 
-	public void deselect(){
+	public void deselect(bool msg){
 		if(this.selectedCard == null) return;//message: no card is selected yet
 		this.selectedCard = null;
-		//message: card deselected
+		this.selectedCardLocation = null;
+		
+		if(msg)//message: card deselected
+	}
+
+	public int monstersInField(){
+		return this.monsterPlayGround.total();
 	}
 
 	public void getSelectedCard(){
 		return this.selectedCard;
 	}
 
+	public void summonFromHand(){
+		this.monsterPlayGround.add(this.selectedCard, "OO");
+		this.deselect(False);
+	}
 
 	public void attack(int defenderLocation){
 		if(this.selectedCard == null)return;//message:

@@ -32,12 +32,6 @@ public class Phases{
 
 
 	public void run(){
-
-		for(Phases phase: this.phases){
-			//message: "phase:" phase.name() + '\n';
-			if(phase.getMessage() != null);//message: phase.getMessage();
-			phase.run();
-		}
 	}
 
 	public getMessage(){

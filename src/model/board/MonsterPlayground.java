@@ -8,12 +8,15 @@ import java.util.ArrayList;
 public class MonsterPlayground extends Board{
 
     private Card[] cards = new Card[5];
+    private String[] situation = new String[5];
 
     @Override
     public void init() {
-        for(int i = 0; i < 5; i++) this.cards[i] = null;
+        for(int i = 0; i < 5; i++){
+            this.cards[i] = null;
+            this.situation[i] = "E";
+        }
     }
-
 
     @Override
     public void show() {
@@ -25,6 +28,20 @@ public class MonsterPlayground extends Board{
         return this.cards[location];
     }
 
+    public int total(){
+        
+        for(int i = 4; i >= 0; i--)
+            if(this.cards[i] != null) return i + 1;
+
+        return 0;
+    }
+
+    public void add(Card card, String situation){
+        for(int i = 0; i < 5; i++)if(this.cards[i] == null){
+            this.cards[i] = card;
+            this.situation[i] = situation;
+        }
+    }
 
     public void flipSummon(int location){
 
