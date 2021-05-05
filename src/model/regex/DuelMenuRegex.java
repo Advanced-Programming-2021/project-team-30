@@ -35,26 +35,44 @@ public class DuelMenuRegex {
     };
 
     public static String cardShow = "\\s*card show \\s*(?<cardName>.*)\\s*";
-    public static String selectMonster;
-    public static String selectMonsterAbbr;
-    public static String[] selectOpponentMonster;
-    public static String[] selectOpponentMonsterAbbr;
-    public static String selectSpell;
-    public static String selectSpellAbbr;
-    public static String[] selectOpponentSpell;
-    public static String[] selectOpponentSpellAbbr;
-    public static String selectField;
-    public static String selectFieldAbbr;
-    public static String[] selectOpponentField;
-    public static String[] selectOpponentFieldAbbr;
-    public static String selectHand;
-    public static String selectHandAbbr;
-    public static String deselect;
-    public static String setCardPosition;
-    public static String setCardPositionAbbr;
-    public static String attack;
-    public static String cardShowSelected;
-    public static String cardShowSelectedAbbr;
+    public static String selectMonster = "\\s*select --monster (\\d)\\s*";
+    public static String selectMonsterAbbr = "\\s*select -m (\\d)\\s*";
+    public static String[] selectOpponentMonster = {
+            "\\s*select --monster --opponent (\\d)\\s*",
+            "\\s*select --opponent --monster (\\d)\\s*"
+    };
+    public static String[] selectOpponentMonsterAbbr = {
+            "\\s*select -m -o (\\d)\\s*",
+            "\\s*select -o -m (\\d)\\s*"
+    };
+    public static String selectSpell = "\\s*select --spell (\\d)\\s*";
+    public static String selectSpellAbbr = "\\s*select -s (\\d)\\s*";
+    public static String[] selectOpponentSpell = {
+            "\\s*select --spell --opponent (\\d)\\s*",
+            "\\s*select --opponent --spell (\\d)\\s*"
+    };
+    public static String[] selectOpponentSpellAbbr = {
+            "\\s*select -s -o (\\d)\\s*",
+            "\\s*select -o -s (\\d)\\s*"
+    };
+    public static String selectField = "\\s*select --field\\s*";
+    public static String selectFieldAbbr = "\\s*select -f\\s*";
+    public static String[] selectOpponentField = {
+            "\\s*select --field --opponent\\s*",
+            "\\s*select --opponent --field\\s*"
+    };
+    public static String[] selectOpponentFieldAbbr = {
+            "\\s*select -f -o\\s*",
+            "\\s*select -o -f\\s*"
+    };
+    public static String selectHand = "\\s*select --hand (\\d)\\s*";
+    public static String selectHandAbbr = "\\s*select -h (\\d)\\s*";
+    public static String deselect = "\\s*select -d\\s*";
+    public static String setCardPosition = "\\s*set --position (attack|defense)\\s*";
+    public static String setCardPositionAbbr = "\\s*set -p (attack|defense)\\s*";
+    public static String attack = "\\s*attack (\\d)\\s*";
+    public static String cardShowSelected = "\\s*card show --selected\\s*";
+    public static String cardShowSelectedAbbr = "\\s*card show -s\\s*";
 
 
 }
