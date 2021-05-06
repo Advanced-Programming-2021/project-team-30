@@ -23,6 +23,11 @@ public class MonsterPlayground extends Board{
         // wait
     }
 
+    @Override
+
+    public void set(){
+        add(null, "DH");
+    }
 
     public Card search(int location){
         return this.cards[location];
@@ -37,6 +42,7 @@ public class MonsterPlayground extends Board{
     }
 
     public void add(Card card, String situation){
+        if(card == null) card = selectCard;
         for(int i = 0; i < 5; i++)if(this.cards[i] == null){
             this.cards[i] = card;
             this.situation[i] = situation;

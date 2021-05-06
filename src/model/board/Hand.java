@@ -9,27 +9,32 @@ public class Hand extends Board{
 
     @Override
     public void init() {
-
+        //
     }
 
     @Override
     public void show() {
 
     }
+
     public void summon(int location, int target){
 
     }
+
     public void set(int location, int target){
 
     }
+
     public Card getCard(int location){
 
     }
+
     public void addCard(Card card){
 
     }
-    public void removeCard(Card card){
 
+    public void removeCard(){
+        cards.remove(selectedCardLocation);
     }
 
 }

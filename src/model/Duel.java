@@ -123,6 +123,10 @@ public class Duel{
 		return this.board.monstersInField();
 	}
 
+	public void set(){
+		board[current_player].set();
+	}
+
 	public void doEffect(){
 		//does effects
 	}

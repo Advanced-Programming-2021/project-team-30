@@ -16,7 +16,7 @@ public class Board {
 	private SpellTrapPlayGround spellTrapPlayGround;
 	private Card selectedCard = null;
 	private int selectedCardLocation = null;
-	private String map;
+	private String selectedCardOrigin = null;
 	final String[] selectCardOptions = 
 	{"monsterGround",
 	 "spellTrapGround",
@@ -63,9 +63,6 @@ public class Board {
 				}
 
 			case selectCardOptions[2]:
-
-				if(enemy)return;
-
 				if(location >= board.hand.getSize()) return;//message: invalid input
 				this.selected = this.hand.search(location);
 
@@ -83,6 +80,7 @@ public class Board {
 				return;//message: invalid input
 		}
 		this.location = location;
+		this.selectedCardOrigin = from;
 	}
 
 
@@ -92,6 +90,29 @@ public class Board {
 		this.selectedCardLocation = null;
 		
 		if(msg)//message: card deselected
+	}
+
+	public void set(){
+		if(selectedCard == null){
+			return;
+			//message: no card is selected yet
+		}
+
+		if(selectedCardOrigin != "hand"){
+			//message: you can't set this card
+			return;
+		}
+
+		if(monsterPlayGround.total() == 5){
+			//message: monster card zone is full
+			return;
+		}
+
+		monsterPlayGround.set();
+		hand.removeCard();
+		selectedCard = null;
+		selectedCardLocation = null;
+		selectedCardOrigin = null;
 	}
 
 	public int monstersInField(){
