@@ -3,16 +3,23 @@ package model;
 import model.cards.Card;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Event {
-    private ArrayList<Event> events;
+    private static ArrayList<Event> events;
     private String name;
-    private ArrayList<Card> cards;
+    private static ArrayList<Card> cards;
+    private Card card;
     public Event(String name){
         setName(name);
     }
-    public static void searchCardsOnEvent(Event event){
-
+    public static Card searchCardsOnEvent(Event event){
+        for (Card card : Event.cards) {
+            if (card.event.equals(event)) {
+                return card;
+            }
+        }
+        return null;
     }
 
     public void setName(String name) {
@@ -30,11 +37,28 @@ public class Event {
     public ArrayList<Card> getCards() {
         return cards;
     }
-    public void getRecentEvent(){
-
+    public Event getRecentEvent(){
+        return Event.events.get(Event.events.size() - 1);
     }
     public void caller(String name){
+        for (Event event : Event.events) {
+            if (event.name.equals(name)) {
+                for (Card card : Event.cards) {
+                    if (card.event.equals(event)) {
+                        //card.trigger();
+                    }
+                }
 
+            }
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Event)) return false;
+        Event event = (Event) o;
+        return Objects.equals(getName(), event.getName()) && Objects.equals(card, event.card);
     }
 
 }

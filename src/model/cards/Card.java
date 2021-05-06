@@ -1,8 +1,11 @@
 package model.cards;
+import model.Event;
+
 import java.lang.String;
 import java.util.regex.Matcher;
 
 public class Card {
+    public Event event;
     protected boolean isInGraveyard = false ;
     protected Type cardType ;
     protected Attribute status ;
@@ -55,6 +58,7 @@ public class Card {
             String cardName = matcher.group("cardName");
         }
     }
+
 
 
 }
