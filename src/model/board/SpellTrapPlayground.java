@@ -5,17 +5,34 @@ import model.cards.Card;
 import java.util.ArrayList;
 
 public class SpellTrapPlayground extends Board{
-    Card[] cards = new String[5];
+    private Board board;
+    private Card[] cards = new Card[5];
+    private String[] position = new String[5];
 
     @Override
     public void init() {
-        for(int i = 0; i < 5; i++)this.cards[i] = null;
+        for(int i = 0; i < 5; i++){
+            cards[i] = null;
+            position[i] = null;
+        }
     }
 
     @Override
-
     public Card search(int location){
         return this.cards[location];
+    }
+
+    @Override
+    public int total(){
+        int counter = 0;
+        for(int i = 0; i < 5; i++)
+            if(cards[i] != null) counter++;
+        return counter;
+    }
+
+    public SpellTrapPlayground(Board board){
+        this.board = board;
+        init();
     }
 
     public void show() {
@@ -29,5 +46,9 @@ public class SpellTrapPlayground extends Board{
     }
     public int getNumber(){
 
+    }
+
+    public String getPosition(int location){
+        return position[location];
     }
 }

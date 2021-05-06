@@ -14,6 +14,12 @@ public class FieldZone extends Board{
         this.duel.showCard(this.field);
     }
 
+    @Override
+    public int total(){
+        if(getCard() == null) return 0;
+        return 1;
+    }
+
     public void getCard(){
         return this.field;
     }
@@ -25,7 +31,7 @@ public class FieldZone extends Board{
         this.field = card;    
     }
 
-    public void remove(){
+    public void removeCard(){
         if(this.field == null){
             //message: field is already empty
             return;

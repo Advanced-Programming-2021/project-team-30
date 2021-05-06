@@ -44,7 +44,7 @@ public class Board {
 			case selectCardOptions[0]:
 				if(location > 4) return;//message: invalid input
 				if(enemy){
-					this.showCard(this.monsterPlayGround.search());
+					showCard(monsterPlayGround.search());
 				}
 
 				else{
@@ -85,9 +85,10 @@ public class Board {
 
 
 	public void deselect(bool msg){
-		if(this.selectedCard == null) return;//message: no card is selected yet
-		this.selectedCard = null;
-		this.selectedCardLocation = null;
+		if(selectedCard == null) return;//message: no card is selected yet
+		selectedCard = null;
+		selectedCardLocation = null;
+		selectedCardOrigin = null;
 		
 		if(msg)//message: card deselected
 	}
@@ -115,12 +116,47 @@ public class Board {
 		selectedCardOrigin = null;
 	}
 
-	public int monstersInField(){
-		return this.monsterPlayGround.total();
+	public int total(String form){
+		switch(from){
+			case "hand":
+				return hand.total();
+
+			case "monsters":
+				return monsterPlayGround.total();
+
+			case "spells":
+				return spellTrapPlayGround.total();
+
+			case "deck":
+				return mainDeck.total();
+
+			case "graveyard":
+				return graveYard.total();
+
+			default:
+				return fieldZone.total();
+		}
 	}
 
-	public void getSelectedCard(){
-		return this.selectedCard;
+	public int monstersInField(){
+		return monsterPlayGround.total();
+	}
+
+	public Card getSelectedCard(){
+		return selectedCard;
+	}
+
+	public int getSelectedCardLocation(){
+		return selectedCardLocation;
+	}
+
+	public String getSelectedCardOrigin(){
+		return selectedCardOrigin;
+	}
+
+	public String getPosition(int location, int ground){
+		if(ground == 0) return monsterPlayGround.getPosition(location);
+		return spellTrapPlayGround.getPosition(location);
 	}
 
 	public void showCard(Card card){
@@ -132,12 +168,74 @@ public class Board {
 		this.deselect(False);
 	}
 
-	public void attack(int defenderLocation){
-		if(this.selectedCard == null)return;//message:
+	public boolean setPosition(String newPosition){
+		if(selectedCard == null){
+			//message: no card is selected yet
+			return false;
+		}
+
+		if(selectedCardOrigin != "monsterGround"){
+			// message: you can't change this card position
+			return false;
+		}
+
+		if(duel.askPostionChange[selectedCardLocation]){
+			//message: you already changed this card position in this turn
+			return false;
+		}
+
+		return monsterPlayGround.setPosition(newPosition);
+	}
+
+	public void flipSummon(){
+		if(selectedCard == null){
+			//message: no card is selected yet
+			return false;
+		}
+
+		if(selectedCardOrigin != "monsterGround"){
+			//message: you can't change this card's position
+			return false;
+		}
+
+		return monsterPlayGround.flipSummon();
 	}
 
     public String show(){
     	;
     	//show details
+    }
+
+    public void getCard(int location, String from){
+    	switch (from) {
+    		case "monsterGround":
+    			return monsterPlayGround.getCard(location);
+    		case "spellTrapGround":
+    			return spellTrapPlayGround.getCard(location);
+    		case "handGround":
+    			return hand.getCard(location);
+    		case "fieldGround":
+    			return fieldZone.getCard(location);
+    		case "graveYardGround":
+    			return graveYard.getCard(location);
+    	}
+    }
+
+    public void removeCard(String form, int location){
+    	switch(from):
+    		case: "monsterGround":
+    			monsterPlayGround.removeCard(location);
+
+    		case: "spellTrapGround":
+    			spellTrapPlayGround.removeCard(location)
+
+    		case: "handGround":
+    			hand.removeCard(location);
+
+    		case "fieldGround":
+    			fieldZone.removeCard();
+
+    		case "graveYardGround":
+    			graveYard.removeCard(location);
     }
 }

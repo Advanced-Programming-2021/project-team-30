@@ -17,6 +17,11 @@ public class Hand extends Board{
 
     }
 
+    @Override
+    public int total(){
+        return cards.size();
+    }
+
     public void summon(int location, int target){
 
     }
@@ -33,8 +38,8 @@ public class Hand extends Board{
 
     }
 
-    public void removeCard(){
-        cards.remove(selectedCardLocation);
+    public void removeCard(int location){
+        cards.remove(location);
     }
 
 }

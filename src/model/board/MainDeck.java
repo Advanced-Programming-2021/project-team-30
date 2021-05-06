@@ -16,6 +16,12 @@ public class MainDeck extends Board{
     public void show() {
 
     }
+
+    @Override
+    public int total(){
+        return cards.size();
+    }
+
     public void shuffle(){
 
     }
