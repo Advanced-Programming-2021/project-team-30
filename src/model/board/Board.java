@@ -187,7 +187,7 @@ public class Board {
 		return monsterPlayGround.setPosition(newPosition);
 	}
 
-	public void flipSummon(){
+	public boolean flipSummon(){
 		if(selectedCard == null){
 			//message: no card is selected yet
 			return false;

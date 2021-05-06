@@ -22,6 +22,10 @@ public class MainDeck extends Board{
         return cards.size();
     }
 
+    public void removeCard(int location){
+        cards.remove(location);
+    }
+
     public void shuffle(){
 
     }

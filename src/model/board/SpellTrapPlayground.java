@@ -13,7 +13,7 @@ public class SpellTrapPlayground extends Board{
     public void init() {
         for(int i = 0; i < 5; i++){
             cards[i] = null;
-            position[i] = null;
+            position[i] = "E";
         }
     }
 
@@ -30,6 +30,13 @@ public class SpellTrapPlayground extends Board{
         return counter;
     }
 
+
+    @Override
+    public void remove(int location){
+        cards[location] = null;
+        position[location] = "E";
+    }
+
     public SpellTrapPlayground(Board board){
         this.board = board;
         init();
@@ -39,9 +46,6 @@ public class SpellTrapPlayground extends Board{
 
     }
     public void activate(int location){
-
-    }
-    public void remove(int location){
 
     }
     public int getNumber(){

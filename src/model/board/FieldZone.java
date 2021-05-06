@@ -20,6 +20,16 @@ public class FieldZone extends Board{
         return 1;
     }
 
+    @Override
+    public void removeCard(){
+        if(field == null){
+            //message: field is already empty
+            return;
+        }
+        field = null;
+        duel.undoEffect(card);
+    }
+
     public void getCard(){
         return this.field;
     }
@@ -29,15 +39,6 @@ public class FieldZone extends Board{
             this.duel.undoEffect(this.field);
         this.duel.doEffect(card);
         this.field = card;    
-    }
-
-    public void removeCard(){
-        if(this.field == null){
-            //message: field is already empty
-            return;
-        }
-        this.field = null;
-        this.duel.undoEffect(card);
     }
 
     public void setField(Card field) {

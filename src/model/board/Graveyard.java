@@ -24,6 +24,11 @@ public class Graveyard extends Board{
         return cards.size();
     }
 
+    @Override
+    public void removeCard(int location){
+        cards.remove(location);
+    }
+
     public void addCard(Card card){
         this.cards.add(card);
     }
@@ -36,10 +41,6 @@ public class Graveyard extends Board{
         }
         else
             return cards[index];
-    }
-
-    public void removeCard(int location){
-        cards.remove(location);
     }
 
     public int getNumber(){
