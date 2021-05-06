@@ -15,21 +15,28 @@ public class Duel{
 	private ArrayList<Card> chain = new ArrayList<Card>();
 	private Board[] board = new Board[2];
 
-	private int current_player = 0, current_phase = 0;
+	private int current_player = 0, current_phase = 0, rounds;
 	private Phases phase = new Phases(this);
 	private boolean didItSummon;
 	
-	public Duel(Player player1, Player player2){
+	public Duel(Player player1, Player player2, int rounds){
 		
+		// check
+		//checks player1 for active deck; checks player2 for active deck;
+		/* message: username has no active deck
+		   message: username's deck is invalid
+		*/
+		if(rounds != 1 && rounds != 3)return;//message: number of rounds is not supported
+		//initialize
 		Player[] players = {player1, player2};
 
-		//initialize
 		for(int i = 0; i < 2; i++){
 			Player myPlayer = players[i];
 			this.player[i] = myPlayer;
 			this.deck[i] = myPlayer.getActiveDeck().getAllCards();
 			this.board[i] = new Board(this, myPlayer);
 		}
+		this.rounds = rounds;
 	}
 
 	
@@ -57,8 +64,16 @@ public class Duel{
 		}
 	}
 
-	private void selectCard(int location, String type){
-		this.board.selectCard(location, type);
+	private void selectCard(int location, String from, boolean enemy){
+		if(enemy){
+			this.selectCardFromEnemy(location, from);
+			return;
+		}
+		this.board[this.current_player].selectCard(location, from, false);
+	}
+
+	public void selectCardFromEnemy(int location, String from){
+		this.board[1 - this.current_player].selectCard(location, from, true);
 	}
 	
 	private void turn(){
@@ -108,8 +123,17 @@ public class Duel{
 		return this.board.monstersInField();
 	}
 
+	public void doEffect(){
+		//does effects
+	}
+
 	public boolean check_players(){
 		;
+	}
+
+	public void getMapDetails(){
+		;
+		//processes for getting map details
 	}
 
 	public void tictactoe(){

@@ -5,6 +5,8 @@ import model.Player;
 
 public class Board {
 
+	final String[] monsterCodes = {"E", "OO", "DO", "DH"};
+	final String[] spellTrapCodes = {"E", "O", "H"};
 	private Duel duel;
 	private FieldZone fieldZone;
 	private Hand hand;
@@ -14,7 +16,8 @@ public class Board {
 	private SpellTrapPlayGround spellTrapPlayGround;
 	private Card selectedCard = null;
 	private int selectedCardLocation = null;
-	public static String[] selectCardOptions = 
+	private String map;
+	final String[] selectCardOptions = 
 	{"monsterGround",
 	 "spellTrapGround",
 	 "handGround",
@@ -33,31 +36,48 @@ public class Board {
 	}
 
 
-	public void selectCard(int location, String from){
+	public void selectCard(int location, String from, boolean enemy){
 		if(location < 0) return;//message: invalid input
 
 		switch(from){
 			
 			case selectCardOptions[0]:
 				if(location > 4) return;//message: invalid input
-				this.selected = this.monsterPlayGround.search(locaion);
-				if(this.selected == null); //message: no card found in the given position
+				if(enemy){
+					this.showCard(this.monsterPlayGround.search());
+				}
+
+				else{
+					this.selected = this.monsterPlayGround.search(location);
+					if(this.selected == null); //message: no card found in the given position
+				}
 
 			case selectCardOptions[1]:
 				if(location > 4) return;//message: invalid input
-				this.selected = this.spellTrapPlayGround.search(location);
-				if(this.selected == null); //message: no card found in the given position
+				
+				if(enemy) this.showCard(this.spellTrapPlayGround.search(location));
+
+				else{
+					this.selected = this.spellTrapPlayGround.search(location);
+					if(this.selected == null); //message: no card found in the given position
+				}
 
 			case selectCardOptions[2]:
+
+				if(enemy)return;
+
 				if(location >= board.hand.getSize()) return;//message: invalid input
 				this.selected = this.hand.search(location);
 
-			/*case selectCardOptions[3]:
+			case selectCardOptions[3]:
+				if(enemy) this.showCard(this.fieldZone.getCard());
+
+				else{
+					this.selectedCard = this.fieldZone.getCard();
+				}
 
 			case selectCardOptions[4]:
-
-			not sure if needed, putting it here so we decide later
-			*/
+				this.graveYardGround.show();
 
 			default:
 				return;//message: invalid input
@@ -82,6 +102,10 @@ public class Board {
 		return this.selectedCard;
 	}
 
+	public void showCard(Card card){
+		;//message: shows card*
+	}
+
 	public void summonFromHand(){
 		this.monsterPlayGround.add(this.selectedCard, "OO");
 		this.deselect(False);
@@ -91,7 +115,8 @@ public class Board {
 		if(this.selectedCard == null)return;//message:
 	}
 
-    public void show() {
-    	
+    public String show(){
+    	;
+    	//show details
     }
 }

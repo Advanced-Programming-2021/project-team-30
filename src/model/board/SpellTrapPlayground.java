@@ -5,14 +5,19 @@ import model.cards.Card;
 import java.util.ArrayList;
 
 public class SpellTrapPlayground extends Board{
-    private ArrayList<Card> cards = new ArrayList<>();
+    Card[] cards = new String[5];
 
     @Override
     public void init() {
-
+        for(int i = 0; i < 5; i++)this.cards[i] = null;
     }
 
     @Override
+
+    public Card search(int location){
+        return this.cards[location];
+    }
+
     public void show() {
 
     }
