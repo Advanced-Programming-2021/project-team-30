@@ -2,8 +2,10 @@ package model.menu;
 
 import model.Player;
 import model.cards.Card;
+import model.regex.DebugRegex;
 import model.regex.Regex;
 import model.regex.ShopMenuRegex;
+import model.response.MenuResponse;
 import model.response.ShopMenuResponse;
 import view.Main;
 
@@ -50,6 +52,12 @@ public class ShopMenu {
     private void showAllCards(){
         DeckMenu.showCards(cards);
     }
+    private void increasePlayerMoney(Matcher matcher){
+        if (matcher.find()){
+            int amount = Integer.parseInt(matcher.group("amount"));
+            getCurrentPlayer().setMoney(getCurrentPlayer().getMoney() + amount);
+        }
+    }
     public void run(String command){
         if (Regex.getCommandMatcher(command, ShopMenuRegex.cardShow).find())
             Card.showCard(Regex.getCommandMatcher(command, ShopMenuRegex.cardShow));
@@ -58,6 +66,13 @@ public class ShopMenu {
         else if (Regex.getCommandMatcher(command, ShopMenuRegex.showAllCards).find()
                 || Regex.getCommandMatcher(command, ShopMenuRegex.showAllCardsAbbr).find())
             showAllCards();
+        else if (Regex.getCommandMatcher(command, DebugRegex.increaseMoney).find())
+            increasePlayerMoney(Regex.getCommandMatcher(command, DebugRegex.increaseMoney));
+        else if (Regex.getCommandMatcher(command, DebugRegex.increaseMoneyAbbr).find())
+            increasePlayerMoney(Regex.getCommandMatcher(command, DebugRegex.increaseMoneyAbbr));
+        else
+            Main.outputToUser(MenuResponse.invalidCommand);
+
 
     }
 }

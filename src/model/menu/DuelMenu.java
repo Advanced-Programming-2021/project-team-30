@@ -38,7 +38,7 @@ public class DuelMenu {
                 else if (round != 1 && round != 3)
                     Main.outputToUser(DuelMenuResponse.invalidRound);
                 else
-                    new Duel(currentPlayer, opponentPlayer);
+                    new Duel(currentPlayer, opponentPlayer, round);
 
             }
 
