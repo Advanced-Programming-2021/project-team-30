@@ -15,8 +15,8 @@ public class Board {
 	private MonsterPlayGround monsterPlayGround;
 	private SpellTrapPlayGround spellTrapPlayGround;
 	private Card selectedCard = null;
-	private int selectedCardLocation = null;
-	private String selectedCardOrigin = null;
+	private int selectedCardLocation = null, selectedCardOwner = null;
+	private String selectedCardOrigin = null, selectedCardPosition = null;
 	final String[] selectCardOptions = 
 	{"monsterGround",
 	 "spellTrapGround",
@@ -36,51 +36,42 @@ public class Board {
 	}
 
 
-	public void selectCard(int location, String from, boolean enemy){
+	public void selectCard(int location, String from, boolean opponent){
 		if(location < 0) return;//message: invalid input
 
 		switch(from){
 			
 			case selectCardOptions[0]:
 				if(location > 4) return;//message: invalid input
-				if(enemy){
-					showCard(monsterPlayGround.search());
-				}
+				selectedCard = monsterPlayGround.search(location);
 
-				else{
-					this.selected = this.monsterPlayGround.search(location);
-					if(this.selected == null); //message: no card found in the given position
-				}
+				if(selectedCard == null)return; //message: no card found in the given position
 
 			case selectCardOptions[1]:
 				if(location > 4) return;//message: invalid input
 				
-				if(enemy) this.showCard(this.spellTrapPlayGround.search(location));
-
-				else{
-					this.selected = this.spellTrapPlayGround.search(location);
-					if(this.selected == null); //message: no card found in the given position
-				}
+				selectedCard = spellTrapPlayGround.search(location);
+				if(selectedCard == null); //message: no card found in the given position
+				
 
 			case selectCardOptions[2]:
-				if(location >= board.hand.getSize()) return;//message: invalid input
-				this.selected = this.hand.search(location);
+				if(location >= hand.total()) return;//message: invalid input
+				selectedCard = hand.search(location);
 
 			case selectCardOptions[3]:
-				if(enemy) this.showCard(this.fieldZone.getCard());
-
-				else{
-					this.selectedCard = this.fieldZone.getCard();
-				}
+				selectedCard = fieldZone.getCard();
+				if(selectedCard == null)return; //message: the selected field zone is empty
 
 			case selectCardOptions[4]:
-				this.graveYardGround.show();
+				// chooses a card from the graveYard
 
 			default:
 				return;//message: invalid input
 		}
 		this.location = location;
-		this.selectedCardOrigin = from;
+		selectedCardOrigin = from;
+		if(opponent) selectedCardOwner = "me";
+		else selectedCardOwner = "enemy";
 	}
 
 
@@ -201,12 +192,33 @@ public class Board {
 		return monsterPlayGround.flipSummon();
 	}
 
-    public String show(){
-    	;
-    	//show details
+	public boolean activateSpell(){
+		if(!hand.getRequirementsStatus(getSelectedCardLocation())){
+			//message: preparations of this spell are not done yet
+			return false;
+		}
+
+		removeCard("handGround", getSelectedCardLocation());
+		addCard("spellTrapGround", getSelectedCard(), "O");
+		//message: spell activated
+		return true;
+	}
+
+	public boolean setSpell(){
+		removeCard("handGround", getSelectedCardLocation());
+		addCard("spellTrapGround", getSelectedCard(), "H");
+		//message: set successfully
+		return true;
+	}
+
+    public String show(String from){
+    	switch(from){
+    		case "graveYardGround":
+    			graveYardGround.show();
+    	}
     }
 
-    public void getCard(int location, String from){
+    public Card getCard(int location, String from){
     	switch (from) {
     		case "monsterGround":
     			return monsterPlayGround.getCard(location);
@@ -237,5 +249,32 @@ public class Board {
 
     		case "graveYardGround":
     			graveYard.removeCard(location);
+    }
+
+    public void addCard(String to, Card card, String position){
+    	switch(to){
+    		case "monsterGround":
+    			monsterPlayGround.addCard(card, position);
+
+    		case "spellTrapGround":
+    			spellTrapPlayGround.addCard(card, position);
+
+    		case "graveYardGround":
+    			graveYard.addCard(card);
+
+    		default: return;
+    	}
+    }
+
+    public void showCard(){
+    	if(getSelectedCard() == null){
+    		//message: no card is selected
+    		return;
+    	}
+    	if(selectedCardOwner == "enemy" && (selectedCardPosition == "DH" || selectedCardPosition == "H")){
+    		//message: card is not visible
+    		return;
+    	}
+    	//shows card using message
     }
 }

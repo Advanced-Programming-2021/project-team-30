@@ -14,9 +14,8 @@ public class Graveyard extends Board{
 
     @Override
     public void show() {
-        for(Card card: cards){
-            this.duel.showCard(card);
-        }
+        for(Card card: cards)
+            //message: <cards.getName()>:<cards.details()>
     }
 
     @Override

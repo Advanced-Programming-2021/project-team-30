@@ -8,6 +8,7 @@ public class SpellTrapPlayground extends Board{
     private Board board;
     private Card[] cards = new Card[5];
     private String[] position = new String[5];
+    private boolean[] isRequirementsDoneStatus = new boolean[5];
 
     @Override
     public void init() {
@@ -19,7 +20,7 @@ public class SpellTrapPlayground extends Board{
 
     @Override
     public Card search(int location){
-        return this.cards[location];
+        return cards[location];
     }
 
     @Override
@@ -42,6 +43,13 @@ public class SpellTrapPlayground extends Board{
         init();
     }
 
+    public void addCard(Card card, String position){
+        for(int i = 0; i < 5; i++)if(cards[i] == null){
+            cards[i] = card;
+            this.position[i] = position;
+        }
+    }
+
     public void show() {
 
     }
@@ -54,5 +62,13 @@ public class SpellTrapPlayground extends Board{
 
     public String getPosition(int location){
         return position[location];
+    }
+
+    public boolean setRequirementsStatus(int location, boolean setter){
+        isRequirementsDoneStatus[location] = setter;
+    }
+    
+    public boolean getRequirementsStatus(int location){
+        return isRequirementsDoneStatus[location];
     }
 }

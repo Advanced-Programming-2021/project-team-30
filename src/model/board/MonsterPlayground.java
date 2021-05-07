@@ -12,6 +12,7 @@ public class MonsterPlayground extends Board{
     private Board board;
     private Card[] cards = new Card[5];
     private String[] position = new String[5];
+    private boolean[] isRequirementsDoneStatus = new boolean[5];
 
     @Override
     public void init() {
@@ -55,7 +56,7 @@ public class MonsterPlayground extends Board{
         return cards[location];
     }
 
-    public void add(Card card, String position){
+    public void addCard(Card card, String position){
         if(card == null) card = selectCard;
         for(int i = 0; i < 5; i++)if(cards[i] == null){
             cards[i] = card;
@@ -91,5 +92,13 @@ public class MonsterPlayground extends Board{
 
     public int getNumber(){
 
+    }
+
+    public boolean setRequirementsStatus(int location, boolean setter){
+        isRequirementsDoneStatus[location] = setter;
+    }
+    
+    public boolean getRequirementsStatus(int location){
+        return isRequirementsDoneStatus[location];
     }
 }

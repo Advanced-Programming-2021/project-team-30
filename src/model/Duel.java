@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 
 public class Duel{
+	final int[] rotation = {0, 1, 3, 2, 5, 4};
+	// rotates the location; input: location as index, output: rotation of location
+ 
 	private Player[] player = new Player[2];
 	private ArrayList<Card> chain = new ArrayList<Card>();
 	private Board[] board = new Board[2];
@@ -16,7 +19,7 @@ public class Duel{
 	private int[] player_lp = new int[2];
 	private Phases phase = new Phases(this);
 	private boolean didItSummon;
-	private boolean[] didItChangePosition = new boolean[5];
+	private boolean[] didItChangePosition = new boolean[2][5];
 	private boolean[] didItAttack = new boolean[5];
 	
 	public Duel(Player player1, Player player2, int rounds){
@@ -75,12 +78,16 @@ public class Duel{
 		return board[current_player].total(from);
 	}
 
-	private void selectCard(int location, String from, boolean enemy){
+	public void selectCard(int location, String from, boolean enemy){
 		if(enemy){
-			selectCardFromEnemy(location, from);
+			board[1 - current_player].selectCard(rotate(location), from);
 			return;
 		}
-		board[current_player].selectCard(location, from, false);
+		board[current_player].selectCard(location, from);
+	}
+
+	public int rotate(int location){
+		return rotation[location];
 	}
 
 	public void selectCardFromEnemy(int location, String from){
@@ -92,7 +99,8 @@ public class Duel{
 		this.current_phase = 0;
 		this.didItSummon = false;
 		for(int i = 0; i < 5; i++){
-			didItChangePosition[i] = false;
+			didItChangePosition[0][i] = false;
+			didItChangePosition[1][i] = false;
 			didItAttack[i] = false;
 		}
 		this.phase.run();
@@ -140,23 +148,31 @@ public class Duel{
 
 	public void flipSummon(){
 		if(board[current_player].flipSummon()){
-			didItChangePosition[borad[current_player].getSelectedCardLocation()] = true;
+			didItChangePosition[0][borad[current_player].getSelectedCardLocation()] = true;
 			deselect(false);
 		}
 	}
 
+	public void ritualSummon()
+
 	public void removeFromHand(int location){
-		this.hand.remove(location);
+		board.removeCard("hand", location);
 	}
 
 	public void set(){
 		board[current_player].set();
 	}
 
-	public void setPosition(String newPosition){
-		if(board.setPosition(newPosition)){
-			didItChangePosition[board[current_player].getSelectedCardLocation] = true;
-			deselect(false);
+	public void setPosition(String newPosition, String from){
+		switch(from){
+			case "monsterGround":
+				if(board.setPosition(newPosition)){
+					didItChangePosition[0][board[current_player].getSelectedCardLocation] = true;
+					deselect(false);
+				}
+
+			case "spellTrapGround":
+
 		}
 	}
 
@@ -278,12 +294,60 @@ public class Duel{
 		//message: you opponent receives <damage> battale damage
 	}
 
+	public boolean activateSpell(boolean activate){
+		if(!checkSelectedCard()){
+			//message: no card is selected yet
+			return false;
+		}
+
+		if(getSelectedCardOrigin() != "handGround"){
+			//message: this card has been activated/set before
+			return false;
+		}
+
+		if(getNumberOfCards("spellTrapGround", false) == 5){
+			//message: spell card zone is full
+			return false;
+		}
+
+		if(activate && board[current_player].activateSpell()){
+			didItChangePosition[1][getSelectedCardLocation()] = true;
+			deselect(false);
+		}
+
+		if(!activate && board[current_player].setSpell()){
+			didItChangePosition[1][getSelectedCardLocation()] = true;
+			deselect(false);
+		}
+	}
+
+	public void showGraveYard(){
+		board[current_player].show("graveYardGround");
+	}
+
+	public void showCard(){
+		board[current_player].showCard();
+	}
+
+	public int getCurrentPlayer(){
+		return current_player;
+	}
+
+	public boolean checkSelectedCard(){
+		if(getSelectedCard() == null) return false;
+		return true;
+	}
+
 	public void deselect(boolean msg){
 		board[current_player].deselect(msg);
 	}
 
 	public void doEffect(){
 		//does effects
+	}
+
+	public void undoEffect(){
+		//undoes effects
 	}
 
 	public void askPositionChange(int location){
