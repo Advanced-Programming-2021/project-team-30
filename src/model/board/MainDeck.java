@@ -3,42 +3,37 @@ package model.board;
 import model.cards.Card;
 
 import java.util.ArrayList;
+import java.util.Random;
 
-public class MainDeck extends Board{
-    private ArrayList<Card> cards = new ArrayList<>();
+public class MainDeck{
+    private ArrayList<Card> cards = new ArrayList<Card>();
+    private Board board;
+    final Random rand = new Random();
 
-    @Override
-    public void init() {
-
+    public MainDeck(Board board){
+        this.board = board;
+        //this.cards.addAll(cards);
     }
 
-    @Override
-    public void show() {
-
+    public void reset(){
+        cards.clear();
     }
 
-    @Override
     public int total(){
         return cards.size();
     }
 
-    public void removeCard(int location){
-        cards.remove(location);
+    public Card getCard(){ return cards.get(rand.nextInt(cards.size())); }
+
+    public Card getCard(int location){ return cards.get(location); }
+
+    public void addCard(Card card){ cards.add(card); }
+
+    public void removeCard(Card card){ cards.remove(card); }
+
+    public void removeCards(ArrayList<Card> cards){
+        for(Card card: cards)removeCard(card);
     }
 
-    public void shuffle(){
-
-    }
-    public void draw(){
-
-    }
-    public void addCard(Card card){
-
-    }
-    public void removeCard(Card card){
-
-    }
-    public int getNumber(){
-
-    }
+    public void removeCard(int location){ cards.remove(location); }
 }

@@ -4,55 +4,44 @@ import model.cards.Card;
 
 import java.util.ArrayList;
 
-public class Hand extends Board{
+public class Hand{
     private ArrayList<Card> cards = new ArrayList<>();
-    private ArrayList<boolean> isRequirementsDoneStatus = new ArrayList<>();
+    private ArrayList<Boolean> isRequirementsDone = new ArrayList<>();
+    private Board board;
 
-    @Override
-    public void init() {
-        ;
+    public Hand(Board board){
+        this.board = board;
+        reset();
     }
 
-    @Override
-    public void show() {
-
+    public void reset(){
+        cards.clear();
+        isRequirementsDone.clear();
     }
 
-    @Override
     public int total(){
         return cards.size();
     }
 
-    @Override
     public void removeCard(int location){
         cards.remove(location);
-    }
-
-    public void summon(int location, int target){
-
-    }
-
-    public void set(int location, int target){
-
+        isRequirementsDone.remove(location);
     }
 
     public Card getCard(int location){
-        return cards[location];
+        return cards.get(location);
     }
 
     public void addCard(Card card){
         cards.add(card);
-    }
-
-    public void removeCard(int location){
-        cards.remove(location);
+        isRequirementsDone.add(board.checkRequirements(card));
     }
 
     public boolean getRequirementsStatus(int location){
-        return isRequirementsDoneStatus[location];
+        return isRequirementsDone.get(location);
     }
 
-    public boolean setRequirementsStatus(int location, boolean setter){
-        isRequirementsDoneStatus[location] = setter;
+    public void setRequirementsStatus(int location, Boolean setter){
+        isRequirementsDone.set(location, setter);
     }
 }

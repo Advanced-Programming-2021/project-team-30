@@ -1,48 +1,49 @@
 package model.board;
-
+import model.Duel;
 import model.cards.Card;
 
-public class FieldZone extends Board{
+public class FieldZone{
     private Card field;
-    @Override
-    public void init() {
+    private Board board;
+
+    public FieldZone(Board board){
+        this.board = board;
+        reset();
+    }
+
+    public void setField(Card field) {
+        this.field = field;
+    }
+
+    public void reset() {
         this.field = null;
     }
 
-    @Override
-    public void show() {
-        this.duel.showCard(this.field);
-    }
+    public void show() { board.showCard(field); }
 
-    @Override
     public int total(){
         if(getCard() == null) return 0;
         return 1;
     }
 
-    @Override
     public void removeCard(){
         if(field == null){
             //message: field is already empty
             return;
         }
+        board.undoEffect(field);
         field = null;
-        duel.undoEffect(card);
     }
 
-    public void getCard(){
-        return this.field;
+    public Card getCard(){
+        return field;
     }
 
     public void change(Card card){
         if(this.field != null)
-            this.duel.undoEffect(this.field);
-        this.duel.doEffect(card);
+            board.undoEffect(field);
+        board.doEffect(field);
         this.field = card;    
     }
 
-    public void setField(Card field) {
-        
-        this.field = field;
-    }
 }

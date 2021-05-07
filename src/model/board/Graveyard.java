@@ -4,46 +4,37 @@ import model.cards.Card;
 
 import java.util.ArrayList;
 
-public class Graveyard extends Board{
+public class Graveyard{
     private ArrayList<Card> cards = new ArrayList<>();
+    final Board board;
 
-    @Override
-    public void init() {
-        ;
-    }
+    public Graveyard(Board board){ this.board = board; }
 
-    @Override
-    public void show() {
-        for(Card card: cards)
-            //message: <cards.getName()>:<cards.details()>
-    }
+    public void reset(){ cards.clear(); }
 
-    @Override
     public int total(){
         return cards.size();
     }
 
-    @Override
     public void removeCard(int location){
         cards.remove(location);
     }
 
     public void addCard(Card card){
-        this.cards.add(card);
+        cards.add(card);
     }
 
     public Card findCard(Card card){
-        int index = cards.indexOf(card);
-        if(index == -1){
+        int location = cards.indexOf(card);
+        if(location == -1){
             //message: no such card in the graveyard!
             return null;
         }
         else
-            return cards[index];
+            return cards.get(location);
     }
 
-    public int getNumber(){
-        return 1 ;
+    public Card getCard(int location){
+        return cards.get(location);
     }
-
 }

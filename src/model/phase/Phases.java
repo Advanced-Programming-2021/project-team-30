@@ -1,44 +1,55 @@
 package model.phase;
 import model.phase.*;
 import model.Duel;
+import model.cards.Card;
 
 
 public class Phases{
 	private Duel duel;
-	private DrawPhase drawPhase;
-	private StandByPhase standByPhase;
-	private MainPhase1 mainPhase1;
-	private BattlePhase battlePhase;
-	private MainPhase2 mainPhase2;
-	private Phases[] phases = {null, null, null, null, null};
+	private DrawPhase drawPhase = new DrawPhase();
+	private StandbyPhase standByPhase = new StandbyPhase();
+	private MainPhase1 mainPhase1 = new MainPhase1();
+	private BattlePhase battlePhase = new BattlePhase();
+	private MainPhase2 mainPhase2 = new MainPhase2();
+	private Phases[] phases = new Phases[5];
 	private String message = null;
 
 
 	public Phases(Duel duel){
 		this.duel = duel;
-		this.drawPhase = new drawPhase();
-		this.standByPhase = new standByPhase();
-		this.mainPhase1 = new mainPhase1();
-		this.battlePhase = new battlePhase();
-		this.mainPhase2 = new mainPhase2();
-
 		this.phases[0] = this.drawPhase;
 		this.phases[1] = this.standByPhase;
 		this.phases[2] = this.mainPhase1;
 		this.phases[3] = this.battlePhase;
 		this.phases[4] = this.mainPhase2;
-		
 	}
 
 
 	public void run(){
+		for(Phases phase : phases){
+			phase.run();
+			//send message
+			// end of phase <phasename>
+		}
 	}
 
-	public getMessage(){
-		return this.message;
+	public String getMessage(){ return this.message; }
+
+	public void setMessage(String message){ this.message = message; }
+
+	public int getNumberOfCards(String from, boolean opponent){
+		return duel.getNumberOfCards(from, opponent);
 	}
 
-	public setMessage(String message){
-		this.message = message;
+	public void draw(){
+		duel.draw();
+	}
+
+	public Card getSelectedCard(){
+		return duel.getSelectedCard();
+	}
+
+	public String listen(){
+		return duel.listen();
 	}
 }

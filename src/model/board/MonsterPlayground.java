@@ -5,35 +5,34 @@ import model.cards.Card;
 
 import java.util.ArrayList;
 
-import model.baords.Board;
+import model.board.Board;
 
-public class MonsterPlayground extends Board{
+public class MonsterPlayground{
 
-    private Board board;
+    final Board board;
     private Card[] cards = new Card[5];
     private String[] position = new String[5];
-    private boolean[] isRequirementsDoneStatus = new boolean[5];
 
-    @Override
-    public void init() {
+    public void reset() {
         for(int i = 0; i < 5; i++){
             cards[i] = null;
             position[i] = "E";
         }
     }
 
-    @Override
+    public MonsterPlayground(Board board){
+        this.board = board;
+        reset();
+    }
+
     public void show() {
         // wait
     }
 
-    @Override
-
     public void set(){
-        add(null, "DH");
+        addCard(board.getSelectedCard(), "DH");
     }
 
-    @Override
     public int total(){
         int counter = 0;
         for(int i = 0; i < 5; i++)
@@ -41,15 +40,10 @@ public class MonsterPlayground extends Board{
         return counter;
     }
 
-    @Override
     public void removeCard(int location){
+        board.undoEffect(cards[location]);
         cards[location] = null;
         position[location] = "E";
-    }
-
-    public MonsterPlayground(Board board){
-        this.board = board;
-        init();
     }
 
     public Card search(int location){
@@ -57,32 +51,33 @@ public class MonsterPlayground extends Board{
     }
 
     public void addCard(Card card, String position){
-        if(card == null) card = selectCard;
-        for(int i = 0; i < 5; i++)if(cards[i] == null){
+        if(card == null) card = board.getSelectedCard();
+        for(int i = 0; i < 5; i++)if(cards[i] == null) {
             cards[i] = card;
-            position[i] = position;
+            this.position[i] = position;
+            board.doEffect(card);
+            return;
         }
     }
 
     public boolean flipSummon(){
-        if(duel.askPositionChange(selectedCardLocation) || position[selectedCardLocation] != "DH"){
-            //message: you can't flip-summon this card
-            return 0;
+        if(board.askPositionChange(board.getSelectedCardLocation(), 0) || !position[board.getSelectedCardLocation()].equals("DH")){
+            board.setMessage("you can't flip-summon this card");
+            return false;
         }
 
-        position[selectedCardLocation] = "OO";
-        //message: flip-summoned successfully
+        position[board.getSelectedCardLocation()] = "OO";
+        board.setMessage("flip-summoned successfully");
         return true;
     }
 
-
     public boolean setPosition(String newPosition){
-        if(newPosition == cards[selectedCardLocation]){
-            //message: this card is already in the wanted position
+        if(newPosition.equals(position[board.getSelectedCardLocation()])){
+            board.setMessage("this card is already in the wanted position");
             return false;
         }
-        //message: monster card position changed successfully
-        position[selectedCardLocation] = newPosition;
+        board.setMessage("monster card position changed successfully");
+        position[board.getSelectedCardLocation()] = newPosition;
         return true;
     }
 
@@ -90,15 +85,7 @@ public class MonsterPlayground extends Board{
         return position[location];
     }
 
-    public int getNumber(){
-
-    }
-
-    public boolean setRequirementsStatus(int location, boolean setter){
-        isRequirementsDoneStatus[location] = setter;
-    }
-    
     public boolean getRequirementsStatus(int location){
-        return isRequirementsDoneStatus[location];
+        return board.checkRequirements(cards[location]);
     }
 }

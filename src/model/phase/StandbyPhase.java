@@ -1,5 +1,10 @@
 package model.phase;
 
-public class StandbyPhase {
-	// looping over cards and activating the needed event
+public class StandbyPhase extends Phases{
+    @Override
+    public void run(){}
+
+    public StandbyPhase(){
+        super(null);
+    }
 }
