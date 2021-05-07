@@ -53,8 +53,8 @@ public class DuelMenuResponse {
         return "no card is destroyed and you received " + damage + " battle damage";
     }
     public static String noCardDestroyedOpponentCard(String monsterCardName){
-        return "opponent’s monster card was <monster card name> and no card is" +
-                monsterCardName + "destroyed";
+        return "opponent’s monster card was " +
+                monsterCardName + " and no card is destroyed";
     }
     public static String opponentReceiveDamage(int damage){
         return "you opponent receives " + damage + " battle damage";

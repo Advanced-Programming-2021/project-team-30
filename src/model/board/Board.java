@@ -75,7 +75,7 @@ public class Board {
 	}
 
 
-	public void deselect(bool msg){
+	public void deselect(boolean msg){
 		if(selectedCard == null) return;//message: no card is selected yet
 		selectedCard = null;
 		selectedCardLocation = null;

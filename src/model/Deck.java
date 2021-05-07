@@ -59,6 +59,30 @@ public class Deck {
         allCards.addAll(getSideDeck());
         return allCards;
     }
+    public int returnCardCountMain(String cardName){
+        int count = 0;
+        for (Card card : getMainDeck()) {
+            if (card.getName().equals(cardName))
+                count++;
+        }
+        return count;
+    }
+    public int returnCardCountSide(String cardName){
+        int count = 0;
+        for (Card card : getSideDeck()) {
+            if (card.getName().equals(cardName))
+                count++;
+        }
+        return count;
+    }
+    public int returnCardCountDeck(String cardName){
+        int count = 0;
+        for (Card card : getAllCards()) {
+            if (card.getName().equals(cardName))
+                count++;
+        }
+        return count;
+    }
 
     public void addCardToMainDeck(Card card){
         owner.removeFromCards(card);
