@@ -81,7 +81,8 @@ public class DeckMenu {
                 Main.outputToUser(DeckMenuResponse.deckDoesNotExist(deckName));
             else if (deck.getMainDeck().size() == 60)
                 Main.outputToUser(DeckMenuResponse.mainDeckFull);
-            //else if 3cards
+            else if (deck.returnCardCountDeck(cardName) == 3 || deck.returnCardCountSide(cardName) == 3)
+                Main.outputToUser(DeckMenuResponse.cards3InDeck(cardName, deckName));
             else{
                 deck.addCardToMainDeck(card);
                 Main.outputToUser(DeckMenuResponse.cardAdded);
@@ -101,7 +102,8 @@ public class DeckMenu {
                 Main.outputToUser(DeckMenuResponse.deckDoesNotExist(deckName));
             else if (deck.getMainDeck().size() == 15)
                 Main.outputToUser(DeckMenuResponse.sideDeckFull);
-            //else if 3cards
+            else if (deck.returnCardCountDeck(cardName) == 3 || deck.returnCardCountMain(cardName) == 3)
+                Main.outputToUser(DeckMenuResponse.cards3InDeck(cardName, deckName));
             else{
                 deck.addCardToSideDeck(card);
                 Main.outputToUser(DeckMenuResponse.cardAdded);
