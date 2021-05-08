@@ -65,6 +65,7 @@ public class DuelMenuResponse {
     public static String spellZoneFull = "spell card zone is full";
     public static String preparationNotDone = "preparations of this spell are not done yet";
     public static String spellActivated = "spell activated";
+    public static String spellSet = "spell/trap set";
     public static String playerTurn(String username){
         return "now it will be " + username + "’s turn";
     }

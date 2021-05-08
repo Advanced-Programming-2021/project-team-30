@@ -3,6 +3,8 @@ import model.board.Board;
 import model.phase.Phases;
 import model.cards.*;
 import model.Player;
+import model.response.DuelMenuResponse;
+import view.Main;
 
 import java.util.Stack;
 import java.lang.Math;
@@ -27,21 +29,28 @@ public class Duel{
 		// check
 		Deck deck1 = player1.getActiveDeck(), deck2 = player2.getActiveDeck();
 		//NOTE: taking clones!!!!!
-		/*
+		//IMPORTANT: username and nickname are 2 different terms
 		if(deck1 == null){
-			// message: player1.getNickName() has no active deck
+			Main.outputToUser(DuelMenuResponse.hasNoActiveDeck(player1.getNickName()));
 			return;
 		}
 		if(deck2 == null){
-			// message: player2.getNickname() has no active deck
+			Main.outputToUser(DuelMenuResponse.hasNoActiveDeck(player2.getNickName()));
 			return;
-		}*/
-		//checks player1 for active deck; checks player2 for active deck;
-		/* message: username has no active deck
-		   message: username's deck is invalid
-		*/
+		}
+		if(!deck1.isValid()){
+			Main.outputToUser(DuelMenuResponse.hasInvalidDeck(player1.getUsername()));
+			return;
+		}
+		if(!deck2.isValid()){
+			Main.outputToUser(DuelMenuResponse.hasInvalidDeck(player2.getUsername()));
+			return;
+		}
 
-		if(rounds != 1 && rounds != 3)return;//message: number of rounds is not supported
+		if(rounds != 1 && rounds != 3){
+			Main.outputToUser(DuelMenuResponse.invalidRound);
+			return;
+		}
 		//initialize
 		Player[] players = {player1, player2};
 		this.phase = new Phases(this);
@@ -149,15 +158,22 @@ public class Duel{
 
 	public void summon(){
 
-		if(getSelectedCard() == null)
-			return;// message: no card is selected yet
+		if(getSelectedCard() == null){
+			Main.outputToUser(DuelMenuResponse.noCardSelected);
+			return;
+		}
 
 		//if(card is not monster or cannot do normal summon)return;// message: you can't summon this card
 
-		if(currentPhase != 2 && currentPhase != 4)
-			return;// message: action not allowed in this phase
+		if(currentPhase != 2 && currentPhase != 4){
+			Main.outputToUser(DuelMenuResponse.actionNotAllowedInPhase);
+			return;
+		}
 
-		if(getNumberOfCards("monsterGround", false) == 5)return; //message: monster card zone is full
+		if(getNumberOfCards("monsterGround", false) == 5){
+			Main.outputToUser(DuelMenuResponse.monsterZoneFull);
+			return;	
+		}
 
 		if(this.didItSummon)return;//message:you already summoned/set on this turn
 		this.didItSummon = true;
@@ -185,16 +201,10 @@ public class Duel{
 		board[currentPlayer].set();
 	}
 
-	public void setPosition(String newPosition, String from){
-		switch(from){
-			case "monsterGround":
-				if(board[currentPlayer].setPosition(newPosition)){
-					didItChangePosition[0][board[currentPlayer].getSelectedCardLocation()] = true;
-					deselect(false);
-				}
-
-			case "spellTrapGround":
-
+	public void setPosition(String newPosition){
+		if(board[currentPlayer].setPosition(newPosition)){
+			didItChangePosition[0][getSelectedCardLocation()] = true;
+			return;
 		}
 	}
 
@@ -230,7 +240,7 @@ public class Duel{
 		Card myCard = getSelectedCard();
 
 		if(enemyCard == null){
-			//message: there is no card to attack at the given location
+			Main.outputTOUser(DuelMenuResponse.noCardToAttack);
 			return;
 		}
 
@@ -250,35 +260,35 @@ public class Duel{
 				if(defender_dmg < atk_dmg){
 					lp[1 - currentPlayer] -= atk_dmg - defender_dmg;
 					board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);
-					//message: your opponent’s monster is destroyed and your opponent receives <damage> battle damage
+					Main.outputToUser(DuelMenuResponse.opponentMonsterDestroyed(atk_dmg - defender_dmg));
 				}
 				else if(defender_dmg == atk_dmg){
 					board[currentPlayer].removeCard("monsterGround", getSelectedCardLocation());
 					board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);
-					//message: both you and your opponent monster cards are destroyed and no one receives damage
+					Main.outputToUser(DuelMenuResponse.bothMonsterDestroyed);
 				}
 				else{
 					board[currentPlayer].removeCard("monsterGround", getSelectedCardLocation());
 					lp[currentPlayer] -= defender_dmg - atk_dmg;
-					// message: Your monster card is destroyed and you received <damage> battle damage
+					Main.outputToUser(DuelMenuResponse.yourMonsterDestroyed(defender_dmg - atk_dmg));
 				}
 
 			default:
 				if(enemyPosition.equals("DH")){
-					//message: opponent’s monster card was <monster card name> and 
+					Main.outputToUser("opponent’s monster card was <monster card name> and ");
+					// needs to be changed
+					// we add this string to the first of every coming output, if the enemy card is hidden (DH mode)
 				}
 
 				defender_dmg = myCard.getDefenseDamage();
 				if(defender_dmg < atk_dmg){
 					board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);
-					//message: the defense position monster is destroyed
-				}
-				else if(defender_dmg == atk_dmg){
-					//message: no card is destroyed
-				}
-				else{
+					Main.outputToUser(DuelMenuResponse.defenseDestroyed);
+				} else if(defender_dmg == atk_dmg){
+					Main.outputToUser(DuelMenuResponse.noCardDestroyed);
+				} else{
 					lp[currentPlayer] -= defender_dmg - atk_dmg;
-					//message: no card is destroyed and you received <damage> battle damage
+					Main.outputToUser(DuelMenuResponse.noCardDestroyedWithDamage(defender_dmg - atk_dmg));
 				}
 
 		}
@@ -288,17 +298,17 @@ public class Duel{
 
 	public void directAttack(){
 		if(getSelectedCard() == null){
-			//message: no card is selected yet
+			Main.outputToUser(DuelMenuResponse.noCardSelected);
 			return;
 		}
 
-		if(getSelectedCardOrigin().equals("monsterGround")){
-			//message: you can't attack with this card
+		if(!getSelectedCardOrigin().equals("monsterGround")){
+			Main.outputToUser(DuelMenuResponse.cantAttack);
 			return;
 		}
 
 		if(didItAttack[getSelectedCardLocation()]){
-			//message: you already attacked with this card in this turn
+			Main.outputToUser(DuelMenuResponse.alreadyAttacked);
 			return;
 		}
 
@@ -309,36 +319,42 @@ public class Duel{
 
 		if(!getPosition(false, getSelectedCardLocation(), 0).equals("OO")){
 			//message: you can't attack with a card which is not on attack mode
+			return;
 		}
 
-		lp[1 - currentPlayer] -= getSelectedCard().getAttackDamage();
+		Card attacker = getSelectedCard();
+		lp[1 - currentPlayer] -= attacker.getAttackDamage();
 		deselect(false);
-		//message: you opponent receives <damage> battle damage
+		Main.outputToUser(DuelMenuResponse.opponentReceiveDamage(attacker.getAttackDamage()));
 	}
 
 	public boolean activateSpell(boolean activate){
 		if(!checkSelectedCard()){
-			//message: no card is selected yet
+			Main.outputToUser(DuelMenuResponse.noCardSelected);
 			return false;
 		}
 
-		if(getSelectedCardOrigin() != "handGround"){
-			//message: this card has been activated/set before
+		if(!getSelectedCardOrigin().equals("handGround")){
+			Main.outputToUser(DuelMenuResponse.cantSummon);
 			return false;
 		}
 
 		if(getNumberOfCards("spellTrapGround", false) == 5){
-			//message: spell card zone is full
+			Main.outputToUser(DuelMenuResponse.spellZoneFull);
 			return false;
 		}
 
 		if(activate && board[currentPlayer].activateSpell()){
 			didItChangePosition[1][getSelectedCardLocation()] = true;
+			Main.outputToUser(DuelMenuResponse.spellActivated);
+			doEffect(getSelectedCard());
 			deselect(false);
 		}
 
 		if(!activate && board[currentPlayer].setSpell()){
 			didItChangePosition[1][getSelectedCardLocation()] = true;
+			Main.outputToUser(DuelMenuResponse.spellSet);
+			doEffect(getSelectedCard());
 			deselect(false);
 		}
 		return true;
