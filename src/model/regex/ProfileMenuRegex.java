@@ -1,23 +1,23 @@
 package model.regex;
 
 public class ProfileMenuRegex {
-    public static String changeNickname = "profile change --nickname \\s*(?<nickname>.*)\\s*";
-    public static String changeNicknameAbbr = "profile change -n \\s*(?<nickname>.*)\\s*";
+    public static String changeNickname = "profile change --nickname (?<nickname>.*)";
+    public static String changeNicknameAbbr = "profile change -n (?<nickname>.*)";
     public static String[] changePassword = {
-            "\\s*profile change --password --current \\s*(?<currentPassword>.*)\\s* --new \\s*(?<newPassword>.*)\\s*",
-            "\\s*profile change --password --new \\s*(?<newPassword>.*)\\s* --current \\s*(?<currentPassword>.*)\\s*",
-            "\\s*profile change --new \\s*(?<newPassword>.*)\\s* --password --current \\s*(?<currentPassword>.*)\\s*",
-            "\\s*profile change --new \\s*(?<newPassword>.*)\\s* --current \\s*(?<currentPassword>.*)\\s* --password\\s*",
-            "\\s*profile change --current \\s*(?<currentPassword>.*)\\s* --new \\s*(?<newPassword>.*)\\s* --password\\s*",
-            "\\s*profile change --current \\s*(?<currentPassword>.*)\\s* --password --new \\s*(?<newPassword>.*)\\s*"
+            "profile change --password --current (?<currentPassword>.*) --new (?<newPassword>.*)",
+            "profile change --password --new (?<newPassword>.*) --current (?<currentPassword>.*)",
+            "profile change --new (?<newPassword>.*) --password --current (?<currentPassword>.*)",
+            "profile change --new (?<newPassword>.*) --current (?<currentPassword>.*) --password",
+            "profile change --current (?<currentPassword>.*) --new (?<newPassword>.*) --password",
+            "profile change --current (?<currentPassword>.*) --password --new (?<newPassword>.*)"
     };
     public static String[] changePasswordAbbr = {
-            "\\s*profile change -p -c \\s*(?<currentPassword>.*)\\s* -n \\s*(?<newPassword>.*)\\s*",
-            "\\s*profile change -p -n \\s*(?<newPassword>.*)\\s* -c \\s*(?<currentPassword>.*)\\s*",
-            "\\s*profile change -n \\s*(?<newPassword>.*)\\s* -p -c \\s*(?<currentPassword>.*)\\s*",
-            "\\s*profile change -n \\s*(?<newPassword>.*)\\s* -c \\s*(?<currentPassword>.*)\\s* -p\\s*",
-            "\\s*profile change -c \\s*(?<currentPassword>.*)\\s* -n \\s*(?<newPassword>.*)\\s* -p\\s*",
-            "\\s*profile change -c \\s*(?<currentPassword>.*)\\s* -p -n \\s*(?<newPassword>.*)\\s*"
+            "profile change -p -c (?<currentPassword>.*) -n (?<newPassword>.*)",
+            "profile change -p -n (?<newPassword>.*) -c (?<currentPassword>.*)",
+            "profile change -n (?<newPassword>.*) -p -c (?<currentPassword>.*)",
+            "profile change -n (?<newPassword>.*) -c (?<currentPassword>.*) -p",
+            "profile change -c (?<currentPassword>.*) -n (?<newPassword>.*) -p",
+            "profile change -c (?<currentPassword>.*) -p -n (?<newPassword>.*)"
     };
 
 }

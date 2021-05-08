@@ -1,6 +1,6 @@
 package model.regex;
 
 public class ImportExportMenuRegex {
-    public static String importCard = "\\s*import card (?<cardName>.*)\\s*";
-    public static String exportCard = "\\s*export card (?<cardName>.*)\\s*";
+    public static String importCard = "import card (?<cardName>.*)";
+    public static String exportCard = "export card (?<cardName>.*)";
 }

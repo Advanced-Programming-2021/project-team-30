@@ -7,6 +7,7 @@ import model.regex.DeckMenuRegex;
 import model.regex.Regex;
 import model.response.DeckMenuResponse;
 import model.response.MenuResponse;
+import org.junit.jupiter.api.Test;
 import view.Main;
 
 import java.util.ArrayList;

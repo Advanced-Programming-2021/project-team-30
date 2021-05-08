@@ -31,11 +31,11 @@ public class Duel{
 		//NOTE: taking clones!!!!!
 		//IMPORTANT: username and nickname are 2 different terms
 		if(deck1 == null){
-			Main.outputToUser(DuelMenuResponse.hasNoActiveDeck(player1.getNickName()));
+			Main.outputToUser(DuelMenuResponse.hasNoActiveDeck(player1.getNickname()));
 			return;
 		}
 		if(deck2 == null){
-			Main.outputToUser(DuelMenuResponse.hasNoActiveDeck(player2.getNickName()));
+			Main.outputToUser(DuelMenuResponse.hasNoActiveDeck(player2.getNickname()));
 			return;
 		}
 		if(!deck1.isValid()){
@@ -240,7 +240,7 @@ public class Duel{
 		Card myCard = getSelectedCard();
 
 		if(enemyCard == null){
-			Main.outputTOUser(DuelMenuResponse.noCardToAttack);
+			Main.outputToUser(DuelMenuResponse.noCardToAttack);
 			return;
 		}
 
@@ -373,8 +373,7 @@ public class Duel{
 	}
 
 	public boolean checkSelectedCard(){
-		if(getSelectedCard() == null) return false;
-		return true;
+		return getSelectedCard() != null;
 	}
 
 	public void deselect(boolean msg){

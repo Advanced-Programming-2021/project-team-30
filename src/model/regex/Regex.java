@@ -17,4 +17,10 @@ public class Regex {
         }
         return null;
     }
+    public static String returnMenuName(String command){
+        Matcher matcher = getCommandMatcher(command, MenuRegex.enterMenu);
+        if (matcher.find())
+            return matcher.group(1);
+        return "";
+    }
 }

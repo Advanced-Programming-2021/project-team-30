@@ -2,39 +2,39 @@ package model.regex;
 
 public class DuelMenuRegex {
     public static String[] newDuel = {
-            "\\s*duel --new --second-player \\s*(?<player2Name>.*)\\s* --rounds \\s*(?<round>\\d)\\s*",
-            "\\s*duel --new --rounds \\s*(?<round>\\d)\\s* --second-player \\s*(?<player2Name>.*)\\s*",
-            "\\s*duel --second-player \\s*(?<player2Name>.*)\\s* --new --rounds \\s*(?<round>\\d)\\s*",
-            "\\s*duel --rounds \\s*(?<round>\\d)\\s* --new --second-player \\s*(?<player2Name>.*)\\s*",
-            "\\s*duel --second-player \\s*(?<player2Name>.*)\\s* --rounds \\s*(?<round>\\d)\\s* --new\\s*",
-            "\\s*duel --rounds \\s*(?<round>\\d)\\s* --second-player \\s*(?<player2Name>.*)\\s* --new\\s*"
+            "duel --new --second-player (?<player2Name>.*) --rounds (?<round>\\d)",
+            "duel --new --rounds (?<round>\\d) --second-player (?<player2Name>.*)",
+            "duel --second-player (?<player2Name>.*) --new --rounds (?<round>\\d)",
+            "duel --rounds (?<round>\\d) --new --second-player (?<player2Name>.*)",
+            "duel --second-player (?<player2Name>.*) --rounds (?<round>\\d) --new",
+            "duel --rounds (?<round>\\d) --second-player (?<player2Name>.*) --new"
     };
     public static String[] newDuelAbbr = {
-            "\\s*duel -n -s-p \\s*(?<player2Name>.*)\\s* -r \\s*(?<round>\\d)\\s*",
-            "\\s*duel -n -r \\s*(?<round>\\d)\\s* -s-p \\s*(?<player2Name>.*)\\s*",
-            "\\s*duel -s-p \\s*(?<player2Name>.*)\\s* -n -r \\s*(?<round>\\d)\\s*",
-            "\\s*duel -r \\s*(?<round>\\d)\\s* -n -s-p \\s*(?<player2Name>.*)\\s*",
-            "\\s*duel -s-p \\s*(?<player2Name>.*)\\s* -r \\s*(?<round>\\d)\\s* -n\\s*",
-            "\\s*duel -r \\s*(?<round>\\d)\\s* -s-p \\s*(?<player2Name>.*)\\s* -n\\s*"
+            "duel -n -s-p (?<player2Name>.*) -r (?<round>\\d)",
+            "duel -n -r (?<round>\\d) -s-p (?<player2Name>.*)",
+            "duel -s-p (?<player2Name>.*) -n -r (?<round>\\d)",
+            "duel -r (?<round>\\d) -n -s-p (?<player2Name>.*)",
+            "duel -s-p (?<player2Name>.*) -r (?<round>\\d) -n",
+            "duel -r (?<round>\\d) -s-p (?<player2Name>.*) -n"
     };
     public static String[] newDuelAI = {
-            "\\s*duel --new --ai --rounds \\s*(?<round>\\d)\\s*",
-            "\\s*duel --new --rounds \\s*(?<round>\\d)\\s* --ai\\s*",
-            "\\s*duel --ai --new --rounds \\s*(?<round>\\d)\\s*",
-            "\\s*duel --rounds \\s*(?<round>\\d)\\s* --new --ai\\s*",
-            "\\s*duel --ai --rounds \\s*(?<round>\\d)\\s* --new\\s*",
-            "\\s*duel --rounds \\s*(?<round>\\d)\\s* --ai --new\\s*"
+            "duel --new --ai --rounds (?<round>\\d)",
+            "duel --new --rounds (?<round>\\d) --ai",
+            "duel --ai --new --rounds (?<round>\\d)",
+            "duel --rounds (?<round>\\d) --new --ai",
+            "duel --ai --rounds (?<round>\\d) --new",
+            "duel --rounds (?<round>\\d) --ai --new"
     };
     public static String[] newDuelAIAbbr = {
-            "\\s*duel -n -ai -r \\s*(?<round>\\d)\\s*",
-            "\\s*duel -n -r \\s*(?<round>\\d)\\s* -ai\\s*",
-            "\\s*duel -ai -n -r \\s*(?<round>\\d)\\s*",
-            "\\s*duel -r \\s*(?<round>\\d)\\s* -n -ai\\s*",
-            "\\s*duel -ai -r \\s*(?<round>\\d)\\s* -n\\s*",
-            "\\s*duel -r \\s*(?<round>\\d)\\s* -ai -n\\s*"
+            "duel -n -ai -r (?<round>\\d)",
+            "duel -n -r (?<round>\\d) -ai",
+            "duel -ai -n -r (?<round>\\d)",
+            "duel -r (?<round>\\d) -n -ai",
+            "duel -ai -r (?<round>\\d) -n",
+            "duel -r (?<round>\\d) -ai -n"
     };
 
-    public static String cardShow = "\\s*card show \\s*(?<cardName>.*)\\s*";
+    public static String cardShow = "card show (?<cardName>.*)";
     public static String selectMonster = "\\s*select --monster (\\d)\\s*";
     public static String selectMonsterAbbr = "\\s*select -m (\\d)\\s*";
     public static String[] selectOpponentMonster = {

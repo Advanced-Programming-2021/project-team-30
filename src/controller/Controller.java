@@ -33,11 +33,11 @@ public class Controller {
         else if (currentMenu == Menu.IMPORTEXPORT)
             importExportMenu = new ImportExportMenu();
     }
-    private void checkNotLogin(String command){
+    public void checkNotLogin(String command){
         boolean notLogin = false;
         String[] menus = {"Main", "Deck", "Duel", "Scoreboard", "Profile", "Shop", "Import/Export"};
-        if (Regex.getCommandMatcher(command, MenuRegex.enterMenu).find()){
-            String menuName = Regex.getCommandMatcher(command, MenuRegex.enterMenu).group(1);
+        if (!Regex.returnMenuName(command).equals("")){
+            String menuName = Regex.returnMenuName(command);
             for (String menu : menus) {
                 if (menuName.equals(menu)) {
                     notLogin = true;
@@ -64,9 +64,9 @@ public class Controller {
     public void navigate(String command){
         checkNotLogin(command);
         String[] menus = {"Deck", "Duel", "Scoreboard", "Profile", "Shop", "Import/Export"};
-        if (Regex.getCommandMatcher(command, MenuRegex.enterMenu).find()) {
+        if (!Regex.returnMenuName(command).equals("")) {
             if (currentMenu == Menu.MAIN) {
-                String menuName = Regex.getCommandMatcher(command, MenuRegex.enterMenu).group(1);
+                String menuName = Regex.returnMenuName(command);
                 for (String menu : menus) {
                     if (menuName.equals(menu)) {
                         currentMenu = stringToMenu(menuName);

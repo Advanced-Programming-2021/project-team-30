@@ -1,69 +1,69 @@
 package model.regex;
 
 public class DeckMenuRegex {
-    public static String cardShow = "\\s*card show \\s*(?<cardName>.*)\\s*";
-    public static String createDeck = "\\s*deck create \\s*(?<deckName>.*)\\s*";
-    public static String deleteDeck = "\\s*deck delete \\s*(?<deckName>.*)\\s*";
-    public static String setActiveDeck = "\\s*deck set-activate \\s*(?<deckName>.*)\\s*";
+    public static String cardShow = "card show (?<cardName>.*)";
+    public static String createDeck = "deck create (?<deckName>.*)";
+    public static String deleteDeck = "deck delete (?<deckName>.*)";
+    public static String setActiveDeck = "deck set-activate (?<deckName>.*)";
     public static String[] addCardMain = {
-            "\\s*deck add-card --card \\s*(?<cardName>.*)\\s* --deck \\s*(?<deckName>.*)\\s*",
-            "\\s*deck add-card --deck \\s*(?<deckName>.*)\\s* --card \\s*(?<cardName>.*)\\s*"
+            "deck add-card --card (?<cardName>.*) --deck (?<deckName>.*)",
+            "deck add-card --deck (?<deckName>.*) --card (?<cardName>.*)"
     };
     public static String[] addCardMainAbbr = {
-            "\\s*deck add-card -c \\s*(?<cardName>.*)\\s* -d \\s*(?<deckName>.*)\\s*",
-            "\\s*deck add-card -d \\s*(?<deckName>.*)\\s* -c \\s*(?<cardName>.*)\\s*"
+            "deck add-card -c (?<cardName>.*) -d (?<deckName>.*)",
+            "deck add-card -d (?<deckName>.*) -c (?<cardName>.*)"
     };
     public static String[] addCardSide = {
-            "\\s*deck add-card --card \\s*(?<cardName>.*)\\s* --deck \\s*(?<deckName>.*)\\s* --side\\s*",
-            "\\s*deck add-card --deck \\s*(?<deckName>.*)\\s* --card \\s*(?<cardName>.*)\\s* --side\\s*",
-            "\\s*deck add-card --card \\s*(?<cardName>.*)\\s* --side --deck \\s*(?<deckName>.*)\\s*",
-            "\\s*deck add-card --deck \\s*(?<deckName>.*)\\s* --side --card \\s*(?<cardName>.*)\\s*",
-            "\\s*deck add-card --side --card \\s*(?<cardName>.*)\\s* --deck \\s*(?<deckName>.*)\\s*",
-            "\\s*deck add-card --side --deck \\s*(?<deckName>.*)\\s* --card \\s*(?<cardName>.*)\\s*"
+            "deck add-card --card (?<cardName>.*) --deck (?<deckName>.*) --side",
+            "deck add-card --deck (?<deckName>.*) --card (?<cardName>.*) --side",
+            "deck add-card --card (?<cardName>.*) --side --deck (?<deckName>.*)",
+            "deck add-card --deck (?<deckName>.*) --side --card (?<cardName>.*)",
+            "deck add-card --side --card (?<cardName>.*) --deck (?<deckName>.*)",
+            "deck add-card --side --deck (?<deckName>.*) --card (?<cardName>.*)"
     };
     public static String[] addCardSideAbbr = {
-            "\\s*deck add-card -c \\s*(?<cardName>.*)\\s* -d \\s*(?<deckName>.*)\\s* -s\\s*",
-            "\\s*deck add-card -d \\s*(?<deckName>.*)\\s* -c \\s*(?<cardName>.*)\\s* -s\\s*",
-            "\\s*deck add-card -c \\s*(?<cardName>.*)\\s* -s -d \\s*(?<deckName>.*)\\s*",
-            "\\s*deck add-card -d \\s*(?<deckName>.*)\\s* -s -c \\s*(?<cardName>.*)\\s*",
-            "\\s*deck add-card -s -c \\s*(?<cardName>.*)\\s* -d \\s*(?<deckName>.*)\\s*",
-            "\\s*deck add-card -s -d \\s*(?<deckName>.*)\\s* -c \\s*(?<cardName>.*)\\s*"
+            "deck add-card -c (?<cardName>.*) -d (?<deckName>.*) -s",
+            "deck add-card -d (?<deckName>.*) -c (?<cardName>.*) -s",
+            "deck add-card -c (?<cardName>.*) -s -d (?<deckName>.*)",
+            "deck add-card -d (?<deckName>.*) -s -c (?<cardName>.*)",
+            "deck add-card -s -c (?<cardName>.*) -d (?<deckName>.*)",
+            "deck add-card -s -d (?<deckName>.*) -c (?<cardName>.*)"
     };
     public static String[] removeCardMain = {
-            "\\s*deck rm-card --card \\s*(?<cardName>.*)\\s* --deck \\s*(?<deckName>.*)\\s*",
-            "\\s*deck rm-card --deck \\s*(?<deckName>.*)\\s* --card \\s*(?<cardName>.*)\\s*"
+            "deck rm-card --card (?<cardName>.*) --deck (?<deckName>.*)",
+            "deck rm-card --deck (?<deckName>.*) --card (?<cardName>.*)"
     };
     public static String[] removeCardMainAbbr = {
-            "\\s*deck rm-card -c \\s*(?<cardName>.*)\\s* -d \\s*(?<deckName>.*)\\s*",
-            "\\s*deck rm-card -d \\s*(?<deckName>.*)\\s* -c \\s*(?<cardName>.*)\\s*"
+            "deck rm-card -c (?<cardName>.*) -d (?<deckName>.*)",
+            "deck rm-card -d (?<deckName>.*) -c (?<cardName>.*)"
     };
     public static String[] removeCardSide = {
-            "\\s*deck rm-card --card \\s*(?<cardName>.*)\\s* --deck \\s*(?<deckName>.*)\\s* --side\\s*",
-            "\\s*deck rm-card --deck \\s*(?<deckName>.*)\\s* --card \\s*(?<cardName>.*)\\s* --side\\s*",
-            "\\s*deck rm-card --card \\s*(?<cardName>.*)\\s* --side --deck \\s*(?<deckName>.*)\\s*",
-            "\\s*deck rm-card --deck \\s*(?<deckName>.*)\\s* --side --card \\s*(?<cardName>.*)\\s*",
-            "\\s*deck rm-card --side --card \\s*(?<cardName>.*)\\s* --deck \\s*(?<deckName>.*)\\s*",
-            "\\s*deck rm-card --side --deck \\s*(?<deckName>.*)\\s* --card \\s*(?<cardName>.*)\\s*"
+            "deck rm-card --card (?<cardName>.*) --deck (?<deckName>.*) --side",
+            "deck rm-card --deck (?<deckName>.*) --card (?<cardName>.*) --side",
+            "deck rm-card --card (?<cardName>.*) --side --deck (?<deckName>.*)",
+            "deck rm-card --deck (?<deckName>.*) --side --card (?<cardName>.*)",
+            "deck rm-card --side --card (?<cardName>.*) --deck (?<deckName>.*)",
+            "deck rm-card --side --deck (?<deckName>.*) --card (?<cardName>.*)"
     };
     public static String[] removeCardSideAbbr = {
-            "\\s*deck rm-card -c \\s*(?<cardName>.*)\\s* -d \\s*(?<deckName>.*)\\s* -s\\s*",
-            "\\s*deck rm-card -d \\s*(?<deckName>.*)\\s* -c \\s*(?<cardName>.*)\\s* -s\\s*",
-            "\\s*deck rm-card -c \\s*(?<cardName>.*)\\s* -s -d \\s*(?<deckName>.*)\\s*",
-            "\\s*deck rm-card -d \\s*(?<deckName>.*)\\s* -s -c \\s*(?<cardName>.*)\\s*",
-            "\\s*deck rm-card -s -c \\s*(?<cardName>.*)\\s* -d \\s*(?<deckName>.*)\\s*",
-            "\\s*deck rm-card -s -d \\s*(?<deckName>.*)\\s* -c \\s*(?<cardName>.*)\\s*"
+            "deck rm-card -c (?<cardName>.*) -d (?<deckName>.*) -s",
+            "deck rm-card -d (?<deckName>.*) -c (?<cardName>.*) -s",
+            "deck rm-card -c (?<cardName>.*) -s -d (?<deckName>.*)",
+            "deck rm-card -d (?<deckName>.*) -s -c (?<cardName>.*)",
+            "deck rm-card -s -c (?<cardName>.*) -d (?<deckName>.*)",
+            "deck rm-card -s -d (?<deckName>.*) -c (?<cardName>.*)"
     };
     public static String showAllDecks = "\\s*deck show --all\\s*";
     public static String showAllDecksAbbr = "\\s*deck show -a\\s*";
-    public static String showMainDeck = "\\s*deck show --deck-name \\s*(?<deckName>.*)\\s*";
-    public static String showMainDeckAbbr = "\\s*deck show -d \\s*(?<deckName>.*)\\s*";
+    public static String showMainDeck = "deck show --deck-name (?<deckName>.*)";
+    public static String showMainDeckAbbr = "deck show -d (?<deckName>.*)";
     public static String[] showSideDeck = {
-            "\\s*deck show --deck-name \\s*(?<deckName>.*) --side\\s*",
-            "\\s*deck show --side --deck-name \\s*(?<deckName>.*)\\s*"
+            "deck show --deck-name (?<deckName>.*) --side",
+            "deck show --side --deck-name (?<deckName>.*)"
     };
     public static String[] showSideDeckAbbr = {
-            "\\s*deck show -d \\s*(?<deckName>.*) -s\\s*",
-            "\\s*deck show -s -d \\s*(?<deckName>.*)\\s*"
+            "deck show -d (?<deckName>.*) -s",
+            "deck show -s -d (?<deckName>.*)"
     };
     public static String showAllCards = "\\s*deck show --cards\\s*";
     public static String showAllCardsAbbr = "\\s*deck show -c\\s*";
