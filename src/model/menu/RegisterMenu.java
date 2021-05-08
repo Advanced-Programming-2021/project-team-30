@@ -60,7 +60,7 @@ public class RegisterMenu {
             loginUser(loginMatcher);
         else if (loginAbbrMatcher != null)
             loginUser(loginAbbrMatcher);
-        else
+        else if (MenuRegex.isNotNavigationCommand(command))
             Main.outputToUser(MenuResponse.invalidCommand);
 
     }

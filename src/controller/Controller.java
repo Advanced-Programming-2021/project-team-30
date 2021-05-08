@@ -20,23 +20,17 @@ public class Controller {
     public ProfileMenu profileMenu;
     public ImportExportMenu importExportMenu;
     public void createMenus(){
-        if (currentMenu == Menu.DUEL)
-            duelMenu = new DuelMenu();
-        else if (currentMenu == Menu.DECK)
-            deckMenu = new DeckMenu();
-        else if (currentMenu == Menu.SHOP)
-            shopMenu = new ShopMenu();
-        else if (currentMenu == Menu.SCOREBOARD)
-            scoreboardMenu = new ScoreboardMenu();
-        else if (currentMenu == Menu.PROFILE)
-            profileMenu = new ProfileMenu();
-        else if (currentMenu == Menu.IMPORTEXPORT)
-            importExportMenu = new ImportExportMenu();
+        duelMenu = new DuelMenu();
+        deckMenu = new DeckMenu();
+        shopMenu = new ShopMenu();
+        scoreboardMenu = new ScoreboardMenu();
+        profileMenu = new ProfileMenu();
+        importExportMenu = new ImportExportMenu();
     }
     public void checkNotLogin(String command){
         boolean notLogin = false;
         String[] menus = {"Main", "Deck", "Duel", "Scoreboard", "Profile", "Shop", "Import/Export"};
-        if (!Regex.returnMenuName(command).equals("")){
+        if (currentMenu == Menu.REGISTER && !Regex.returnMenuName(command).equals("")){
             String menuName = Regex.returnMenuName(command);
             for (String menu : menus) {
                 if (menuName.equals(menu)) {

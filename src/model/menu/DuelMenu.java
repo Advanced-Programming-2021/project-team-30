@@ -4,6 +4,7 @@ import model.Deck;
 import model.Duel;
 import model.Player;
 import model.regex.DuelMenuRegex;
+import model.regex.MenuRegex;
 import model.regex.Regex;
 import model.response.DuelMenuResponse;
 import model.response.MenuResponse;
@@ -64,7 +65,7 @@ public class DuelMenu {
             newDuelWithAI(newDuelAI);
         else if (newDuelAIAbbr != null)
             newDuelWithAI(newDuelAIAbbr);
-        else
+        else if (MenuRegex.isNotNavigationCommand(command))
             Main.outputToUser(MenuResponse.invalidCommand);
 
     }

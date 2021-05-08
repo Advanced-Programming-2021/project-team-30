@@ -1,6 +1,7 @@
 package model.menu;
 
 import model.Player;
+import model.regex.MenuRegex;
 import model.response.MenuResponse;
 import view.Main;
 
@@ -10,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ScoreboardMenu {
-    private ArrayList<Player> players;
+    private final ArrayList<Player> players = Player.getPlayers(); //Should be read from file
 
     public ArrayList<Player> getPlayers() {
         return players;
@@ -23,15 +24,24 @@ public class ScoreboardMenu {
                     .thenComparing(Player::getNickname);
             List<Player> sortedAccounts = sortedPlayers.stream().sorted(accountComparator).collect(Collectors.toList());
             int rank = 1;
+            int counter = 1;
             for (int i = 0; i < sortedAccounts.size(); i++) {
                 Player sortedAccount = sortedAccounts.get(i);
                 String string = rank + "- " + sortedAccount.getNickname() + ": " + sortedAccount.getScore();
                 Main.outputToUser(string);
-                if (i < sortedAccounts.size() - 1 && sortedAccount.getScore() != sortedAccounts.get(i + 1).getScore())
-                    rank++;
+                if (i < sortedAccounts.size() - 1) {
+                    if (sortedAccount.getScore() != sortedAccounts.get(i + 1).getScore()) {
+                        rank += counter;
+                        counter = 1;
+                    }
+                    else{
+                        counter++;
+                    }
+
+                }
             }
         }
-        else
+        else if (MenuRegex.isNotNavigationCommand(command))
             Main.outputToUser(MenuResponse.invalidCommand);
 
     }

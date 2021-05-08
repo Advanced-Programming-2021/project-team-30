@@ -3,6 +3,7 @@ package model.menu;
 import com.google.gson.Gson;
 import model.cards.Card;
 import model.regex.ImportExportMenuRegex;
+import model.regex.MenuRegex;
 import model.regex.Regex;
 import model.response.MenuResponse;
 import view.Main;
@@ -54,7 +55,7 @@ public class ImportExportMenu {
             read(Regex.getCommandMatcher(command, ImportExportMenuRegex.importCard));
         else if (Regex.getCommandMatcher(command, ImportExportMenuRegex.exportCard).find())
             write(Regex.getCommandMatcher(command, ImportExportMenuRegex.exportCard));
-        else
+        else if (MenuRegex.isNotNavigationCommand(command))
             Main.outputToUser(MenuResponse.invalidCommand);
 
     }

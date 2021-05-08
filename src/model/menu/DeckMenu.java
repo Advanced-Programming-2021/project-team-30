@@ -4,6 +4,7 @@ import model.Deck;
 import model.Player;
 import model.cards.Card;
 import model.regex.DeckMenuRegex;
+import model.regex.MenuRegex;
 import model.regex.Regex;
 import model.response.DeckMenuResponse;
 import model.response.MenuResponse;
@@ -266,7 +267,7 @@ public class DeckMenu {
                 if (Regex.getCommandMatcher(command, DeckMenuRegex.showAllCards).find()
                         || Regex.getCommandMatcher(command, DeckMenuRegex.showAllCardsAbbr).find())
                     showCards(getCurrentPlayer().getCards());
-                else
+                else if (MenuRegex.isNotNavigationCommand(command))
                     Main.outputToUser(MenuResponse.invalidCommand);
             }
         }

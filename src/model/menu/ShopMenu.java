@@ -3,6 +3,7 @@ package model.menu;
 import model.Player;
 import model.cards.Card;
 import model.regex.DebugRegex;
+import model.regex.MenuRegex;
 import model.regex.Regex;
 import model.regex.ShopMenuRegex;
 import model.response.MenuResponse;
@@ -70,7 +71,7 @@ public class ShopMenu {
             increasePlayerMoney(Regex.getCommandMatcher(command, DebugRegex.increaseMoney));
         else if (Regex.getCommandMatcher(command, DebugRegex.increaseMoneyAbbr).find())
             increasePlayerMoney(Regex.getCommandMatcher(command, DebugRegex.increaseMoneyAbbr));
-        else
+        else if (MenuRegex.isNotNavigationCommand(command))
             Main.outputToUser(MenuResponse.invalidCommand);
 
 

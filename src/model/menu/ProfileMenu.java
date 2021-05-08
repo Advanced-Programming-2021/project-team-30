@@ -2,6 +2,7 @@ package model.menu;
 
 import model.Menu;
 import model.Player;
+import model.regex.MenuRegex;
 import model.regex.ProfileMenuRegex;
 import model.regex.Regex;
 import model.response.MenuResponse;
@@ -66,7 +67,7 @@ public class ProfileMenu {
             changePassword(changePasswordMatcher);
         else if (changePasswordAbbrMatcher != null)
             changePassword(changePasswordAbbrMatcher);
-        else
+        else if (MenuRegex.isNotNavigationCommand(command))
             Main.outputToUser(MenuResponse.invalidCommand);
 
 

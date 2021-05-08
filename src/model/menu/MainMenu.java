@@ -4,6 +4,7 @@ import controller.Controller;
 import model.Menu;
 import model.Player;
 import model.regex.MainMenuRegex;
+import model.regex.MenuRegex;
 import model.regex.Regex;
 import model.response.MainMenuResponse;
 import model.response.MenuResponse;
@@ -33,7 +34,7 @@ public class MainMenu {
     public void run(String command){
         if (Regex.getCommandMatcher(command, MainMenuRegex.logout).find())
             logout();
-        else
+        else if (MenuRegex.isNotNavigationCommand(command))
             Main.outputToUser(MenuResponse.invalidCommand);
 
     }
