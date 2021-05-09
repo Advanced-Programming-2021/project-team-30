@@ -1,6 +1,7 @@
 package model;
 import model.board.Board;
 import model.phase.Phases;
+import model.cards.MonsterCard.*;
 import model.cards.*;
 import model.Player;
 import model.response.DuelMenuResponse;
@@ -236,8 +237,8 @@ public class Duel{
 			return;
 		}
 
-		Card enemyCard = board[1 - currentPlayer].getCard("monsterGround", defenderLocation);
-		Card myCard = getSelectedCard();
+		MonsterCard enemyCard = (MonsterCard)board[1 - currentPlayer].getCard("monsterGround", defenderLocation);
+		MonsterCard myCard = (MonsterCard)(getSelectedCard());
 
 		if(enemyCard == null){
 			Main.outputToUser(DuelMenuResponse.noCardToAttack);
@@ -256,7 +257,7 @@ public class Duel{
 
 		switch(enemyPosition){
 			case "OO":
-				defender_dmg = enemyCard.getAttackDamage();
+				defender_dmg = ((MonsterCard)enemyCard).getAttackDamage();
 				if(defender_dmg < atk_dmg){
 					lp[1 - currentPlayer] -= atk_dmg - defender_dmg;
 					board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);

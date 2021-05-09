@@ -1,7 +1,11 @@
 package model.board;
 import model.Duel;
 import model.cards.*;
+import model.cards.MonsterCard.*;
+import model.cards.nonMonsterCard.Spell.*;
+import model.cards.nonMonsterCard.Trap.*;
 import model.Player;
+import java.lang.Class;
 
 import java.util.ArrayList;
 
@@ -73,7 +77,25 @@ public class Board implements Cloneable{
 	}
 
 	public boolean checkRequirements(Card card){
-		//checks
+		if(card instanceof MonsterCard){
+			MonsterCard monster = (MonsterCard) card;
+			if(monster.getLevel() > 5 && !card.isTributed())return false;
+		}
+		if(card instanceof NormalCard)return true;
+		if(card instanceof RitualCard){
+			return ((RitualCard) card).isRitualDone();
+		}
+		if(card instanceof EffectCard){
+			//not sure if needed, putting it here for now
+			//chcks effects
+			;
+		}
+		if(card instanceof Spell){
+			;
+		}
+		if(card instanceof Trap){
+			;
+		}
 	}
 
 	public void selectCard(int location, String from, boolean opponent){
