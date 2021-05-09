@@ -1,9 +1,16 @@
 package model;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import model.board.Board;
 import model.cards.Card;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Player {
     private static ArrayList<Player> players = new ArrayList<>();
@@ -137,6 +144,24 @@ public class Player {
 
     public void showDecks(){
 
+    }
+    public static void writePlayers(){
+        try {
+            FileWriter fileWriter = new FileWriter("Players.json");
+            fileWriter.write(new Gson().toJson(players));
+            fileWriter.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    public static void readPlayers(){
+        try {
+            String json = new String(Files.readAllBytes(Paths.get("Players.json")));
+            players = new Gson().fromJson(json, new TypeToken<List<Player>>(){}.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 

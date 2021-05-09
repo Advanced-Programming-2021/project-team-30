@@ -90,6 +90,7 @@ public class Controller {
 
 
     public void run(){
+        Player.readPlayers();
         while (currentMenu != Menu.EXIT){
             String command = Main.getInput();
             navigate(command);
@@ -114,6 +115,7 @@ public class Controller {
                 }
             }
         }
+        Player.writePlayers();
 
     }
 }
