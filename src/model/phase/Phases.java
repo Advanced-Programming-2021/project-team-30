@@ -2,6 +2,8 @@ package model.phase;
 import model.phase.*;
 import model.Duel;
 import model.cards.Card;
+import model.response.DuelMenuResponse;
+import view.Main;
 
 
 public class Phases{
@@ -12,7 +14,8 @@ public class Phases{
 	private BattlePhase battlePhase = new BattlePhase();
 	private MainPhase2 mainPhase2 = new MainPhase2();
 	private Phases[] phases = new Phases[5];
-	private String message = null;
+	private String message = "";
+	protected String name;
 
 
 	public Phases(Duel duel){
@@ -28,9 +31,12 @@ public class Phases{
 	public void run(){
 		for(Phases phase : phases){
 			phase.run();
-			//send message
-			// end of phase <phasename>
+			Main.outputToUser(DuelMenuResponse.endOfPhase(phase.getName()));
 		}
+	}
+
+	public String getName(){
+		return this.name;
 	}
 
 	public String getMessage(){ return this.message; }

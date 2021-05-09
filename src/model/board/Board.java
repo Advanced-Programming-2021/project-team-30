@@ -2,11 +2,15 @@ package model.board;
 import model.Duel;
 import model.cards.*;
 import model.cards.MonsterCard.*;
+import model.cards.nonMonsterCard.NonMonsterCard;
 import model.cards.nonMonsterCard.Spell.*;
 import model.cards.nonMonsterCard.Trap.*;
-import model.Player;
+import model.response.DuelMenuResponse;
+import view.Main;
+
 import java.lang.Class;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Board implements Cloneable{
@@ -22,7 +26,7 @@ public class Board implements Cloneable{
 	private SpellTrapPlayground spellTrapPlayGround;
 	private Card selectedCard = null;
 	private int selectedCardLocation, selectedCardOwner;
-	private String selectedCardOrigin, selectedCardPosition, message;
+	private String selectedCardOrigin, selectedCardPosition;
 	private static final String[] selectCardOptions =
 	{"monsterGround",
 	 "spellTrapGround",
@@ -41,7 +45,7 @@ public class Board implements Cloneable{
 //			copy.add((Card) card.clone());
 //	}
 
-	public Board(Duel duel, Player player){
+	public Board(Duel duel){
 		this.duel = duel;
 		this.fieldZone = new FieldZone(this);
 		this.hand = new Hand(this);
@@ -72,10 +76,6 @@ public class Board implements Cloneable{
 		return duel.askPositionChange(location, ground);
 	}
 
-	public void setMessage(String message){
-		this.message = message;
-	}
-
 	public boolean checkRequirements(Card card){
 		if(card instanceof MonsterCard){
 			MonsterCard monster = (MonsterCard) card;
@@ -87,14 +87,14 @@ public class Board implements Cloneable{
 		}
 		if(card instanceof EffectCard){
 			//not sure if needed, putting it here for now
-			//chcks effects
+			//checks effects
 			;
 		}
 		if(card instanceof Spell){
-			;
+			ArrayList<String> requirements = ((Spell)card).getRequirements();
 		}
 		if(card instanceof Trap){
-			;
+			ArrayList<String> requirements = ((Trap)card).getRequirements();
 		}
 	}
 
@@ -139,7 +139,7 @@ public class Board implements Cloneable{
 		selectedCardLocation = -1;
 		selectedCardOrigin = null;
 		
-		if(msg);//message: card deselected
+		if(msg) Main.outputToUser(DuelMenuResponse.cardDeselected);
 	}
 
 	public void set(){
@@ -148,7 +148,7 @@ public class Board implements Cloneable{
 			//message: no card is selected yet
 		}
 
-		if(selectedCardOrigin != "hand"){
+		if(!selectedCardOrigin.equals("hand")){
 			//message: you can't set this card
 			return;
 		}
@@ -166,25 +166,14 @@ public class Board implements Cloneable{
 	}
 
 	public int total(String from){
-		switch(from){
-			case "handGround":
-				return hand.total();
-
-			case "monsterGround":
-				return monsterPlayGround.total();
-
-			case "spellTrapGround":
-				return spellTrapPlayGround.total();
-
-			case "graveyardGround":
-				return graveYard.total();
-
-			case "deckGround":
-				return mainDeck.total();
-
-			default:
-				return fieldZone.total();
-		}
+		return switch (from) {
+			case "handGround" -> hand.total();
+			case "monsterGround" -> monsterPlayGround.total();
+			case "spellTrapGround" -> spellTrapPlayGround.total();
+			case "graveyardGround" -> graveYard.total();
+			case "deckGround" -> mainDeck.total();
+			default -> fieldZone.total();
+		};
 	}
 
 	public int monstersInField(){
@@ -208,10 +197,6 @@ public class Board implements Cloneable{
 		return spellTrapPlayGround.getPosition(location);
 	}
 
-	public void showCard(Card card){
-		;//message: shows card*
-	}
-
 	public void summonFromHand(){
 		monsterPlayGround.addCard(selectedCard, "OO");
 		this.deselect(false);
@@ -224,12 +209,12 @@ public class Board implements Cloneable{
 		}
 
 		if(!selectedCardOrigin.equals("monsterGround")){
-			setMessage("you can't change this card position");
+			Main.outputToUser(DuelMenuResponse.cantChangePosition);
 			return false;
 		}
 
 		if(duel.askPositionChange(selectedCardLocation, 0)){
-			setMessage("you already changed this card position in this turn");
+			Main.outputToUser(DuelMenuResponse.alreadyChangedPos);
 			return false;
 		}
 
@@ -238,12 +223,12 @@ public class Board implements Cloneable{
 
 	public boolean flipSummon(){
 		if(selectedCard == null){
-			setMessage("no card is selected yet");
+			Main.outputToUser(DuelMenuResponse.noCardSelected);
 			return false;
 		}
 
 		if(!selectedCardOrigin.equals("monsterGround")){
-			setMessage("you can't change this card's position");
+			Main.outputToUser(DuelMenuResponse.cantChangePosition);
 			return false;
 		}
 
@@ -269,35 +254,27 @@ public class Board implements Cloneable{
 		return true;
 	}
 
-    public String show(String from){
-    	switch(from){
-    		case "graveYardGround":
-    			graveYard.show();
-    	}
+    public void showGraveYard(){
+    	Card[] cards = graveYard.getAll().toArray(new Card[graveYard.total()]);
+    	Main.outputToUser(DuelMenuResponse.showGraveYard(cards));
     }
 
     public void draw(){
-		boolean answer = true;
 		Card drawn = getCard("deckGround", 0);
 		removeCard("deckGround", 0);
 		addCard("handGround", drawn, null);
 	}
 
     public Card getCard(String from, int location){
-    	switch (from) {
-    		case "monsterGround":
-    			return monsterPlayGround.search(location);
-    		case "spellTrapGround":
-    			return spellTrapPlayGround.search(location);
-    		case "handGround":
-    			return hand.getCard(location);
-    		case "fieldGround":
-    			return fieldZone.getCard();
-    		case "graveYardGround":
-    			return graveYard.getCard(location);
-			case "deckGround":
-				return mainDeck.getCard();
-    	}
+		return switch (from) {
+			case "monsterGround" -> monsterPlayGround.search(location);
+			case "spellTrapGround" -> spellTrapPlayGround.search(location);
+			case "handGround" -> hand.getCard(location);
+			case "fieldGround" -> fieldZone.getCard();
+			case "graveYardGround" -> graveYard.getCard(location);
+			case "deckGround" -> mainDeck.getCard();
+			default -> null;
+		};
     }
 
     public void removeCard(String from, int location){
@@ -332,20 +309,23 @@ public class Board implements Cloneable{
 
 			case "handGround":
 				hand.addCard(card);
-
-    		default: return;
     	}
     }
 
     public void showCard(){
     	if(getSelectedCard() == null){
-    		//message: no card is selected
+			Main.outputToUser(DuelMenuResponse.noCardSelected);
     		return;
     	}
     	if(selectedCardOwner == 1 && (selectedCardPosition.equals("DH") || selectedCardPosition.equals("H"))){
-    		setMessage("card is not visible");
+    		Main.outputToUser(DuelMenuResponse.cardInvisible);
     		return;
     	}
-
+		if(getSelectedCard() instanceof MonsterCard){
+			Main.outputToUser(DuelMenuResponse.showMonsterCard((MonsterCard)getSelectedCard()));
+		} else{
+			Main.outputToUser(DuelMenuResponse.showSpellTrapCard((NonMonsterCard)getSelectedCard()));
+		}
+    	deselect(false);
     }
 }

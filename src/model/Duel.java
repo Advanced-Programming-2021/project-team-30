@@ -57,7 +57,7 @@ public class Duel{
 		this.phase = new Phases(this);
 		for(int i = 0; i < 2; i++){
 			this.player[i] = players[i];
-			this.board[i] = new Board(this, players[i]);
+			this.board[i] = new Board(this);
 		}
 		this.rounds = rounds;
 
@@ -131,7 +131,7 @@ public class Duel{
 	}
 
 	public String listen(){
-		//gets input, checks with regex, gives output
+		//gets input, checks, calls methods
 		return "SDFSD";
 	}
 	
@@ -228,12 +228,12 @@ public class Duel{
 		}
 
 		if(!getSelectedCardOrigin().equals("monsterGround")){
-			board[currentPlayer].setMessage("you can't attack this card");
+			Main.outputToUser(DuelMenuResponse.cantAttack);
 			return;
 		}
 
 		if(didItAttack[getSelectedCardLocation()]){
-			board[currentPlayer].setMessage("this card already attacked");
+			Main.outputToUser(DuelMenuResponse.alreadyAttacked);
 			return;
 		}
 
@@ -255,43 +255,37 @@ public class Duel{
 
 		int atk_dmg = myCard.getAttackDamage(), defender_dmg;
 
-		switch(enemyPosition){
-			case "OO":
-				defender_dmg = ((MonsterCard)enemyCard).getAttackDamage();
-				if(defender_dmg < atk_dmg){
-					lp[1 - currentPlayer] -= atk_dmg - defender_dmg;
-					board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);
-					Main.outputToUser(DuelMenuResponse.opponentMonsterDestroyed(atk_dmg - defender_dmg));
-				}
-				else if(defender_dmg == atk_dmg){
-					board[currentPlayer].removeCard("monsterGround", getSelectedCardLocation());
-					board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);
-					Main.outputToUser(DuelMenuResponse.bothMonsterDestroyed);
-				}
-				else{
-					board[currentPlayer].removeCard("monsterGround", getSelectedCardLocation());
-					lp[currentPlayer] -= defender_dmg - atk_dmg;
-					Main.outputToUser(DuelMenuResponse.yourMonsterDestroyed(defender_dmg - atk_dmg));
-				}
+		if(enemyPosition.equals("OO")) {
+			defender_dmg = ((MonsterCard) enemyCard).getAttackDamage();
+			if (defender_dmg < atk_dmg) {
+				lp[1 - currentPlayer] -= atk_dmg - defender_dmg;
+				board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);
+				Main.outputToUser(DuelMenuResponse.opponentMonsterDestroyed(atk_dmg - defender_dmg));
+			} else if (defender_dmg == atk_dmg) {
+				board[currentPlayer].removeCard("monsterGround", getSelectedCardLocation());
+				board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);
+				Main.outputToUser(DuelMenuResponse.bothMonsterDestroyed);
+			} else {
+				board[currentPlayer].removeCard("monsterGround", getSelectedCardLocation());
+				lp[currentPlayer] -= defender_dmg - atk_dmg;
+				Main.outputToUser(DuelMenuResponse.yourMonsterDestroyed(defender_dmg - atk_dmg));
+			}
+		} else{
+			if(enemyPosition.equals("DH")){
+				Main.outputToUser(String.format("opponent’s monster card was <%s> and ", enemyCard.getName()));
+				// we add this string to the first of every coming output, if the enemy card is hidden (DH mode)
+			}
 
-			default:
-				if(enemyPosition.equals("DH")){
-					Main.outputToUser("opponent’s monster card was <monster card name> and ");
-					// needs to be changed
-					// we add this string to the first of every coming output, if the enemy card is hidden (DH mode)
-				}
-
-				defender_dmg = myCard.getDefenseDamage();
-				if(defender_dmg < atk_dmg){
-					board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);
-					Main.outputToUser(DuelMenuResponse.defenseDestroyed);
-				} else if(defender_dmg == atk_dmg){
-					Main.outputToUser(DuelMenuResponse.noCardDestroyed);
-				} else{
-					lp[currentPlayer] -= defender_dmg - atk_dmg;
-					Main.outputToUser(DuelMenuResponse.noCardDestroyedWithDamage(defender_dmg - atk_dmg));
-				}
-
+			defender_dmg = myCard.getDefenseDamage();
+			if(defender_dmg < atk_dmg){
+				board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);
+				Main.outputToUser(DuelMenuResponse.defenseDestroyed);
+			} else if(defender_dmg == atk_dmg){
+				Main.outputToUser(DuelMenuResponse.noCardDestroyed);
+			} else{
+				lp[currentPlayer] -= defender_dmg - atk_dmg;
+				Main.outputToUser(DuelMenuResponse.noCardDestroyedWithDamage(defender_dmg - atk_dmg));
+			}
 		}
 		deselect(false);
 		didItAttack[getSelectedCardLocation()] = true;
@@ -323,7 +317,7 @@ public class Duel{
 			return;
 		}
 
-		Card attacker = getSelectedCard();
+		MonsterCard attacker = (MonsterCard) getSelectedCard();
 		lp[1 - currentPlayer] -= attacker.getAttackDamage();
 		deselect(false);
 		Main.outputToUser(DuelMenuResponse.opponentReceiveDamage(attacker.getAttackDamage()));
@@ -362,7 +356,7 @@ public class Duel{
 	}
 
 	public void showGraveYard(){
-		board[currentPlayer].show("graveYardGround");
+		board[currentPlayer].showGraveYard();
 	}
 
 	public void showCard(){
@@ -387,10 +381,5 @@ public class Duel{
 
 	public void undoEffect(Card card){
 		//undoes effects
-	}
-
-	public void getMapDetails(){
-		;
-		//processes for getting map details
 	}
 }

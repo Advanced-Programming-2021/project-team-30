@@ -37,4 +37,8 @@ public class Graveyard{
     public Card getCard(int location){
         return cards.get(location);
     }
+
+    public ArrayList<Card> getAll(){
+        return this.cards;
+    }
 }

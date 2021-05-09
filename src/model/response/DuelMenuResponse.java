@@ -1,5 +1,12 @@
 package model.response;
 
+import model.cards.MonsterCard.MonsterCard;
+import model.cards.nonMonsterCard.NonMonsterCard;
+import model.cards.nonMonsterCard.Spell.Spell;
+import model.cards.Card;
+
+import java.util.ArrayList;
+
 public class DuelMenuResponse {
     public static String noPlayer = "there is no player with this username";
     public static String hasNoActiveDeck(String username){
@@ -39,6 +46,7 @@ public class DuelMenuResponse {
     public static String cantAttack = "you can’t attack with this card";
     public static String alreadyAttacked = "this card already attacked";
     public static String noCardToAttack = "there is no card to attack here";
+    public static String endOfPhase(String phaseName){ return "end of phase: " + phaseName; }
     public static String opponentMonsterDestroyed(int damage) {
         return "your opponent’s monster is destroyed and your opponent receives" + damage + " battle damage";
     }
@@ -79,7 +87,33 @@ public class DuelMenuResponse {
     public static String youShouldSpecial = "you should Special summon right now";
     public static String graveyardEmpty = "graveyard empty";
     public static String cardInvisible = "card is not visible";
+    public static String showMonsterCard(MonsterCard card){
+        String name = "Name: " + card.getName();
+        String level = "Level: " + card.getLevel();
+        String type = "Type: " + card.getTypes();
+        String atk = "ATK: " + card.getAttackDamage();
+        String def = "DEF: " + card.getDefenseDamage();
+        String description = "Description: " + card.getDetails();
 
+        return name + "\n" + level + "\n" + type + "\n" + atk + "\n" + def + "\n" + description + "\n";
+    }
+    public static String showSpellTrapCard(NonMonsterCard card){
+        String name = "Name: " + card.getName();
+        String spellOrTrap;
+        if(card instanceof Spell)spellOrTrap = "Spell";
+        else spellOrTrap = "Trap";
+        String type = "Type: " + card.getType();
+        String description = "Description: " + card.getDetails();
+
+        return name + "\n" + spellOrTrap + "\n" + type + "\n" + description + "\n";
+    }
+    public static String showGraveYard(Card[] cards){
+        StringBuilder answer = new StringBuilder("");
+        for(int i = 0; i < cards.length; i++)
+            answer.append(String.format("%d. <%s>:<%s>\n",i + 1, cards[i].getName(), cards[i].getDetails()));
+
+        return answer.toString();
+    }
 
 
 

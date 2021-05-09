@@ -12,4 +12,7 @@ public class NonMonsterCard extends Card {
     public void set() {
         // ??
     }
+    public String getType(){
+        return this.type;
+    }
 }

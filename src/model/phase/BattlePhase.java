@@ -6,6 +6,7 @@ public class BattlePhase extends Phases{
 
     }
     public BattlePhase(){
-        //
+        super(null);
+        this.name = "battle phase";
     }
 }

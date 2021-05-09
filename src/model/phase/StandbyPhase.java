@@ -6,5 +6,6 @@ public class StandbyPhase extends Phases{
 
     public StandbyPhase(){
         super(null);
+        this.name = "standby phase";
     }
 }

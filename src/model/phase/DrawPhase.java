@@ -14,5 +14,6 @@ public class DrawPhase extends Phases {
 
 	public DrawPhase(){
 		super(null);
+		this.name = "draw phase";
 	}
 }

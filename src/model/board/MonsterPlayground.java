@@ -1,11 +1,10 @@
 package model.board;
-import model.cards.MonsterCard.*;
 
 import model.cards.Card;
 
-import java.util.ArrayList;
-
 import model.board.Board;
+import model.response.DuelMenuResponse;
+import view.Main;
 
 public class MonsterPlayground{
 
@@ -23,10 +22,6 @@ public class MonsterPlayground{
     public MonsterPlayground(Board board){
         this.board = board;
         reset();
-    }
-
-    public void show() {
-        // wait
     }
 
     public void set(){
@@ -62,21 +57,21 @@ public class MonsterPlayground{
 
     public boolean flipSummon(){
         if(board.askPositionChange(board.getSelectedCardLocation(), 0) || !position[board.getSelectedCardLocation()].equals("DH")){
-            board.setMessage("you can't flip-summon this card");
+            Main.outputToUser(DuelMenuResponse.cantFlipSummon);
             return false;
         }
 
         position[board.getSelectedCardLocation()] = "OO";
-        board.setMessage("flip-summoned successfully");
+        Main.outputToUser(DuelMenuResponse.flipSummonSuccessful);
         return true;
     }
 
     public boolean setPosition(String newPosition){
         if(newPosition.equals(position[board.getSelectedCardLocation()])){
-            board.setMessage("this card is already in the wanted position");
+            Main.outputToUser(DuelMenuResponse.alreadyInWantedPos);
             return false;
         }
-        board.setMessage("monster card position changed successfully");
+        Main.outputToUser(DuelMenuResponse.changePosSuccessful);
         position[board.getSelectedCardLocation()] = newPosition;
         return true;
     }

@@ -18,5 +18,6 @@ public class MainPhase1 extends Phases{
 
 	public MainPhase1(){
 		super(null);
+		this.name = "main phase 1";
 	}
 }
