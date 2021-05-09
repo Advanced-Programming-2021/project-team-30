@@ -8,7 +8,6 @@ import model.regex.MenuRegex;
 import model.regex.Regex;
 import model.response.DeckMenuResponse;
 import model.response.MenuResponse;
-import org.junit.jupiter.api.Test;
 import view.Main;
 
 import java.util.ArrayList;
@@ -28,11 +27,7 @@ public class DeckMenu {
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
-    public DeckMenu(){
-        Player player = MainMenu.getCurrentUser();
-        if (player != null)
-            setCurrentPlayer(player);
-    }
+
     private void createDeck(Matcher matcher){
         if (matcher.find()){
             String deckName = matcher.group("deckName");
@@ -156,7 +151,7 @@ public class DeckMenu {
 
     private void showDecks(){
         ArrayList<Deck> decks = new ArrayList<>(getCurrentPlayer().getDecks());
-        StringBuilder string = new StringBuilder("Decks:\n" + "Active deck:\n");
+        StringBuilder string = new StringBuilder("Decks:\nActive deck:\n");
         if (getCurrentPlayer().getActiveDeck() != null){
             string.append(getCurrentPlayer().getActiveDeck().toStringForShowDecks());
         }

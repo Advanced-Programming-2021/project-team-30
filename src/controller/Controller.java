@@ -1,6 +1,7 @@
 package controller;
 
 import model.Menu;
+import model.Player;
 import model.menu.*;
 import model.regex.MenuRegex;
 import model.regex.Regex;
@@ -13,19 +14,20 @@ public class Controller {
     public static Menu currentMenu = Menu.REGISTER;
     public RegisterMenu registerMenu = new RegisterMenu();
     public MainMenu mainMenu = new MainMenu();
-    public DuelMenu duelMenu;
-    public DeckMenu deckMenu;
-    public ScoreboardMenu scoreboardMenu;
-    public ShopMenu shopMenu;
-    public ProfileMenu profileMenu;
-    public ImportExportMenu importExportMenu;
-    public void createMenus(){
-        duelMenu = new DuelMenu();
-        deckMenu = new DeckMenu();
-        shopMenu = new ShopMenu();
-        scoreboardMenu = new ScoreboardMenu();
-        profileMenu = new ProfileMenu();
-        importExportMenu = new ImportExportMenu();
+    public DuelMenu duelMenu = new DuelMenu();
+    public DeckMenu deckMenu = new DeckMenu();
+    public ScoreboardMenu scoreboardMenu = new ScoreboardMenu();
+    public ShopMenu shopMenu = new ShopMenu();
+    public ProfileMenu profileMenu = new ProfileMenu();
+    public ImportExportMenu importExportMenu = new ImportExportMenu();
+    public void setMenusCurrentUser(){
+        Player player = MainMenu.getCurrentUser();
+        if (player != null){
+            duelMenu.currentPlayer = player;
+            deckMenu.setCurrentPlayer(player);
+            shopMenu.setCurrentPlayer(player);
+            profileMenu.setCurrentPlayer(player);
+        }
     }
     public void checkNotLogin(String command){
         boolean notLogin = false;
@@ -95,19 +97,21 @@ public class Controller {
                 registerMenu.run(command);
             } else if (currentMenu == Menu.MAIN) {
                 mainMenu.run(command);
-                createMenus();
-            } else if(currentMenu == Menu.DUEL){
-                duelMenu.run(command);
-            } else if (currentMenu == Menu.DECK) {
-                deckMenu.run(command);
-            } else if (currentMenu == Menu.SHOP) {
-                shopMenu.run(command);
-            } else if (currentMenu == Menu.SCOREBOARD) {
-                scoreboardMenu.showScoreboard(command);
-            } else if (currentMenu == Menu.PROFILE) {
-                profileMenu.run(command);
-            } else if (currentMenu == Menu.IMPORTEXPORT) {
-                importExportMenu.run(command);
+            } else {
+                setMenusCurrentUser();
+                if (currentMenu == Menu.DUEL) {
+                    duelMenu.run(command);
+                } else if (currentMenu == Menu.DECK) {
+                    deckMenu.run(command);
+                } else if (currentMenu == Menu.SHOP) {
+                    shopMenu.run(command);
+                } else if (currentMenu == Menu.SCOREBOARD) {
+                    scoreboardMenu.showScoreboard(command);
+                } else if (currentMenu == Menu.PROFILE) {
+                    profileMenu.run(command);
+                } else if (currentMenu == Menu.IMPORTEXPORT) {
+                    importExportMenu.run(command);
+                }
             }
         }
 

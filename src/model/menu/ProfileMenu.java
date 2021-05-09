@@ -22,21 +22,13 @@ public class ProfileMenu {
         return currentPlayer;
     }
 
-    public ProfileMenu(){
-        Player player = MainMenu.getCurrentUser();
-        if (player != null)
-            setCurrentPlayer(player);
-
-    }
     private void changeNickname(Matcher matcher){
-        if (matcher.find()){
-            String nickname = matcher.group("nickname");
-            if (Player.getPlayerByNickname(nickname) != null)
-                Main.outputToUser(ProfileMenuResponse.nicknameExists(nickname));
-            else{
-                getCurrentPlayer().setNickname(nickname);
-                Main.outputToUser(ProfileMenuResponse.changeNickname);
-            }
+        String nickname = matcher.group("nickname");
+        if (Player.getPlayerByNickname(nickname) != null)
+            Main.outputToUser(ProfileMenuResponse.nicknameExists(nickname));
+        else{
+            getCurrentPlayer().setNickname(nickname);
+            Main.outputToUser(ProfileMenuResponse.changeNickname);
         }
 
     }

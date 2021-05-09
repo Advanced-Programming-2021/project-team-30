@@ -24,11 +24,7 @@ public class ShopMenu {
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
-    public ShopMenu(){
-        Player player = MainMenu.getCurrentUser();
-        if (player != null)
-            setCurrentPlayer(player);
-    }
+
     public Card getCardFromCards(String cardName){
         for (Card card : cards) {
             if (card.getName().equals(cardName))

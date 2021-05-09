@@ -13,7 +13,7 @@ import view.Main;
 import java.util.regex.Matcher;
 
 public class DuelMenu {
-    Player currentPlayer;
+    public Player currentPlayer;
 
     public DuelMenu(){
         currentPlayer = MainMenu.getCurrentUser();
