@@ -1,10 +1,9 @@
 package model.board;
-import model.Duel;
 import model.cards.Card;
 
 public class FieldZone{
     private Card field;
-    private Board board;
+    final Board board;
 
     public FieldZone(Board board){
         this.board = board;
@@ -18,8 +17,6 @@ public class FieldZone{
     public void reset() {
         this.field = null;
     }
-
-    public void show() { board.showCard(field); }
 
     public int total(){
         if(getCard() == null) return 0;

@@ -46,6 +46,7 @@ public class DuelMenuResponse {
     public static String cantAttack = "you can’t attack with this card";
     public static String alreadyAttacked = "this card already attacked";
     public static String noCardToAttack = "there is no card to attack here";
+    public static String invalidInput = "invalid input";
     public static String endOfPhase(String phaseName){ return "end of phase: " + phaseName; }
     public static String opponentMonsterDestroyed(int damage) {
         return "your opponent’s monster is destroyed and your opponent receives" + damage + " battle damage";

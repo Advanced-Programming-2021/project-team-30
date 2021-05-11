@@ -30,6 +30,11 @@ public class SpellTrapPlayground{
         return counter;
     }
 
+    public boolean searchAdvancedRitual(){
+        for(int i = 0; i < 5; i++)if(cards[i].getName().equals("Advanced Ritual Art")) return true;
+        return false;
+    }
+
     public void addCard(Card card, String position){
         for(int i = 0; i < 5; i++)if(cards[i] == null){
             cards[i] = card;

@@ -8,8 +8,6 @@ import model.cards.nonMonsterCard.Trap.*;
 import model.response.DuelMenuResponse;
 import view.Main;
 
-import java.lang.Class;
-
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -17,13 +15,13 @@ public class Board implements Cloneable{
 
 	final String[] monsterCodes = {"E", "OO", "DO", "DH"};
 	final String[] spellTrapCodes = {"E", "O", "H"};
-	private Duel duel;
-	private FieldZone fieldZone;
-	private Hand hand;
-	private Graveyard graveYard;
-	private MainDeck mainDeck;
-	private MonsterPlayground monsterPlayGround;
-	private SpellTrapPlayground spellTrapPlayGround;
+	final Duel duel;
+	final FieldZone fieldZone;
+	final Hand hand;
+	final Graveyard graveYard;
+	final MainDeck mainDeck;
+	final MonsterPlayground monsterPlayGround;
+	final SpellTrapPlayground spellTrapPlayGround;
 	private Card selectedCard = null;
 	private int selectedCardLocation, selectedCardOwner;
 	private String selectedCardOrigin, selectedCardPosition;
@@ -96,6 +94,44 @@ public class Board implements Cloneable{
 		if(card instanceof Trap){
 			ArrayList<String> requirements = ((Trap)card).getRequirements();
 		}
+	}
+
+	public boolean isRitualSummonPossible(){
+		if(!spellTrapPlayGround.searchAdvancedRitual() || !(getSelectedCard() instanceof RitualCard)){
+			Main.outputToUser(DuelMenuResponse.noWayRitual);
+			return false;
+		}
+		//checks if sum of some card levels equals to wanted one
+		ArrayList<MonsterCard> cards = hand.getAllMonsterCards();
+		int n = cards.size(), location;
+		int[] levels = new int[n];
+		for(int i = 0; i < n; i++)levels[i] = cards.get(i).getLevel();
+		if(selectedCardOrigin.equals("handGround"))location = selectedCardLocation;
+		else location = -1;
+		if(!checkCardLevels(levels, ((MonsterCard)selectedCard).getLevel(), location)){
+			Main.outputToUser(DuelMenuResponse.noWayRitual);
+			return false;
+		}
+		return true;
+	}
+
+	public boolean checkCardLevels(int[] levels, int goal, int location){
+		int n = levels.length, levelSum = 0;
+		boolean[] selection = new boolean[n];
+		for(int i = 0; i < power(2, n); i++){
+			int copy = i;
+			for(int j = 0; j < n; j++){
+				selection[j] = copy%2 == 1;
+				copy /= 2;
+			}
+			for(int j = 0; j < n; j++) if(selection[i]) levelSum += levels[i];
+			if(levelSum == goal && (location == -1 || !selection[location]))return true;
+		}
+		return false;
+	}
+
+	public int power(int base, int exponent){
+		return (int) Math.pow( (double)(base) , (double)(exponent));
 	}
 
 	public void selectCard(int location, String from, boolean opponent){

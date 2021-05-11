@@ -1,6 +1,7 @@
 package model.board;
 
 import model.cards.Card;
+import model.cards.MonsterCard.MonsterCard;
 
 import java.util.ArrayList;
 
@@ -35,6 +36,12 @@ public class Hand{
     public void addCard(Card card){
         cards.add(card);
         isRequirementsDone.add(board.checkRequirements(card));
+    }
+
+    public ArrayList<MonsterCard> getAllMonsterCards(){
+        ArrayList<MonsterCard> answer = new ArrayList<>();
+        for(Card card: cards)if(card instanceof MonsterCard) answer.add((MonsterCard) card);
+        return answer;
     }
 
     public boolean getRequirementsStatus(int location){

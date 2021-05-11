@@ -12,6 +12,7 @@ public class Event {
     private Card card;
     public Event(String name){
         setName(name);
+        events.add(this);
     }
     public static Card searchCardsOnEvent(Event event){
         for (Card card : Event.cards) {
@@ -21,6 +22,9 @@ public class Event {
         }
         return null;
     }
+
+    public static void addCard(Card card){ cards.add(card); }
+    public static void removeCard(Card card){ cards.remove(card); }
 
     public void setName(String name) {
         this.name = name;
@@ -40,17 +44,18 @@ public class Event {
     public Event getRecentEvent(){
         return Event.events.get(Event.events.size() - 1);
     }
-    public void caller(String name){
+    public ArrayList<Card> caller(String name){
+        ArrayList<Card> answer = new ArrayList<>();
         for (Event event : Event.events) {
             if (event.name.equals(name)) {
                 for (Card card : Event.cards) {
                     if (card.event.equals(event)) {
-                        //card.trigger();
+                        answer.add(card);
                     }
                 }
-
             }
         }
+        return answer;
     }
 
     @Override

@@ -7,7 +7,7 @@ import view.Main;
 
 
 public class Phases{
-	private Duel duel;
+	final Duel duel;
 	private DrawPhase drawPhase = new DrawPhase();
 	private StandbyPhase standByPhase = new StandbyPhase();
 	private MainPhase1 mainPhase1 = new MainPhase1();
@@ -58,4 +58,6 @@ public class Phases{
 	public String listen(){
 		return duel.listen();
 	}
+
+	public void reset(){ this.message = ""; }
 }

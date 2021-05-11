@@ -13,10 +13,10 @@ import java.lang.Math;
 public class Duel{
 	final int[] rotation = {0, 1, 3, 2, 5, 4};
 	// rotates the location; input: location as index, output: rotation of location
- 
+
 	final Player[] player = new Player[2];
 	private Stack<Card> chain = new Stack<>();
-	private Board[] board = new Board[2];
+	final Board[] board = new Board[2];
 
 	private int currentPlayer, currentPhase, rounds;
 	private int[] lp = new int[2];
@@ -135,7 +135,9 @@ public class Duel{
 		return "SDFSD";
 	}
 	
-	private void turn(){ phase.run(); }
+	private void turn(){
+		phase.run();
+	}
 
 	public void selectCard(int location, String from, boolean enemy){
 		if(enemy){
@@ -176,7 +178,11 @@ public class Duel{
 			return;	
 		}
 
-		if(this.didItSummon)return;//message:you already summoned/set on this turn
+		if(this.didItSummon) {
+			Main.outputToUser(DuelMenuResponse.alreadySummoned);
+			return;
+		}
+
 		this.didItSummon = true;
 		board[currentPlayer].summonFromHand();
 	}
@@ -191,7 +197,8 @@ public class Duel{
 	}
 
 	public void ritualSummon(){
-		//
+		if(!board[currentPlayer].isRitualSummonPossible())return;
+		//waits for inputs
 	}
 
 	public void removeFromHand(int location){
@@ -203,10 +210,7 @@ public class Duel{
 	}
 
 	public void setPosition(String newPosition){
-		if(board[currentPlayer].setPosition(newPosition)){
-			didItChangePosition[0][getSelectedCardLocation()] = true;
-			return;
-		}
+		if(board[currentPlayer].setPosition(newPosition)){ didItChangePosition[0][getSelectedCardLocation()] = true; }
 	}
 
 	public String getPosition(boolean opponent, int location, int ground){
@@ -218,12 +222,12 @@ public class Duel{
 
 	public void attack(int defenderLocation){
 		if(defenderLocation < 0 || defenderLocation > 4){
-			//message: invalid input
+			Main.outputToUser(DuelMenuResponse.invalidInput);
 			return;
 		}
 
 		if(getSelectedCard() == null){
-			//message: no card is selected yet
+			Main.outputToUser(DuelMenuResponse.noCardSelected);
 			return;
 		}
 
