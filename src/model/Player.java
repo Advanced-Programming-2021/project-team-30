@@ -29,6 +29,8 @@ public class Player {
         setNickname(nickname);
         setScore(0);
         setMoney(0);
+        decks = new ArrayList<>();
+        cards = new ArrayList<>();
         players.add(this);
     }
 

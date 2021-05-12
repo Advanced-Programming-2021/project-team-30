@@ -16,7 +16,6 @@ public class Deck {
     private ArrayList<Card> sideDeck;
     private String name;
     private Player owner;
-    private boolean isValid;
     public Deck(String name, Player owner){
         setName(name);
         setOwner(owner);
@@ -39,12 +38,8 @@ public class Deck {
         return owner;
     }
 
-    public void setValid(boolean valid) {
-        isValid = valid;
-    }
-
     public boolean isValid() {
-        return isValid;
+        return getMainDeck().size() >= 40;
     }
 
     public ArrayList<Card> getMainDeck() {
