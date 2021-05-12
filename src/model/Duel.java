@@ -7,6 +7,7 @@ import model.Player;
 import model.response.DuelMenuResponse;
 import view.Main;
 
+import java.util.ArrayList;
 import java.util.Stack;
 import java.lang.Math;
 
@@ -24,6 +25,10 @@ public class Duel{
 	private boolean didItSummon;
 	private boolean[][] didItChangePosition = new boolean[2][5];
 	private boolean[] didItAttack = new boolean[5];
+
+	public static ArrayList<Duel> duels = new ArrayList<>();
+
+	public static Duel getRecentDuel(){return Duel.duels.get(duels.size() - 1);}
 	
 	public Duel(Player player1, Player player2, int rounds){
 		
@@ -60,7 +65,7 @@ public class Duel{
 			this.board[i] = new Board(this, players[i]);
 		}
 		this.rounds = rounds;
-
+		Duel.duels.add(this);
 	}
 
 	public void roundReset(){
