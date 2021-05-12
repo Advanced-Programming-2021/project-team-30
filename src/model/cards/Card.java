@@ -1,10 +1,11 @@
 package model.cards;
 import model.Event;
+import model.Prototype;
 
 import java.lang.String;
 import java.util.regex.Matcher;
 
-public class Card {
+public class Card implements Prototype {
     public Event event;
     protected boolean isInGraveyard = false ;
     protected Type cardType ;
@@ -16,6 +17,12 @@ public class Card {
         setName(name);
         setPrice(price);
     }
+
+    @Override
+    public Prototype getClone(){
+        return new Card(name, price, details);
+    }
+
     private void setName(String name) {
         this.name = name;
     }

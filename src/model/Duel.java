@@ -57,7 +57,7 @@ public class Duel{
 		this.phase = new Phases(this);
 		for(int i = 0; i < 2; i++){
 			this.player[i] = players[i];
-			this.board[i] = new Board(this);
+			this.board[i] = new Board(this, players[i]);
 		}
 		this.rounds = rounds;
 

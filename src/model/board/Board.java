@@ -1,5 +1,6 @@
 package model.board;
 import model.Duel;
+import model.Player;
 import model.cards.*;
 import model.cards.MonsterCard.*;
 import model.cards.nonMonsterCard.NonMonsterCard;
@@ -7,11 +8,9 @@ import model.cards.nonMonsterCard.Spell.*;
 import model.cards.nonMonsterCard.Trap.*;
 import model.response.DuelMenuResponse;
 import view.Main;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
-public class Board implements Cloneable{
+public class Board{
 
 	final String[] monsterCodes = {"E", "OO", "DO", "DH"};
 	final String[] spellTrapCodes = {"E", "O", "H"};
@@ -33,22 +32,20 @@ public class Board implements Cloneable{
  	 "graveYardGround",
 	 "deckGround"};
 
-//	protected Object clone() throws CloneNotSupportedException{
-//		return super.clone();
-//	}
-//
-//	public ArrayList<Card> cloneArrayList(ArrayList<Card> original){
-//		ArrayList<Card> copy = new ArrayList<>();
-//		for(Card card : original)
-//			copy.add((Card) card.clone());
-//	}
+	public ArrayList<Card> cloneArrayList(ArrayList<Card> original){
+		ArrayList<Card> copy = new ArrayList<>();
+		for(Card card : original)
+			copy.add((Card) card.getClone());
+		return copy;
+		//needs to get deeper about type of card(e.g. monsterCard, TrapCard, etc). waiting for cards to be updated
+	}
 
-	public Board(Duel duel){
+	public Board(Duel duel, Player player){
 		this.duel = duel;
 		this.fieldZone = new FieldZone(this);
 		this.hand = new Hand(this);
 		this.graveYard = new Graveyard(this);
-		this.mainDeck = new MainDeck(this);//requires clone of player.getActiveDeck().getMainDeck()
+		this.mainDeck = new MainDeck(this, cloneArrayList(player.getActiveDeck().getAllCards()));
 		this.monsterPlayGround = new MonsterPlayground(this);
 		this.spellTrapPlayGround = new SpellTrapPlayground(this);
 	}
@@ -130,42 +127,75 @@ public class Board implements Cloneable{
 		return false;
 	}
 
-	public int power(int base, int exponent){
-		return (int) Math.pow( (double)(base) , (double)(exponent));
-	}
+	public int power(int base, int exponent){ return (int) Math.pow(base, exponent); }
 
 	public void selectCard(int location, String from, boolean opponent){
-		if(location < 0) return;//message: invalid input
+		if(location < 0){
+			Main.outputToUser(DuelMenuResponse.invalidInput);
+			return;
+		}
+
+		selectedCardOrigin = "";
+		selectedCardLocation = -1;
+		selectedCardOwner = -1;
+		selectedCardPosition = "";
 
 		switch(from){
 			
 			case "monsterGround":
-				if(location > 4) return;//message: invalid input
+				if(location > 4){
+					Main.outputToUser(DuelMenuResponse.invalidInput);
+					return;
+				}
 				selectedCard = monsterPlayGround.search(location);
 
-				if(selectedCard == null)return; //message: no card found in the given position
+				if(selectedCard == null) {
+					Main.outputToUser(DuelMenuResponse.noCardFound);
+					return;
+				}
+				selectedCardPosition = getPosition(location, 0);
 
 			case "spellTrapGround":
-				if(location > 4) return;//message: invalid input
+				if(location > 4) {
+					Main.outputToUser(DuelMenuResponse.invalidInput);
+					return;
+				}
 				
 				selectedCard = spellTrapPlayGround.search(location);
-				if(selectedCard == null)return; //message: no card found in the given position
+				if(selectedCard == null){
+					Main.outputToUser(DuelMenuResponse.noCardFound);
+					return;
+				}
+
+				selectedCardPosition = getPosition(location, 1);
 				
 
 			case "handGround":
-				if(location >= hand.total()) return;//message: invalid input
+				if(location >= hand.total()) {
+					Main.outputToUser(DuelMenuResponse.invalidInput);
+					return;
+				}
 				selectedCard = hand.getCard(location);
 
 			case "fieldGround":
 				selectedCard = fieldZone.getCard();
-				if(selectedCard == null)return; //message: the selected field zone is empty
+				if(selectedCard == null){
+					Main.outputToUser(DuelMenuResponse.fieldZoneEmpty);
+					return;
+				}
 
 			case "graveYardGround":
-				// chooses a card from the graveYard
+				selectedCard = graveYard.getCard(location);
+				if(selectedCard == null){
+					Main.outputToUser(DuelMenuResponse.invalidInput);
+					return;
+				}
 		}
 		selectedCardOrigin = from;
 		if(opponent) selectedCardOwner = 0;
 		else selectedCardOwner = 1;
+		selectedCardLocation = location;
+		Main.outputToUser(DuelMenuResponse.cardSelected);
 	}
 
 
@@ -180,17 +210,17 @@ public class Board implements Cloneable{
 
 	public void set(){
 		if(selectedCard == null){
+			Main.outputToUser(DuelMenuResponse.noCardSelected);
 			return;
-			//message: no card is selected yet
 		}
 
 		if(!selectedCardOrigin.equals("hand")){
-			//message: you can't set this card
+			Main.outputToUser(DuelMenuResponse.cantSet);
 			return;
 		}
 
 		if(monsterPlayGround.total() == 5){
-			//message: monster card zone is full
+			Main.outputToUser(DuelMenuResponse.monsterZoneFull);
 			return;
 		}
 
@@ -212,9 +242,7 @@ public class Board implements Cloneable{
 		};
 	}
 
-	public int monstersInField(){
-		return monsterPlayGround.total();
-	}
+	public int monstersInField(){ return monsterPlayGround.total(); }
 
 	public Card getSelectedCard(){
 		return selectedCard;
@@ -240,7 +268,7 @@ public class Board implements Cloneable{
 
 	public boolean setPosition(String newPosition){
 		if(selectedCard == null){
-			//message: no card is selected yet
+			Main.outputToUser(DuelMenuResponse.noCardSelected);
 			return false;
 		}
 
@@ -273,20 +301,20 @@ public class Board implements Cloneable{
 
 	public boolean activateSpell(){
 		if(!hand.getRequirementsStatus(getSelectedCardLocation())){
-			//message: preparations of this spell are not done yet
+			Main.outputToUser(DuelMenuResponse.preparationNotDone);
 			return false;
 		}
 
 		removeCard("handGround", getSelectedCardLocation());
 		addCard("spellTrapGround", getSelectedCard(), "O");
-		//message: spell activated
+		Main.outputToUser(DuelMenuResponse.spellActivated);
 		return true;
 	}
 
 	public boolean setSpell(){
 		removeCard("handGround", getSelectedCardLocation());
 		addCard("spellTrapGround", getSelectedCard(), "H");
-		//message: set successfully
+		Main.outputToUser(DuelMenuResponse.spellSet);
 		return true;
 	}
 

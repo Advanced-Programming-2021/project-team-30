@@ -87,6 +87,7 @@ public class DuelMenuResponse {
     public static String noWaySpecial = "there is no way you could Special summon a monster";
     public static String youShouldSpecial = "you should Special summon right now";
     public static String graveyardEmpty = "graveyard empty";
+    public static String fieldZoneEmpty = "selected field zone is empty";
     public static String cardInvisible = "card is not visible";
     public static String showMonsterCard(MonsterCard card){
         String name = "Name: " + card.getName();

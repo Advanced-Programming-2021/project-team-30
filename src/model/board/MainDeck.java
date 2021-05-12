@@ -7,12 +7,12 @@ import java.util.Random;
 
 public class MainDeck{
     private ArrayList<Card> cards = new ArrayList<Card>();
-    private Board board;
+    final Board board;
     final Random rand = new Random();
 
-    public MainDeck(Board board){
+    public MainDeck(Board board, ArrayList<Card> cards){
         this.board = board;
-        //this.cards.addAll(cards);
+        this.cards.addAll(cards);
     }
 
     public void reset(){
