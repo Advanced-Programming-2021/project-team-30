@@ -19,7 +19,7 @@ public class Duel{
 	private Stack<Card> chain = new Stack<>();
 	final Board[] board = new Board[2];
 
-	private int currentPlayer, currentPhase, rounds;
+	private int currentPlayer, currentPhase, rounds, attackerLocation, defenderLocation;
 	private int[] lp = new int[2];
 	private Phases phase;
 	private boolean didItSummon;
