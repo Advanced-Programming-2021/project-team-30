@@ -1,5 +1,6 @@
 package model.board;
 import model.Duel;
+import model.Ground;
 import model.Player;
 import model.cards.*;
 import model.cards.MonsterCard.*;
@@ -231,14 +232,15 @@ public class Board{
 		selectedCardOrigin = null;
 	}
 
-	public int total(String from){
+	public int total(Ground from){
 		return switch (from) {
-			case "handGround" -> hand.total();
-			case "monsterGround" -> monsterPlayGround.total();
-			case "spellTrapGround" -> spellTrapPlayGround.total();
-			case "graveyardGround" -> graveYard.total();
-			case "deckGround" -> mainDeck.total();
-			default -> fieldZone.total();
+			case handGround -> hand.total();
+			case monsterGround -> monsterPlayGround.total();
+			case spellTrapGround -> spellTrapPlayGround.total();
+			case graveyardGround -> graveYard.total();
+			case mainDeckGround -> mainDeck.total();
+			case fieldGround -> fieldZone.total();
+			default -> monsterPlayGround.total() + spellTrapPlayGround.total() + hand.total() + mainDeck.total();
 		};
 	}
 

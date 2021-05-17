@@ -5,8 +5,5 @@ public class BattlePhase extends Phases{
     public void run(){
 
     }
-    public BattlePhase(){
-        super(null);
-        this.name = "battle phase";
-    }
+    public BattlePhase(){ this.name = "battle phase"; }
 }

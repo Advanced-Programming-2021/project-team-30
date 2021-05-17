@@ -16,8 +16,5 @@ public class MainPhase1 extends Phases{
 		return super.listen();
 	}
 
-	public MainPhase1(){
-		super(null);
-		this.name = "main phase 1";
-	}
+	public MainPhase1(){ this.name = "main phase 1"; }
 }

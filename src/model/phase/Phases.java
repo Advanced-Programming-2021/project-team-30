@@ -1,13 +1,15 @@
 package model.phase;
+
 import model.phase.*;
 import model.Duel;
 import model.cards.Card;
 import model.response.DuelMenuResponse;
 import view.Main;
+import model.Ground;
 
 
 public class Phases{
-	final Duel duel;
+	final static Duel duel = Duel.getRecentDuel();
 	private DrawPhase drawPhase = new DrawPhase();
 	private StandbyPhase standByPhase = new StandbyPhase();
 	private MainPhase1 mainPhase1 = new MainPhase1();
@@ -18,8 +20,7 @@ public class Phases{
 	protected String name;
 
 
-	public Phases(Duel duel){
-		this.duel = duel;
+	public Phases(){
 		this.phases[0] = this.drawPhase;
 		this.phases[1] = this.standByPhase;
 		this.phases[2] = this.mainPhase1;
@@ -43,8 +44,8 @@ public class Phases{
 
 	public void setMessage(String message){ this.message = message; }
 
-	public int getNumberOfCards(String from, boolean opponent){
-		return duel.getNumberOfCards(from, opponent);
+	public int getNumberOfCards(Ground from, int player){
+		return duel.getNumberOfCards(from, player);
 	}
 
 	public void draw(){

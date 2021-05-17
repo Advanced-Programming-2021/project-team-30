@@ -1,10 +1,12 @@
 package model.phase;
+
 import model.cards.*;
+import model.Ground;
 
 public class DrawPhase extends Phases {
 	@Override
 	public void run(){
-		if(super.getNumberOfCards("deckGround", false) == 0){
+		if(super.getNumberOfCards(Ground.mainDeckGround, duel.getCurrentPlayer()) == 0){
 			super.setMessage("no card has been added");
 			return;
 		}
@@ -12,8 +14,5 @@ public class DrawPhase extends Phases {
 		super.setMessage("new card added to the hand:" + super.getSelectedCard().getName());
 	}
 
-	public DrawPhase(){
-		super(null);
-		this.name = "draw phase";
-	}
+	public DrawPhase(){ this.name = "draw phase"; }
 }

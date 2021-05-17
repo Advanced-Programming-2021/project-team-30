@@ -59,7 +59,7 @@ public class Duel{
 		}
 		//initialize
 		Player[] players = {player1, player2};
-		this.phase = new Phases(this);
+		this.phase = new Phases();
 		for(int i = 0; i < 2; i++){
 			this.player[i] = players[i];
 			this.board[i] = new Board(this, players[i]);
@@ -115,8 +115,8 @@ public class Duel{
 	}
 
 	public boolean checkPlayers(){
-		boolean p1 = (lp[0] <= 0 || getNumberOfCards("all_usable", false) == 0);
-		boolean p2 = (lp[1] <= 0 || getNumberOfCards("all_usable", true) == 0);
+		boolean p1 = (lp[0] <= 0 || getNumberOfCards(Ground.allUsable, getCurrentPlayer()) == 0);
+		boolean p2 = (lp[1] <= 0 || getNumberOfCards(Ground.allUsable, 1 - getCurrentPlayer()) == 0);
 
 		return !(p1 || p2);
 	}
@@ -125,10 +125,8 @@ public class Duel{
 		return didItChangePosition[ground][location];
 	}
 
-	public int getNumberOfCards(String from, boolean opponent){
-		if(opponent)
-			return board[1 - currentPlayer].total(from);
-		return board[currentPlayer].total(from);
+	public int getNumberOfCards(Ground from, int player){
+		return board[player].total(from);
 	}
 
 	public int rotate(int location){
@@ -178,7 +176,7 @@ public class Duel{
 			return;
 		}
 
-		if(getNumberOfCards("monsterGround", false) == 5){
+		if(getNumberOfCards(Ground.monsterGround, currentPlayer) == 5){
 			Main.outputToUser(DuelMenuResponse.monsterZoneFull);
 			return;	
 		}
@@ -316,7 +314,7 @@ public class Duel{
 			return;
 		}
 
-		if(getNumberOfCards("monsterGround", true) != 0){
+		if(getNumberOfCards(Ground.monsterGround, 1 - currentPlayer) != 0){
 			//message: you can't attack directly when there is still monster card in the enemy field! 
 			return;
 		}
@@ -343,7 +341,7 @@ public class Duel{
 			return false;
 		}
 
-		if(getNumberOfCards("spellTrapGround", false) == 5){
+		if(getNumberOfCards(Ground.spellTrapGround, currentPlayer) == 5){
 			Main.outputToUser(DuelMenuResponse.spellZoneFull);
 			return false;
 		}

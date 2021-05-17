@@ -7,8 +7,5 @@ public class StandbyPhase extends Phases{
     @Override
     public void reset(){}
 
-    public StandbyPhase(){
-        super(null);
-        this.name = "standby phase";
-    }
+    public StandbyPhase(){ this.name = "standby phase"; }
 }
