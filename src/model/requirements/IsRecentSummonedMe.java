@@ -2,10 +2,10 @@ package model.requirements;
 
 import model.event.OnSummon;
 
-public class isRecentSummonedMe extends Requirement{
+public class IsRecentSummonedMe extends Requirement{
     final int myLocation;
 
-    public isRecentSummonedMe(int myLocation){ this.myLocation = myLocation; }
+    public IsRecentSummonedMe(int myLocation){ this.myLocation = myLocation; }
 
     @Override
     public boolean check(){ return OnSummon.getLocation() == myLocation; }

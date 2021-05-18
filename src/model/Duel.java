@@ -387,6 +387,14 @@ public class Duel{
 		return board[player].doesCardWithNameExist(from, name);
 	}
 
+	public void addAttackDamageToGround(int player, int damage){
+		for(int i = 0; i < 5; i++)board[player].addAttackDamage(i, damage);
+	}
+
+	public void addAttackDamage(int location, int player, int damage){
+		board[player].addAttackDamage(location, damage);
+	}
+
 	public void doEffect(Card card){
 		//does effects
 	}

@@ -2,10 +2,10 @@ package model.requirements;
 
 import model.event.OnGettingAttacked;
 
-public class isRecentAttackedMe extends Requirement{
+public class IsRecentAttackedMe extends Requirement{
     final int myLocation;
 
-    public isRecentAttackedMe(int myLocation){ this.myLocation = myLocation; }
+    public IsRecentAttackedMe(int myLocation){ this.myLocation = myLocation; }
 
     public boolean check(){ return OnGettingAttacked.getLocation() == myLocation; }
 }

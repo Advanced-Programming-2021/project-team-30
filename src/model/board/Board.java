@@ -264,7 +264,7 @@ public class Board{
 	}
 
 	public void summonFromHand(){
-		monsterPlayGround.addCard(selectedCard, "OO");
+		monsterPlayGround.addCard((MonsterCard) selectedCard, "OO");
 		this.deselect(false);
 	}
 
@@ -373,7 +373,7 @@ public class Board{
     public void addCard(String to, Card card, String position){
     	switch(to){
     		case "monsterGround":
-    			monsterPlayGround.addCard(card, position);
+    			monsterPlayGround.addCard((MonsterCard) card, position);
 
     		case "spellTrapGround":
     			spellTrapPlayGround.addCard(card, position);
@@ -402,4 +402,8 @@ public class Board{
 		}
     	deselect(false);
     }
+
+    public void addAttackDamage(int location, int damage){
+		monsterPlayGround.addAttackDamage(location, damage);
+	}
 }

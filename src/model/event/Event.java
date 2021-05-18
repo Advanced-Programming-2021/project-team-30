@@ -11,7 +11,7 @@ import model.Dto;
 public abstract class Event {
 
     private static ArrayList<Event> events;
-    protected ArrayList<String>[] data = new ArrayList[2];
+    protected ArrayList<String>[] data;
 
     public abstract Object decode(int index, int check);
     public abstract Event setParams(Dto data);

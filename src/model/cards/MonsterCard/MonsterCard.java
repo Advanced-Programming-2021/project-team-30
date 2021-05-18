@@ -48,4 +48,6 @@ public class MonsterCard extends Card {
     public void flip() {
 
     }
+
+    public void addAttackDamage(int damage){ this.attackDamage += damage; }
  }
