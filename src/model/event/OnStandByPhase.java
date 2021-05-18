@@ -4,7 +4,7 @@ import model.Dto;
 
 public class OnStandByPhase extends Event{
     private OnStandByPhase instance;
-    
+    public static boolean isCalled;
 
     @Override
     public Event setParams(Dto data) {

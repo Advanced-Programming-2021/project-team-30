@@ -4,6 +4,7 @@ import model.Dto;
 
 public class OnSpellActivation extends Event{
     private static OnSpellActivation instance;
+    public static boolean isCalled;
     private int location, player;
     private boolean causesDamage;
 

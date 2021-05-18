@@ -5,6 +5,7 @@ import model.Ground;
 
 public class OnFlip extends Event{
     private static OnFlip instance;
+    public static boolean isCalled;
     private int location, player;
     private Ground ground;
 

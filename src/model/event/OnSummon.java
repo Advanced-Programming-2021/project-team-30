@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class OnSummon extends Event{
     private static OnSummon instance;
+    public static boolean isCalled;
     private int location, ground, player;
     private boolean isSpecial;
 

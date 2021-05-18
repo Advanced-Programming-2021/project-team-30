@@ -4,6 +4,7 @@ import model.Dto;
 
 public class OnDeath extends Event{
     private static OnDeath instance;
+    public static boolean isCalled;
     private int location;
     private boolean isDoneByEffect;
 

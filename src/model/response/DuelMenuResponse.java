@@ -89,6 +89,7 @@ public class DuelMenuResponse {
     public static String graveyardEmpty = "graveyard empty";
     public static String fieldZoneEmpty = "selected field zone is empty";
     public static String cardInvisible = "card is not visible";
+    public static String askForEffectActivation = "you can activate the effect of a card now; do you want to do it?";
     public static String showMonsterCard(MonsterCard card){
         String name = "Name: " + card.getName();
         String level = "Level: " + card.getLevel();

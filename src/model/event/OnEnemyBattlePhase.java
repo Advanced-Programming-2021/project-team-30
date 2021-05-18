@@ -4,6 +4,7 @@ import model.Dto;
 
 public class OnEnemyBattlePhase extends Event{
     private static OnEnemyBattlePhase instance;
+    public static boolean isCalled;
 
     @Override
     public Event setParams(Dto data) {

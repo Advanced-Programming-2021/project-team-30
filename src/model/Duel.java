@@ -1,4 +1,5 @@
 package model;
+
 import model.board.Board;
 import model.phase.Phases;
 import model.cards.MonsterCard.*;
@@ -6,6 +7,7 @@ import model.cards.*;
 import model.Player;
 import model.response.DuelMenuResponse;
 import view.Main;
+import model.event.*;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -22,7 +24,7 @@ public class Duel{
 	private int currentPlayer, currentPhase, rounds, attackerLocation, defenderLocation;
 	private int[] lp = new int[2];
 	private Phases phase;
-	private boolean didItSummon;
+	private boolean didItSummon, isAttackBlocked;
 	private boolean[][] didItChangePosition = new boolean[2][5];
 	private boolean[] didItAttack = new boolean[5];
 
@@ -74,6 +76,7 @@ public class Duel{
 		this.lp[1] = 8000;
 		this.currentPlayer = 0;
 		this.currentPhase = 0;
+		this.isAttackBlocked = false;
 		this.board[0].reset();
 		this.board[1].reset();
 		this.phase.reset();
@@ -220,6 +223,8 @@ public class Duel{
 		return board[player].getPosition(location, ground);
 	}
 
+	public void blockAttack(){ this.isAttackBlocked = true; }
+
 	public void attack(int defenderLocation){
 		if(defenderLocation < 0 || defenderLocation > 4){
 			Main.outputToUser(DuelMenuResponse.invalidInput);
@@ -259,7 +264,16 @@ public class Duel{
 
 		int atk_dmg = myCard.getAttackDamage(), defender_dmg;
 
-		if(enemyPosition.equals("OO")) {
+		OnGettingAttacked.isCalled = true;
+		ArrayList<Integer> locations = getTriggeredCardLocations(1 - currentPlayer);
+		if(!locations.isEmpty()){
+			Main.outputToUser(DuelMenuResponse.askForEffectActivation);
+			//gets the input
+			//checks and activates the wanted effect
+		}
+		OnGettingAttacked.isCalled = false;
+
+		if(enemyPosition.equals("OO") && !isAttackBlocked) {
 			defender_dmg = ((MonsterCard) enemyCard).getAttackDamage();
 			if (defender_dmg < atk_dmg) {
 				lp[1 - currentPlayer] -= atk_dmg - defender_dmg;
@@ -393,6 +407,16 @@ public class Duel{
 
 	public void addAttackDamage(int location, int player, int damage){
 		board[player].addAttackDamage(location, damage);
+	}
+
+	public ArrayList<Integer> getTriggeredCardLocations(int player){
+		ArrayList<Integer> answer = new ArrayList<>();
+		for(int i = 0; i < 5; i++){
+			MonsterCard card = (MonsterCard) board[player].getCard(Ground.monsterGround, i);
+			if(card.checkEffects())
+				answer.add(i);
+		}
+		return answer;
 	}
 
 	public void doEffect(Card card){
