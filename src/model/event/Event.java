@@ -11,10 +11,18 @@ import model.Dto;
 public abstract class Event {
 
     private static ArrayList<Event> events;
-    protected ArrayList<String> data;
+    protected ArrayList<String>[] data = new ArrayList[2];
 
-    public abstract Object decode(int index);
+    public abstract Object decode(int index, int check);
     public abstract Event setParams(Dto data);
+    public boolean checkParams(Dto data) {
+        this.data[1] = data.getData();
+        int size = this.data[1].size();
+        if(size != this.data[0].size()) return false;
+        for(int i = 0; i < size; i++)
+            if(decode(i, 0) != decode(i, 1)) return false;
+        return true;
+    }
 //    private static ArrayList<Event> events;
 //    private static ArrayList<Card> totalCards;
 //    private String name;

@@ -258,8 +258,8 @@ public class Board{
 		return selectedCardOrigin;
 	}
 
-	public String getPosition(int location, int ground){
-		if(ground == 0) return monsterPlayGround.getPosition(location);
+	public String getPosition(int location, Ground ground){
+		if(ground == Ground.monsterGround) return monsterPlayGround.getPosition(location);
 		return spellTrapPlayGround.getPosition(location);
 	}
 
@@ -326,19 +326,19 @@ public class Board{
     }
 
     public void draw(){
-		Card drawn = getCard("deckGround", 0);
+		Card drawn = getCard(Ground.mainDeckGround, 0);
 		removeCard("deckGround", 0);
 		addCard("handGround", drawn, null);
 	}
 
-    public Card getCard(String from, int location){
+    public Card getCard(Ground from, int location){
 		return switch (from) {
-			case "monsterGround" -> monsterPlayGround.search(location);
-			case "spellTrapGround" -> spellTrapPlayGround.search(location);
-			case "handGround" -> hand.getCard(location);
-			case "fieldGround" -> fieldZone.getCard();
-			case "graveYardGround" -> graveYard.getCard(location);
-			case "deckGround" -> mainDeck.getCard();
+			case monsterGround -> monsterPlayGround.search(location);
+			case spellTrapGround -> spellTrapPlayGround.search(location);
+			case handGround -> hand.getCard(location);
+			case fieldGround -> fieldZone.getCard();
+			case graveyardGround -> graveYard.getCard(location);
+			case mainDeckGround -> mainDeck.getCard();
 			default -> null;
 		};
     }

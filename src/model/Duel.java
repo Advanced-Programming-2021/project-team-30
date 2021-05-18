@@ -216,11 +216,8 @@ public class Duel{
 		if(board[currentPlayer].setPosition(newPosition)){ didItChangePosition[0][getSelectedCardLocation()] = true; }
 	}
 
-	public String getPosition(boolean opponent, int location, int ground){
-		if(opponent){
-			return board[1 - currentPlayer].getPosition(location, ground);
-		}
-		return board[currentPlayer].getPosition(location, ground);
+	public String getPosition(int player, int location, Ground ground){
+		return board[player].getPosition(location, ground);
 	}
 
 	public void attack(int defenderLocation){
@@ -244,7 +241,7 @@ public class Duel{
 			return;
 		}
 
-		MonsterCard enemyCard = (MonsterCard)board[1 - currentPlayer].getCard("monsterGround", defenderLocation);
+		MonsterCard enemyCard = (MonsterCard)board[1 - currentPlayer].getCard(Ground.monsterGround, defenderLocation);
 		MonsterCard myCard = (MonsterCard)(getSelectedCard());
 
 		if(enemyCard == null){
@@ -252,8 +249,8 @@ public class Duel{
 			return;
 		}
 
-		String myPosition = getPosition(false, getSelectedCardLocation(), 0);
-		String enemyPosition = getPosition(false , defenderLocation, 0);
+		String myPosition = getPosition(currentPlayer, getSelectedCardLocation(), Ground.monsterGround);
+		String enemyPosition = getPosition(1 - currentPlayer , defenderLocation, Ground.monsterGround);
 
 		if(!myPosition.equals("OO")){
 			//message: you cannot attack with a card that is not on OO position
@@ -319,7 +316,7 @@ public class Duel{
 			return;
 		}
 
-		if(!getPosition(false, getSelectedCardLocation(), 0).equals("OO")){
+		if(!getPosition(currentPlayer, getSelectedCardLocation(), Ground.monsterGround).equals("OO")){
 			//message: you can't attack with a card which is not on attack mode
 			return;
 		}
@@ -372,6 +369,10 @@ public class Duel{
 
 	public int getCurrentPlayer(){
 		return currentPlayer;
+	}
+
+	public Card getCard(Ground from, int location, int player){
+		return board[player].getCard(from, location);
 	}
 
 	public boolean checkSelectedCard(){

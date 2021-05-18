@@ -12,7 +12,7 @@ public class OnEnemyBattlePhase extends Event{
     }
 
     @Override
-    public Object decode(int index){
+    public Object decode(int index, int check){
         return null;
     }
 }
