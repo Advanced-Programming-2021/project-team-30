@@ -6,15 +6,18 @@ import java.util.ArrayList;
 
 public class OnSummon extends Event{
     private static OnSummon instance;
-    private int location, ground;
-    private boolean enemy, isSpecial;
+    private int location, ground, player;
+    private boolean isSpecial;
 
     public static int getLocation(){ return instance.location; }
+    public static int getGround(){ return instance.ground; }
+    public static int getPlayer(){ return instance.player; }
+    public static boolean isSummonedSpecial(){ return instance.isSpecial; }
 
     private OnSummon(){
         this.location = (int) decode(0, 0);
         this.ground = (int) decode(1, 0);
-        this.enemy = (boolean) decode(2, 0);
+        this.player = (int) decode(2, 0);
         this.isSpecial = (boolean) decode(3, 0);
     }
 
@@ -24,7 +27,7 @@ public class OnSummon extends Event{
         else{
             instance.location = (int) decode(0, 0);
             instance.ground = (int) decode(1, 0);
-            instance.enemy = (boolean) decode(2, 0);
+            instance.player = (int) decode(2, 0);
             instance.isSpecial = (boolean) decode(3, 0);
             return instance;
         }
@@ -33,8 +36,8 @@ public class OnSummon extends Event{
     @Override
     public Object decode(int index, int check){
         return switch (index) {
-            case 0, 1 -> Integer.parseInt(data[check].get(index));
-            case 2, 3 -> Boolean.parseBoolean(data[check].get(index));
+            case 0, 1, 2 -> Integer.parseInt(data[check].get(index));
+            case 3 -> Boolean.parseBoolean(data[check].get(index));
             default -> null;
         };
     }

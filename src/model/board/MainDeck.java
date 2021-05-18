@@ -15,6 +15,11 @@ public class MainDeck{
         this.cards.addAll(cards);
     }
 
+    public boolean doesCardWithNameExist(String name){
+        for(Card card : cards)if(card.getName().equals(name))return true;
+        return false;
+    }
+
     public void reset(){
         cards.clear();
     }

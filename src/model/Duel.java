@@ -383,6 +383,10 @@ public class Duel{
 		board[currentPlayer].deselect(msg);
 	}
 
+	public boolean doesCardWithNameExist(Ground from, int player, String name){
+		return board[player].doesCardWithNameExist(from, name);
+	}
+
 	public void doEffect(Card card){
 		//does effects
 	}

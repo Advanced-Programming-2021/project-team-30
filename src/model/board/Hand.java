@@ -44,6 +44,11 @@ public class Hand{
         return answer;
     }
 
+    public boolean doesCardWithNameExist(String name){
+        for(Card card : cards)if(card.getName().equals(name)) return true;
+        return false;
+    }
+
     public boolean getRequirementsStatus(int location){
         return isRequirementsDone.get(location);
     }

@@ -331,6 +331,14 @@ public class Board{
 		addCard("handGround", drawn, null);
 	}
 
+	public boolean doesCardWithNameExist(Ground from, String name){
+		return switch (from) {
+			case handGround -> hand.doesCardWithNameExist(name);
+			case mainDeckGround -> mainDeck.doesCardWithNameExist(name);
+			default -> false;
+		};
+	}
+
     public Card getCard(Ground from, int location){
 		return switch (from) {
 			case monsterGround -> monsterPlayGround.search(location);
