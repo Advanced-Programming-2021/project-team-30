@@ -11,6 +11,11 @@ public class OnFlip extends Event{
 
     public static int getLocation(){ return instance.location; }
 
+
+    public static OnFlip getInstance(){
+        return instance;
+    }
+
     private OnFlip(){
         this.location = (int) decode(0, 0);
         this.player = (int) decode(1, 0);

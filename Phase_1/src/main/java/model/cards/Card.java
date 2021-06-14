@@ -1,5 +1,4 @@
 package model.cards;
-import model.Event;
 import model.Prototype;
 
 import java.lang.String;
@@ -12,9 +11,9 @@ import model.requirements.*;
 import model.effect.*;
 
 public class Card implements Prototype {
-    protected final ArrayList<Events> triggers;
-    protected final ArrayList<Requirement> requirements;
-    protected final ArrayList<Effect> actions;
+    protected final ArrayList<Events> triggers = new ArrayList<>();
+    protected final ArrayList<Requirement> requirements = new ArrayList<>();
+    protected final ArrayList<Effect> actions = new ArrayList<>();
 
     protected boolean isInGraveyard = false ;
     protected Type cardType ;
@@ -91,18 +90,11 @@ public class Card implements Prototype {
             case OnDeath -> OnDeath.isCalled;
             case OnEnemyBattlePhase -> OnEnemyBattlePhase.isCalled;
             case OnFlip -> OnFlip.isCalled;
-            case OnGettingAttacked -> OnGettingAttacked.isCalled;
+            case OnGettingAttacked -> OnGettingAttacked.getInstance().isCalled;
             case OnSpellActivation -> OnSpellActivation.isCalled;
             case OnStandByPhase -> OnStandByPhase.isCalled;
             case OnSummon -> OnSummon.isCalled;
         };
-    }
-
-    public boolean checkRequirements(Requirements required){
-        switch (required){
-            case CheckTargets:
-
-        }
     }
 
     public static void showCard(Matcher matcher){

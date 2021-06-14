@@ -154,7 +154,7 @@ public class Board{
 					Main.outputToUser(DuelMenuResponse.noCardFound);
 					return;
 				}
-				selectedCardPosition = getPosition(location, 0);
+				selectedCardPosition = getPosition(location, Ground.monsterGround);
 
 			case "spellTrapGround":
 				if(location > 4) {
@@ -168,7 +168,7 @@ public class Board{
 					return;
 				}
 
-				selectedCardPosition = getPosition(location, 1);
+				selectedCardPosition = getPosition(location, Ground.spellTrapGround);
 				
 
 			case "handGround":
@@ -402,6 +402,20 @@ public class Board{
 		}
     	deselect(false);
     }
+
+    public void killCard(int location, Ground ground){
+		Card card;
+		if(ground == Ground.monsterGround){
+			card = monsterPlayGround.getCard(location);
+			monsterPlayGround.killCard(location);
+		} else if(ground == Ground.spellTrapGround){
+			card = spellTrapPlayGround.getCard(location);
+			spellTrapPlayGround.killCard(location);
+		} else card = null;
+
+		if(card != null)
+			graveYard.addCard(card);
+	}
 
     public void addAttackDamage(int location, int damage){
 		monsterPlayGround.addAttackDamage(location, damage);

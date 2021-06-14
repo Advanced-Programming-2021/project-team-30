@@ -1,10 +1,10 @@
 package model;
 
 import model.board.Board;
+import model.effect.Effect;
 import model.phase.Phases;
 import model.cards.MonsterCard.*;
 import model.cards.*;
-import model.Player;
 import model.response.DuelMenuResponse;
 import view.Main;
 import model.event.*;
@@ -13,15 +13,37 @@ import java.util.ArrayList;
 import java.util.Stack;
 import java.lang.Math;
 
+enum eventNum{
+	OnGettingAttacked,
+	OnSummon,
+	OnDeath,
+	OnEnemyBattlePhase,
+	OnSpellActivation,
+	OnStandByPhase,
+	OnFlip
+}
+
 public class Duel{
+	final static Event[] triggerEvents = {
+			OnGettingAttacked.getInstance(),
+			OnSummon.getInstance(),
+			OnDeath.getInstance(),
+			OnEnemyBattlePhase.getInstance(),
+			OnSpellActivation.getInstance(),
+			OnStandByPhase.getInstance(),
+			OnFlip.getInstance()
+	};
 	final int[] rotation = {0, 1, 3, 2, 5, 4};
 	// rotates the location; input: location as index, output: rotation of location
 
 	final Player[] player = new Player[2];
+	public static int attackerLocation, defenderLocation;
 	private Stack<Card> chain = new Stack<>();
+	private Stack<Effect> effects = new Stack<>();
+	private Stack<Event> events = new Stack<>();
 	final Board[] board = new Board[2];
 
-	private int currentPlayer, currentPhase, rounds, attackerLocation, defenderLocation;
+	private int currentPlayer, currentPhase, rounds;
 	private int[] lp = new int[2];
 	private Phases phase;
 	private boolean didItSummon, isAttackBlocked;
@@ -101,7 +123,7 @@ public class Duel{
 			startRound();
 			maxHealth1 = getMax(maxHealth1, this.lp[0]);
 			maxHealth2 = getMax(maxHealth2, this.lp[1]);
-			this.rounds -= 1;
+			this.rounds--;
 		}
 	}
 
@@ -248,6 +270,8 @@ public class Duel{
 
 		MonsterCard enemyCard = (MonsterCard)board[1 - currentPlayer].getCard(Ground.monsterGround, defenderLocation);
 		MonsterCard myCard = (MonsterCard)(getSelectedCard());
+		attackerLocation = getSelectedCardLocation();
+		Duel.defenderLocation = defenderLocation;
 
 		if(enemyCard == null){
 			Main.outputToUser(DuelMenuResponse.noCardToAttack);
@@ -258,23 +282,33 @@ public class Duel{
 		String enemyPosition = getPosition(1 - currentPlayer , defenderLocation, Ground.monsterGround);
 
 		if(!myPosition.equals("OO")){
-			//message: you cannot attack with a card that is not on OO position
+			Main.outputToUser(DuelMenuResponse.cantAttack);
 			return;
 		}
 
 		int atk_dmg = myCard.getAttackDamage(), defender_dmg;
 
-		OnGettingAttacked.isCalled = true;
+		OnGettingAttacked.getInstance().isCalled = true;
 		ArrayList<Integer> locations = getTriggeredCardLocations(1 - currentPlayer);
-		if(!locations.isEmpty()){
+		OnGettingAttacked.getInstance().isCalled = false;
+		if(!locations.isEmpty() && chain.isEmpty()){
 			Main.outputToUser(DuelMenuResponse.askForEffectActivation);
-			//gets the input
-			//checks and activates the wanted effect
+			String ask = listen();
+			if(ask.equals("yes")){
+				chain.add(getSelectedCard());
+				events.add(OnGettingAttacked.getInstance());
+				runChain();
+				return;
+			}
 		}
-		OnGettingAttacked.isCalled = false;
 
-		if(enemyPosition.equals("OO") && !isAttackBlocked) {
-			defender_dmg = ((MonsterCard) enemyCard).getAttackDamage();
+		if(isAttackBlocked){
+			isAttackBlocked = false;
+			return;
+		}
+
+		else if(enemyPosition.equals("OO")) {
+			defender_dmg = enemyCard.getAttackDamage();
 			if (defender_dmg < atk_dmg) {
 				lp[1 - currentPlayer] -= atk_dmg - defender_dmg;
 				board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);
@@ -309,6 +343,9 @@ public class Duel{
 		didItAttack[getSelectedCardLocation()] = true;
 	}
 
+	private void runChain() {
+	}
+
 	public void directAttack(){
 		if(getSelectedCard() == null){
 			Main.outputToUser(DuelMenuResponse.noCardSelected);
@@ -326,12 +363,12 @@ public class Duel{
 		}
 
 		if(getNumberOfCards(Ground.monsterGround, 1 - currentPlayer) != 0){
-			//message: you can't attack directly when there is still monster card in the enemy field! 
+			//message: you can't attack directly when there is still monster card in the enemy field!
 			return;
 		}
 
 		if(!getPosition(currentPlayer, getSelectedCardLocation(), Ground.monsterGround).equals("OO")){
-			//message: you can't attack with a card which is not on attack mode
+			Main.outputToUser(DuelMenuResponse.cantAttack);
 			return;
 		}
 
@@ -417,6 +454,14 @@ public class Duel{
 				answer.add(i);
 		}
 		return answer;
+	}
+
+	public void killCard(int location, Ground ground, int player){
+		board[player].killCard(location, ground);
+	}
+
+	public void stopDamage(){
+
 	}
 
 	public void doEffect(Card card){

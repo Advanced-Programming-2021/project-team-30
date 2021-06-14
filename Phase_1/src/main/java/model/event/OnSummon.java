@@ -22,6 +22,10 @@ public class OnSummon extends Event{
         this.isSpecial = (boolean) decode(3, 0);
     }
 
+    public static OnSummon getInstance() {
+        return instance;
+    }
+
     public Event setParams(Dto data){
         this.data[0] = data.getData();
         if(instance == null) return instance = (new OnSummon());
