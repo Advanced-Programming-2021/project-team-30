@@ -8,7 +8,8 @@ public class AddAttackDamage extends Effect{
     final ArrayList<Ground> targetGrounds;
     final boolean doForBoth;
 
-    public AddAttackDamage(int damage, int location, ArrayList<Ground> targetGrounds, boolean doForBoth){
+    public AddAttackDamage(int cardOwner,int damage, int location, ArrayList<Ground> targetGrounds, boolean doForBoth){
+        super(cardOwner);
         this.damage = damage;
         this.location = location;
         this.targetGrounds = targetGrounds;

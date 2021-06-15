@@ -4,7 +4,6 @@ import model.Dto;
 
 public class OnGettingAttacked extends Event{
     private static OnGettingAttacked instance;
-    public static boolean isCalled;
     private int location;
 
     public static int getLocation(){ return instance.location; }
@@ -12,6 +11,8 @@ public class OnGettingAttacked extends Event{
     private OnGettingAttacked(){
         this.location = (int)decode(0, 0);
     }
+
+    public static OnGettingAttacked getInstance(){ return instance; }
 
     @Override
     public Event setParams(Dto data){

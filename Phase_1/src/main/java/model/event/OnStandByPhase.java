@@ -3,8 +3,12 @@ package model.event;
 import model.Dto;
 
 public class OnStandByPhase extends Event{
-    private OnStandByPhase instance;
+    private static OnStandByPhase instance;
     public static boolean isCalled;
+
+    public static OnStandByPhase getInstance() {
+        return instance;
+    }
 
     @Override
     public Event setParams(Dto data) {

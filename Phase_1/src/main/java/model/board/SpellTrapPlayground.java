@@ -57,4 +57,12 @@ public class SpellTrapPlayground{
     public boolean getRequirementsStatus(int location){
         return board.checkRequirements(cards[location]);
     }
+
+    public Card getCard(int location) {
+        return cards[location];
+    }
+
+    public void killCard(int location) {
+        cards[location] = null;
+    }
 }

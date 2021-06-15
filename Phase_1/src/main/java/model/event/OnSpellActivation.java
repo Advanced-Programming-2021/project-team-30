@@ -20,6 +20,10 @@ public class OnSpellActivation extends Event{
         this.causesDamage = (boolean) decode(2, 0);
     }
 
+    public static OnSpellActivation getInstance() {
+        return instance;
+    }
+
     @Override
     public Event setParams(Dto data) {
         this.data[0] = data.getData();

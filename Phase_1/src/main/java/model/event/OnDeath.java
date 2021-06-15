@@ -8,6 +8,10 @@ public class OnDeath extends Event{
     private int location;
     private boolean isDoneByEffect;
 
+    public static OnDeath getInstance(){
+        return instance;
+    }
+
     public static int getLocation(){ return instance.location; }
 
     public OnDeath(){
