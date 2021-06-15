@@ -1,45 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: blue;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.LoginMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1590.0" style="-fx-background-color: blue;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.LoginMenuController">
     <children>
-        <Button fx:id="Register" layoutX="272.0" layoutY="343.0" mnemonicParsing="false" onAction="#register" prefHeight="44.0" prefWidth="167.0" text="Register">
+        <Button fx:id="Register" layoutX="241.0" layoutY="616.0" mnemonicParsing="false" onAction="#register" prefHeight="80.0" prefWidth="294.0" text="Register">
             <font>
-                <Font size="17.0" />
+                <Font size="28.0" />
             </font></Button>
-        <TextField fx:id="usernameField" layoutX="274.0" layoutY="174.0" prefHeight="48.0" prefWidth="354.0" />
-        <Label layoutX="273.0" layoutY="142.0" prefHeight="30.0" prefWidth="92.0" text="Username" textFill="WHITE">
-            <font>
-                <Font size="17.0" />
-            </font></Label>
-        <Label layoutX="273.0" layoutY="236.0" text="Password" textFill="WHITE">
-            <font>
-                <Font size="17.0" />
-            </font></Label>
-        <PasswordField fx:id="passwordField" layoutX="274.0" layoutY="265.0" prefHeight="48.0" prefWidth="354.0" />
-        <Button fx:id="login" layoutX="460.0" layoutY="343.0" mnemonicParsing="false" onAction="#login" prefHeight="44.0" prefWidth="167.0" text="Login">
-            <font>
-                <Font size="17.0" />
-            </font></Button>
-        <Label layoutX="298" layoutY="69.0" prefHeight="75.0" text="Welcome to Yu-Gi-Oh!" textAlignment="CENTER" textFill="WHITE">
-            <font>
-                <Font size="32.0" />
-            </font>
-        </Label>
-        <Label layoutX="272.0" layoutY="507.0" prefHeight="36.0" prefWidth="354.0" text="Developed By : Group 30" textFill="WHITE" textOverrun="CLIP">
+        <TextField fx:id="usernameField" layoutX="916.0" layoutY="222.0" prefHeight="80.0" prefWidth="482.0">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
+        <Label layoutX="916.0" layoutY="178.0" prefHeight="36.0" prefWidth="114.0" text="Username" textFill="WHITE">
             <font>
                 <Font size="25.0" />
+            </font></Label>
+        <Label layoutX="918.0" layoutY="313.0" prefHeight="36.0" prefWidth="106.0" text="Password" textFill="WHITE">
+            <font>
+                <Font size="25.0" />
+            </font></Label>
+        <PasswordField fx:id="passwordField" layoutX="916.0" layoutY="356.0" prefHeight="80.0" prefWidth="482.0">
+         <font>
+            <Font size="16.0" />
+         </font></PasswordField>
+        <TextField fx:id="usernameField2" layoutX="148.0" layoutY="222.0" prefHeight="80.0" prefWidth="482.0">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
+        <Label layoutX="148.0" layoutY="178.0" prefHeight="36.0" prefWidth="114.0" text="Username" textFill="WHITE">
+            <font>
+                <Font size="25.0" />
+            </font></Label>
+        <Label layoutX="332.0" layoutY="124.0" prefHeight="40.0" prefWidth="134.0" text="Sign Up" textFill="WHITE">
+            <font>
+                <Font size="28.0" />
+            </font></Label>
+        <Label layoutX="1109.0" layoutY="124.0" prefHeight="40.0" prefWidth="134.0" text="Login" textFill="WHITE">
+            <font>
+                <Font size="28.0" />
+            </font></Label>
+        <TextField fx:id="nickNameField" layoutX="148.0" layoutY="499.0" prefHeight="80.0" prefWidth="482.0">
+         <font>
+            <Font size="16.0" />
+         </font></TextField>
+        <Label layoutX="148.0" layoutY="452.0" prefHeight="36.0" prefWidth="123.0" text="Nickname" textFill="WHITE">
+            <font>
+                <Font size="25.0" />
+            </font></Label>
+        <Label layoutX="149.0" layoutY="313.0" prefHeight="36.0" prefWidth="106.0" text="Password" textFill="WHITE">
+            <font>
+                <Font size="25.0" />
+            </font></Label>
+        <PasswordField fx:id="passwordField2" layoutX="148.0" layoutY="356.0" prefHeight="80.0" prefWidth="482.0">
+         <font>
+            <Font size="16.0" />
+         </font></PasswordField>
+        <Button fx:id="login" layoutX="1021.0" layoutY="470.0" mnemonicParsing="false" onAction="#login" prefHeight="80.0" prefWidth="285.0" text="Login">
+            <font>
+                <Font size="28.0" />
+            </font></Button>
+        <Label layoutX="565.0" layoutY="19.0" prefHeight="114.0" prefWidth="419.0" text="Welcome to Yu-Gi-Oh!" textAlignment="CENTER" textFill="WHITE">
+            <font>
+                <Font size="40.0" />
             </font>
         </Label>
+<!--        <Label layoutX="595.0" layoutY="730.0" prefHeight="46.0" prefWidth="354.0" text="Developed By : Group 30" textFill="WHITE" textOverrun="CLIP">-->
+<!--            <font>-->
+<!--                <Font size="32.0" />-->
+<!--            </font>-->
+<!--        </Label>-->
 
     </children>
 </AnchorPane>

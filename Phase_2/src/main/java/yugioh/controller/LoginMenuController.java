@@ -31,30 +31,31 @@ public class LoginMenuController {
         } else if (player == null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Login failed!");
-            alert.setContentText("User does not exist!");
+            alert.setContentText("Username and password didn't match!");
             alert.show();
         } else if (!(player.getPassword().equals(password))){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Login failed!");
-            alert.setContentText("Password is incorrect!");
+            alert.setContentText("Username and password didn't match!");
             alert.show();
         } else {
             MainMenuController.currentUser = player;
+            //MainMenuView.stage.setMaximized(true);
             new MainMenuView().start(LoginMenuView.stage);
         }
 
     }
 
     public void register(ActionEvent actionEvent) {
-        String username = usernameField.getText();
-        String password = passwordField.getText();
+        String username = usernameField2.getText();
+        String password = passwordField2.getText();
         String nickName = nickNameField.getText();
         if (username.isEmpty() && password.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Register failed!");
             alert.setContentText("Please fill the fields!");
             alert.show();
-        } else if (Player.getPlayerByUsername(username) != null && Player.getPlayerByNickname(nickName) != null){
+        } else if (Player.getPlayerByUsername(username) != null || Player.getPlayerByNickname(nickName) != null){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Register failed!");
             alert.setContentText("User already exists!");

@@ -15,9 +15,9 @@ public class MainMenuView extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         MainMenuView.stage = stage;
-        URL url = new File("src/main/resources/yugioh/fxml/LoginMenu.fxml").toURI().toURL();
+        URL url = new File("src/main/resources/yugioh/fxml/MainMenu.fxml").toURI().toURL();
         Parent parent = FXMLLoader.load(url);
-        stage.setTitle("Welcome");
+        stage.setTitle("Main Menu");
         Scene scene = new Scene(parent);
         stage.setScene(scene);
         stage.setMaximized(true);

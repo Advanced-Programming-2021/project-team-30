@@ -159,7 +159,11 @@ public class Player {
     public static void readPlayers(){
         try {
             String json = new String(Files.readAllBytes(Paths.get("src/main/resources/yugioh/players.json")));
-            players = new Gson().fromJson(json, new TypeToken<List<Player>>(){}.getType());
+            ArrayList<Player> playerArrayList;
+            playerArrayList = new Gson().fromJson(json, new TypeToken<List<Player>>(){}.getType());
+            if (playerArrayList == null)
+                playerArrayList = new ArrayList<>();
+            players.addAll(playerArrayList);
         } catch (IOException e) {
             e.printStackTrace();
         }
