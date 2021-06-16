@@ -1,8 +1,8 @@
-package model.requirements;
+package model.effect.requirements;
 
 import model.Ground;
 import model.cards.MonsterCard.MonsterCard;
-import model.event.OnSummon;
+import model.effect.event.OnSummon;
 
 public class RecentSummonedMinDamage extends Requirement{
 

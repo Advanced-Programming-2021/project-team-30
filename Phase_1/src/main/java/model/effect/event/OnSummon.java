@@ -1,8 +1,6 @@
-package model.event;
+package model.effect.event;
 
 import model.Dto;
-
-import java.util.ArrayList;
 
 public class OnSummon extends Event{
     private static OnSummon instance;

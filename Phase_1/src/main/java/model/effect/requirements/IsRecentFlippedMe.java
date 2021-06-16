@@ -1,6 +1,6 @@
-package model.requirements;
+package model.effect.requirements;
 
-import model.event.OnFlip;
+import model.effect.event.OnFlip;
 
 public class IsRecentFlippedMe extends Requirement{
     final int myLocation;

@@ -1,9 +1,9 @@
-package model.effect;
+package model.effect.action;
 
 import model.Ground;
 import java.util.ArrayList;
 
-public class AddAttackDamage extends Effect{
+public class AddAttackDamage extends Action {
     final int damage, location;
     final ArrayList<Ground> targetGrounds;
     final boolean doForBoth;
@@ -37,4 +37,7 @@ public class AddAttackDamage extends Effect{
             if(doForBoth) duel.addAttackDamageToGround(1 - duel.getCurrentPlayer(), -1 * damage);
         }
     }
+
+    @Override
+    public void callEvent(boolean activationStatus){}
 }

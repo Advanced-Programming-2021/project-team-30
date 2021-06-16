@@ -1,6 +1,6 @@
-package model.requirements;
+package model.effect.requirements;
 
-import model.event.OnSummon;
+import model.effect.event.OnSummon;
 
 public class IsRecentSummonedMe extends Requirement{
     final int myLocation;

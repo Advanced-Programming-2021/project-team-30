@@ -1,6 +1,6 @@
-package model.effect;
+package model.effect.action;
 
-public class NeutralizeAttackerDamage extends Effect{
+public class NeutralizeAttackerDamage extends Action {
 
     public NeutralizeAttackerDamage(int ownerPlayer){
         super(ownerPlayer);
@@ -8,11 +8,16 @@ public class NeutralizeAttackerDamage extends Effect{
 
     @Override
     public void doEffect() {
-        duel.
+
     }
 
     @Override
     public void undoEffect() {
+
+    }
+
+    @Override
+    public void callEvent(boolean activationStatus){
 
     }
 }

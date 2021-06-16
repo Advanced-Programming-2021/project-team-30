@@ -1,4 +1,4 @@
-package model.event;
+package model.effect.event;
 
 import model.Dto;
 import model.Ground;

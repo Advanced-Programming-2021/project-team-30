@@ -1,6 +1,5 @@
-package model.requirements;
+package model.effect.requirements;
 
-import model.Duel;
 import model.Ground;
 
 public class MinNumberOfFriends extends Requirement{

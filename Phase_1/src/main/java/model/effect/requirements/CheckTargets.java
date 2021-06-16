@@ -1,9 +1,8 @@
-package model.requirements;
+package model.effect.requirements;
 
 import model.Ground;
 import model.cards.Type;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 // designed for equip cards

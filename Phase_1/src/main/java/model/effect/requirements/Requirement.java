@@ -1,4 +1,4 @@
-package model.requirements;
+package model.effect.requirements;
 
 import model.Duel;
 

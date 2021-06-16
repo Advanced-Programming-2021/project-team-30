@@ -1,6 +1,6 @@
-package model.effect;
+package model.effect.action;
 
-public class BlockAttacker extends Effect{
+public class BlockAttacker extends Action {
     public BlockAttacker(int ownerPlayer){
         super(ownerPlayer);
     }
@@ -12,4 +12,7 @@ public class BlockAttacker extends Effect{
 
     @Override
     public void undoEffect(){}
+
+    @Override
+    public void callEvent(boolean activationStatus) {}
 }

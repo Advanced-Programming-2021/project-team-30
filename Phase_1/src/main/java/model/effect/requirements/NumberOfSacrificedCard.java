@@ -1,4 +1,4 @@
-package model.requirements;
+package model.effect.requirements;
 
 public class NumberOfSacrificedCard extends Requirement{
     final int neededCards;

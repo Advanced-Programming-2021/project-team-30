@@ -1,6 +1,6 @@
-package model.requirements;
+package model.effect.requirements;
 
-import model.event.OnGettingAttacked;
+import model.effect.event.OnGettingAttacked;
 
 public class IsRecentAttackedMe extends Requirement{
     final int myLocation;

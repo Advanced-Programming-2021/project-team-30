@@ -1,6 +1,6 @@
-package model.requirements;
+package model.effect.requirements;
 
-import model.event.OnSpellActivation;
+import model.effect.event.OnSpellActivation;
 
 public class DoesRecentSpellCauseDamage extends Requirement{
 

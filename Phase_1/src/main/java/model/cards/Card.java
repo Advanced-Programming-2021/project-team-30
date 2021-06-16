@@ -1,20 +1,15 @@
 package model.cards;
-import model.Prototype;
 
+import model.Prototype;
 import java.lang.String;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
-import model.event.*;
-import model.requirements.Requirements;
-import model.requirements.*;
-import model.effect.*;
+import model.effect.Effect;
+import model.effect.event.*;
 
 public class Card implements Prototype {
-    protected final ArrayList<Events> triggers = new ArrayList<>();
-    protected final ArrayList<Requirement> requirements = new ArrayList<>();
-    protected final ArrayList<Effect> actions = new ArrayList<>();
 
+    protected ArrayList<Effect> effects = new ArrayList<>();
     protected boolean isInGraveyard = false ;
     protected Type cardType ;
     protected Attribute status ;
@@ -69,32 +64,39 @@ public class Card implements Prototype {
         quantity++ ;
     }
 
-    public void doEffect(){
-        for(int i = 0; i < triggers.size(); i++)
-            if(checkTrigger(triggers.get(i))){
-                actions.get(i).doEffect();
+    public void doEffect(Effect effect){
+        if(effect != null){
+            effect.doEffect();
+            return;
         }
+
     }
 
-    public boolean checkEffects(){
-        for(int i = 0; i < triggers.size(); i++)if(checkTrigger(triggers.get(i))){
-            if(requirements.get(i).check()){
+    public Effect getEffect(){
+        ArrayList<Effect> triggeredEffects = new ArrayList<>();
+        for(Event event: Event.events)if(event.isCalled)
+            triggeredEffects = event.getRegisteredEffects();
+
+        for(Effect effect: triggeredEffects)
+            if(findEffect(effect))
+                return effect;
+        return null;
+    }
+
+    public boolean findEffect(Effect effect){
+        for(Effect myEffect: effects)
+            if(effect == myEffect)
                 return true;
-            }
-        }
         return false;
     }
 
-    public boolean checkTrigger(Events trigger){
-        return switch (trigger) {
-            case OnDeath -> OnDeath.isCalled;
-            case OnEnemyBattlePhase -> OnEnemyBattlePhase.isCalled;
-            case OnFlip -> OnFlip.isCalled;
-            case OnGettingAttacked -> OnGettingAttacked.getInstance().isCalled;
-            case OnSpellActivation -> OnSpellActivation.isCalled;
-            case OnStandByPhase -> OnStandByPhase.isCalled;
-            case OnSummon -> OnSummon.isCalled;
-        };
+    public boolean checkEffects(){
+        Effect effect = getEffect();
+        return effect != null;
+    }
+
+    public void addEffect(Effect effect){
+        effects.add(effect);
     }
 
     public static void showCard(Matcher matcher){

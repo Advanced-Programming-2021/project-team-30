@@ -2,12 +2,13 @@ package model;
 
 import model.board.Board;
 import model.effect.Effect;
+import model.effect.action.Action;
 import model.phase.Phases;
 import model.cards.MonsterCard.*;
 import model.cards.*;
 import model.response.DuelMenuResponse;
 import view.Main;
-import model.event.*;
+import model.effect.event.*;
 
 import java.util.ArrayList;
 import java.util.Stack;
@@ -38,9 +39,8 @@ public class Duel{
 
 	final Player[] player = new Player[2];
 	public static int attackerLocation, defenderLocation;
-	private Stack<Card> chain = new Stack<>();
-	private Stack<Effect> effects = new Stack<>();
-	private Stack<Event> events = new Stack<>();
+	private final Stack<Card> chain = new Stack<>();
+	private Stack<Effect> effectStack = new Stack<>();
 	final Board[] board = new Board[2];
 
 	private int currentPlayer, currentPhase, rounds;
@@ -289,15 +289,13 @@ public class Duel{
 		int atk_dmg = myCard.getAttackDamage(), defender_dmg;
 
 		OnGettingAttacked.getInstance().isCalled = true;
-		ArrayList<Integer> locations = getTriggeredCardLocations(1 - currentPlayer);
+		ArrayList<Integer> locations = getTriggeredCardLocations(1 - currentPlayer, Ground.monsterGround);
 		OnGettingAttacked.getInstance().isCalled = false;
 		if(!locations.isEmpty() && chain.isEmpty()){
 			Main.outputToUser(DuelMenuResponse.askForEffectActivation);
 			String ask = listen();
 			if(ask.equals("yes")){
-				chain.add(getSelectedCard());
-				events.add(OnGettingAttacked.getInstance());
-				runChain();
+				runChain(OnGettingAttacked.getInstance());
 				return;
 			}
 		}
@@ -343,7 +341,61 @@ public class Duel{
 		didItAttack[getSelectedCardLocation()] = true;
 	}
 
-	private void runChain() {
+	private void runChain(Event event) {
+		event.isCalled = true;
+		int askedPlayer = 1 - currentPlayer;
+		chain.add(getSelectedCard());
+		Effect effect = getSelectedCard().getEffect();
+		effectStack.add(effect);
+		effect.callEvent(true);
+		deselect(false);
+		while(true){
+			ArrayList<Integer> triggeredMonsters = getTriggeredCardLocations(askedPlayer, Ground.monsterGround);
+			ArrayList<Integer> triggeredSpells = getTriggeredCardLocations(askedPlayer, Ground.spellTrapGround);
+			if(triggeredMonsters.isEmpty() && triggeredSpells.isEmpty()){
+				if(chain.size() > 1)
+					Main.outputToUser("no more effect can be added to chain");
+				effect.callEvent(false);
+				break;
+			}
+			Main.outputToUser(DuelMenuResponse.askForEffectActivation);
+			String ask = listen();
+			if(!ask.equals("yes"))
+				break;
+			int location = -1;
+			Ground ground = Ground.fieldGround;
+			while(location == -1){
+				Main.outputToUser("which ground?");
+				ground = Ground.valueOf(listen());
+				Main.outputToUser("location:");
+				location = Integer.parseInt("location:");
+				if(ground == Ground.monsterGround){
+					for(int i: triggeredMonsters)
+						if(location == i)
+							break;
+				} else if(ground == Ground.spellTrapGround){
+					for(int i: triggeredSpells)
+						if(location == i)
+							break;
+				} else {
+					Main.outputToUser("the selected card doesn't have any effect to run");
+					location = -1;
+				}
+			}
+			Card card = getCard(ground, location, askedPlayer);
+			effect.callEvent(false);
+			effect = card.getEffect();
+			chain.add(card);
+			effectStack.add(effect);
+			effect.callEvent(true);
+			Main.outputToUser("added the card to chain\nnow it's player " + (1 - askedPlayer) + "'s turn to add to chain");
+			askedPlayer = 1 - askedPlayer;
+		}
+
+		while(!chain.isEmpty()){
+			Card card = chain.pop();
+			effectStack.pop().doEffect();
+		}
 	}
 
 	public void directAttack(){
@@ -378,36 +430,33 @@ public class Duel{
 		Main.outputToUser(DuelMenuResponse.opponentReceiveDamage(attacker.getAttackDamage()));
 	}
 
-	public boolean activateSpell(boolean activate){
+	public void activateSpell(boolean activate){
 		if(!checkSelectedCard()){
 			Main.outputToUser(DuelMenuResponse.noCardSelected);
-			return false;
+			return;
 		}
 
 		if(!getSelectedCardOrigin().equals("handGround")){
 			Main.outputToUser(DuelMenuResponse.cantSummon);
-			return false;
+			return;
 		}
 
 		if(getNumberOfCards(Ground.spellTrapGround, currentPlayer) == 5){
 			Main.outputToUser(DuelMenuResponse.spellZoneFull);
-			return false;
+			return;
 		}
 
 		if(activate && board[currentPlayer].activateSpell()){
 			didItChangePosition[1][getSelectedCardLocation()] = true;
 			Main.outputToUser(DuelMenuResponse.spellActivated);
-			doEffect(getSelectedCard());
-			deselect(false);
+			runChain(OnSpellActivation.getInstance());
 		}
 
 		if(!activate && board[currentPlayer].setSpell()){
 			didItChangePosition[1][getSelectedCardLocation()] = true;
 			Main.outputToUser(DuelMenuResponse.spellSet);
-			doEffect(getSelectedCard());
 			deselect(false);
 		}
-		return true;
 	}
 
 	public void showGraveYard(){
@@ -446,10 +495,14 @@ public class Duel{
 		board[player].addAttackDamage(location, damage);
 	}
 
-	public ArrayList<Integer> getTriggeredCardLocations(int player){
+	public ArrayList<Integer> getTriggeredCardLocations(int player, Ground ground){
 		ArrayList<Integer> answer = new ArrayList<>();
 		for(int i = 0; i < 5; i++){
-			MonsterCard card = (MonsterCard) board[player].getCard(Ground.monsterGround, i);
+			Card card;
+			if(ground == Ground.spellTrapGround)
+				card = board[player].getCard(Ground.spellTrapGround, i);
+			else
+				card = (MonsterCard) board[player].getCard(Ground.monsterGround, i);
 			if(card.checkEffects())
 				answer.add(i);
 		}
@@ -462,13 +515,5 @@ public class Duel{
 
 	public void stopDamage(){
 
-	}
-
-	public void doEffect(Card card){
-		//does effects
-	}
-
-	public void undoEffect(Card card){
-		//undoes effects
 	}
 }

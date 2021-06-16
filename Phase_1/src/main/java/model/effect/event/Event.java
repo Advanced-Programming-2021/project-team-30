@@ -1,18 +1,17 @@
-package model.event;
+package model.effect.event;
 
-import model.cards.Card;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Objects;
-import model.Duel;
 import model.Dto;
+import model.effect.Effect;
 
 public abstract class Event {
 
-    private static ArrayList<Event> events;
+    public static ArrayList<Event> events;
     protected ArrayList<String>[] data;
     public boolean isCalled;
+    protected ArrayList<Effect> registeredEffects = new ArrayList<>();
+
+    public void addEffect(Effect effect){ registeredEffects.add(effect); }
 
     public abstract Object decode(int index, int check);
     public abstract Event setParams(Dto data);
@@ -23,5 +22,9 @@ public abstract class Event {
         for(int i = 0; i < size; i++)
             if(decode(i, 0) != decode(i, 1)) return false;
         return true;
+    }
+
+    public ArrayList<Effect> getRegisteredEffects(){
+        return  registeredEffects;
     }
 }
