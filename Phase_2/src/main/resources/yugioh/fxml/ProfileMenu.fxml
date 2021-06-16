@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1590.0" style="-fx-background-color: #c93e4f" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.ProfileMenuController">
+    <children>
+      <TextField fx:id="newNicknameField" layoutX="247.0" layoutY="488.0" prefHeight="66.0" prefWidth="407.0">
+         <font>
+            <Font size="15.0" />
+         </font></TextField>
+
+        <Label layoutX="900.0" layoutY="302.0" text="Old password" textFill="WHITE">
+            <font>
+                <Font size="22.0" />
+            </font></Label>
+        <Label layoutX="985.0" layoutY="255.0" text="Change password" textFill="WHITE">
+            <font>
+                <Font size="28.0" />
+            </font></Label>
+        <PasswordField fx:id="oldPasswordField" layoutX="900.0" layoutY="343.0" prefHeight="66.0" prefWidth="423.0">
+         <font>
+            <Font size="15.0" />
+         </font></PasswordField>
+        <Label layoutX="900.0" layoutY="415.0" text="New password" textFill="WHITE">
+            <font>
+                <Font size="22.0" />
+            </font></Label>
+        <PasswordField fx:id="newPasswordField" layoutX="900.0" layoutY="454.0" prefHeight="66.0" prefWidth="423.0">
+         <font>
+            <Font size="15.0" />
+         </font></PasswordField>
+        <Button layoutX="1040.0" layoutY="536.0" mnemonicParsing="false" onAction="#changePassword" prefHeight="58.0" prefWidth="127.0" text="change">
+            <font>
+                <Font size="27.0" />
+            </font>
+        </Button>
+        <Button layoutX="717.0" layoutY="671.0" mnemonicParsing="false" onAction="#back" text="Back">
+            <font>
+                <Font size="37.0" />
+            </font>
+        </Button>
+      <Label layoutX="668.0" layoutY="52.0" text="Profile Menu" textFill="WHITE">
+         <font>
+            <Font size="45.0" />
+         </font>
+      </Label>
+      <Label layoutX="247.0" layoutY="157.0" text="Profile Photo" textFill="WHITE">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <Label fx:id="usernameField" layoutX="901.0" layoutY="183.0" prefHeight="38.0" prefWidth="388.0" textFill="WHITE">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <Label layoutX="335.0" layoutY="363.0" text="Change nickname" textFill="WHITE">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Label>
+      <Label layoutX="246.0" layoutY="443.0" text="New nickname" textFill="WHITE">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="nicknameField" layoutX="246.0" layoutY="404.0" prefHeight="38.0" prefWidth="388.0" textFill="WHITE">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Label>
+      <Button layoutX="377.0" layoutY="580.0" mnemonicParsing="false" onAction="#changeNickname" prefHeight="58.0" prefWidth="127.0" text="change">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Button>
+      <Button layoutX="375.0" layoutY="272.0" mnemonicParsing="false" onAction="#chooseFile" text="change">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Button>
+      <ImageView fx:id="profilePhoto" fitHeight="150.0" fitWidth="200.0" layoutX="431.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true" />
+      <Separator layoutX="219.0" layoutY="315.0" prefHeight="80.0" prefWidth="459.0" />
+      <Separator layoutX="874.0" layoutY="204.0" prefHeight="80.0" prefWidth="459.0" />
+    </children>
+
+</AnchorPane>

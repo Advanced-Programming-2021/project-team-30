@@ -1,9 +1,13 @@
 package yugioh.controller;
 
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import yugioh.model.Player;
 import yugioh.view.LoginMenuView;
+import yugioh.view.ProfileMenuView;
 import yugioh.view.ScoreBoardView;
 
 public class MainMenuController {
@@ -15,6 +19,11 @@ public class MainMenuController {
     public Button importExportButton;
     public Button back;
     public Button profileButton;
+    @FXML public ImageView profilePhoto;
+    public void initialize(){
+        profilePhoto.setImage(new Image(currentUser.profilePhotoPath));
+    }
+
 
     public void startNewGame(ActionEvent actionEvent) {
     }
@@ -37,6 +46,7 @@ public class MainMenuController {
         new LoginMenuView().start(LoginMenuView.stage);
     }
 
-    public void gotoProfile(ActionEvent actionEvent) {
+    public void gotoProfile(ActionEvent actionEvent) throws Exception {
+        new ProfileMenuView().start(LoginMenuView.stage);
     }
 }

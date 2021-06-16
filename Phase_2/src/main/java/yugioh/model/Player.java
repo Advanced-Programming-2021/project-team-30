@@ -4,12 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Player {
     private static ArrayList<Player> players = new ArrayList<>();
@@ -22,6 +24,7 @@ public class Player {
     private ArrayList<Deck> decks;
     private ArrayList<Card> cards;
     private Deck activeDeck;
+    public String profilePhotoPath;
     public Player(String username, String password, String nickname){
         setUsername(username);
         setPassword(password);
@@ -31,6 +34,7 @@ public class Player {
         decks = new ArrayList<>();
         cards = new ArrayList<>();
         players.add(this);
+        setProfilePhotoPath();
     }
 
     public String getUsername() {
@@ -71,6 +75,15 @@ public class Player {
 
     public void setMoney(int money) {
         this.money = money;
+    }
+
+    public void setProfilePhotoPath() {
+        File file = new File("src/main/resources/yugioh/assets/profiles");
+        File[] files = file.listFiles();
+        Random random = new Random();
+        assert files != null;
+        File photo = files[random.nextInt(files.length)];
+        this.profilePhotoPath = "file:\\" + photo.getAbsolutePath();
     }
 
     public void setActiveDeck(Deck activeDeck) {
