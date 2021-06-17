@@ -1,5 +1,7 @@
 package model.board;
 import model.cards.Card;
+import model.response.DuelMenuResponse;
+import view.Main;
 
 public class FieldZone{
     private Card field;
@@ -25,10 +27,10 @@ public class FieldZone{
 
     public void removeCard(){
         if(field == null){
-            //message: field is already empty
+            Main.outputToUser(DuelMenuResponse.fieldZoneEmpty);
             return;
         }
-        board.undoEffect(field);
+        field.undoEffect();
         field = null;
     }
 
@@ -37,10 +39,13 @@ public class FieldZone{
     }
 
     public void change(Card card){
-        if(this.field != null)
-            board.undoEffect(field);
-        board.doEffect(field);
-        this.field = card;    
+        if(field != null)
+            field.undoEffect();
+        field = card;
+        field.doEffect(field.getEffect());
     }
 
+    public boolean isFull() {
+        return field != null;
+    }
 }

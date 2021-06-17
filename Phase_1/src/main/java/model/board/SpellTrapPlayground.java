@@ -39,13 +39,12 @@ public class SpellTrapPlayground{
         for(int i = 0; i < 5; i++)if(cards[i] == null){
             cards[i] = card;
             this.position[i] = position;
-            board.doEffect(card);
             return;
         }
     }
 
     public void removeCard(int location){
-        board.undoEffect(cards[location]);
+        cards[location].undoEffect();
         cards[location] = null;
         position[location] = "E";
     }
@@ -64,5 +63,18 @@ public class SpellTrapPlayground{
 
     public void killCard(int location) {
         cards[location] = null;
+    }
+
+    public void replaceCard(int i, Card card) {
+        cards[i] = card;
+    }
+
+    public boolean isThereCardOnLocation(int location) {
+        return cards[location] != null;
+    }
+
+    public void setCardBlockedStatus(int location, boolean status) {
+        if(cards[location] != null)
+            cards[location].setCardBlockedStatus(status);
     }
 }

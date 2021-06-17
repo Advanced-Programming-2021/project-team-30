@@ -1,21 +1,25 @@
 package model.cards.MonsterCard;
+
 import model.cards.Attribute;
 import model.cards.Card;
 import model.cards.Type;
 import java.util.ArrayList;
 
 public class MonsterCard extends Card {
-    protected int heath , attackDamage , defenseDamage , level ;
+    protected int health , attackDamage , defenseDamage , level, tributes = 0;
     protected ArrayList<Type> types = new ArrayList<Type>() ;
     protected Attribute attribute ;
+
+    public MonsterCard(String name, int price, String details) {
+        super(name, price, details);
+    }
+
     public void MonsterCard(int heath , int attackDamage , int defenseDamage ,int level ,ArrayList<Type> types , Attribute attribute ,String details ) {
     }
     public int showHealth() {
-        return this.heath ;
+        return this.health ;
     }
-    public void changeHealth(int change) {
-        this.heath = change ;
-    }
+    public void changeHealth(int change) { this.health = change; }
     public void activeCard() {
         /// ??
     }
@@ -50,4 +54,16 @@ public class MonsterCard extends Card {
     }
 
     public void addAttackDamage(int damage){ this.attackDamage += damage; }
- }
+
+    public int getTributes(){ return tributes; }
+
+    public boolean isTributed() {
+        if(level >= 7) return tributes == 3;
+        else if(level >= 5) return tributes == 2;
+        else return true;
+    }
+
+    public void setAttackDamage(int damage) {
+        this.attackDamage = damage;
+    }
+}

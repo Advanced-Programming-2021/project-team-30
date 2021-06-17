@@ -37,7 +37,7 @@ public class MonsterPlayground{
     }
 
     public void removeCard(int location){
-        board.undoEffect(cards[location]);
+        cards[location].undoEffect();
         cards[location] = null;
         position[location] = "E";
     }
@@ -51,7 +51,6 @@ public class MonsterPlayground{
         for(int i = 0; i < 5; i++)if(cards[i] == null) {
             cards[i] = card;
             this.position[i] = position;
-            board.doEffect(card);
             return;
         }
     }
@@ -93,5 +92,25 @@ public class MonsterPlayground{
 
     public Card getCard(int location) {
         return cards[location];
+    }
+
+    public void replaceCard(int i, Card card) {
+        cards[i] = (MonsterCard) card;
+    }
+
+    public boolean isThereCardOnLocation(int location) {
+        return cards[location] != null;
+    }
+
+    public int getLevelSum() {
+        int sum = 0;
+        for(MonsterCard card: cards)
+            sum += card.getLevel();
+        return sum;
+    }
+
+    public void setCardBlockedStatus(int location, boolean status) {
+        if(cards[location] != null)
+            cards[location].setCardBlockedStatus(status);
     }
 }

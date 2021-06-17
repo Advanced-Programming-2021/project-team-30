@@ -60,14 +60,6 @@ public class Board{
 		spellTrapPlayGround.reset();
 	}
 
-	public void doEffect(Card card){
-		duel.doEffect(card);
-	}
-
-	public void undoEffect(Card card){
-		duel.undoEffect(card);
-	}
-
 	public boolean askPositionChange(int location, int ground){
 		return duel.askPositionChange(location, ground);
 	}
@@ -75,7 +67,7 @@ public class Board{
 	public boolean checkRequirements(Card card){
 		if(card instanceof MonsterCard){
 			MonsterCard monster = (MonsterCard) card;
-			if(monster.getLevel() > 5 && !card.isTributed())return false;
+			if(monster.getLevel() > 5 && !monster.isTributed())return false;
 		}
 		if(card instanceof NormalCard)return true;
 		if(card instanceof RitualCard){
@@ -419,5 +411,47 @@ public class Board{
 
     public void addAttackDamage(int location, int damage){
 		monsterPlayGround.addAttackDamage(location, damage);
+	}
+
+	public void replaceCard(Ground ground, int i, Card card) {
+		if (ground == Ground.monsterGround)
+			monsterPlayGround.replaceCard(i, card);
+		else if (ground == Ground.spellTrapGround)
+			spellTrapPlayGround.replaceCard(i, card);
+	}
+
+    public void specialSummon(Ground ground, int location) {
+		if(ground == Ground.graveyardGround)
+			graveYard.specialSummon(location);
+		else if(ground == Ground.handGround)
+			hand.specialSummon(location);
+		else if(ground == Ground.mainDeckGround)
+			mainDeck.specialSummon(location);
+    }
+
+	public boolean isThereCardOnLocation(Ground ground, int location) {
+		if(ground == Ground.monsterGround)
+			return monsterPlayGround.isThereCardOnLocation(location);
+		else if(ground == Ground.spellTrapGround)
+			return spellTrapPlayGround.isThereCardOnLocation(location);
+		else if(ground == Ground.mainDeckGround)
+			return mainDeck.isThereCardOnLocation(location);
+		else if(ground == Ground.graveyardGround)
+			return graveYard.isThereCardOnLocation(location);
+		else
+			return fieldZone.isFull();
+	}
+
+	public int getLevelSum(Ground ground) {
+		if(ground == Ground.monsterGround)
+			return monsterPlayGround.getLevelSum();
+		else return 0;
+	}
+
+	public void setCardBlockedStatus(Ground ground, int location, boolean status) {
+		if(ground == Ground.monsterGround)
+			monsterPlayGround.setCardBlockedStatus(location, status);
+		else if(ground == Ground.spellTrapGround)
+			spellTrapPlayGround.setCardBlockedStatus(location, status);
 	}
 }

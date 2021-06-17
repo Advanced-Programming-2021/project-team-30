@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 public class DuelMenuResponse {
     public static String noPlayer = "there is no player with this username";
+    public static String invalidLocation = "the given location has no card on it!";
+
     public static String hasNoActiveDeck(String username){
         return username + " has no active deck";
     }

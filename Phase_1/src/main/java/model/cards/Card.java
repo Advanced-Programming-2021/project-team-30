@@ -10,7 +10,7 @@ import model.effect.event.*;
 public class Card implements Prototype {
 
     protected ArrayList<Effect> effects = new ArrayList<>();
-    protected boolean isInGraveyard = false ;
+    protected boolean isInGraveyard = false, isBlocked = false;
     protected Type cardType ;
     protected Attribute status ;
     protected int price , speed , cardNumber , quantity ;
@@ -103,5 +103,14 @@ public class Card implements Prototype {
         if (matcher.find()){
             String cardName = matcher.group("cardName");
         }
+    }
+
+    public void undoEffect() {
+        for(Effect effect: effects)
+            effect.undoEffect();
+    }
+
+    public void setCardBlockedStatus(boolean status) {
+        isBlocked = status;
     }
 }

@@ -2,27 +2,16 @@ package model;
 
 import model.board.Board;
 import model.effect.Effect;
-import model.effect.action.Action;
 import model.phase.Phases;
 import model.cards.MonsterCard.*;
 import model.cards.*;
 import model.response.DuelMenuResponse;
 import view.Main;
 import model.effect.event.*;
-
 import java.util.ArrayList;
 import java.util.Stack;
 import java.lang.Math;
 
-enum eventNum{
-	OnGettingAttacked,
-	OnSummon,
-	OnDeath,
-	OnEnemyBattlePhase,
-	OnSpellActivation,
-	OnStandByPhase,
-	OnFlip
-}
 
 public class Duel{
 	final static Event[] triggerEvents = {
@@ -46,11 +35,12 @@ public class Duel{
 	private int currentPlayer, currentPhase, rounds;
 	private int[] lp = new int[2];
 	private Phases phase;
-	private boolean didItSummon, isAttackBlocked;
+	private boolean didItSummon, isAttackBlocked, isDamageStopped, preventDeath;
 	private boolean[][] didItChangePosition = new boolean[2][5];
-	private boolean[] didItAttack = new boolean[5];
+	private boolean[] didItAttack = new boolean[5], isScannerSet = new boolean[2];
 
 	public static ArrayList<Duel> duels = new ArrayList<>();
+	public static MonsterCard[] scanner;
 
 	public static Duel getRecentDuel(){return Duel.duels.get(duels.size() - 1);}
 	
@@ -83,6 +73,8 @@ public class Duel{
 		}
 		//initialize
 		Player[] players = {player1, player2};
+		isScannerSet[0] = false;
+		isScannerSet[1] = false;
 		this.phase = new Phases();
 		for(int i = 0; i < 2; i++){
 			this.player[i] = players[i];
@@ -106,6 +98,12 @@ public class Duel{
 
 	public void turnReset(){
 		currentPhase = 0;
+		for(int player = 0; player < 2; player++)
+			if(isScannerSet[player]){
+				isScannerSet[player] = false;
+				setScanner(scanner[player], 0);
+			}
+
 		for(int i = 0; i < 5; i++)
 		{
 			this.didItAttack[i] = false;
@@ -287,30 +285,30 @@ public class Duel{
 		}
 
 		int atk_dmg = myCard.getAttackDamage(), defender_dmg;
-
-		OnGettingAttacked.getInstance().isCalled = true;
-		ArrayList<Integer> locations = getTriggeredCardLocations(1 - currentPlayer, Ground.monsterGround);
-		OnGettingAttacked.getInstance().isCalled = false;
-		if(!locations.isEmpty() && chain.isEmpty()){
-			Main.outputToUser(DuelMenuResponse.askForEffectActivation);
-			String ask = listen();
-			if(ask.equals("yes")){
-				runChain(OnGettingAttacked.getInstance());
-				return;
-			}
-		}
+		runChain(OnGettingAttacked.getInstance());
 
 		if(isAttackBlocked){
 			isAttackBlocked = false;
 			return;
 		}
 
-		else if(enemyPosition.equals("OO")) {
+		if(isDamageStopped){
+			isDamageStopped = false;
+			atk_dmg = 0;
+		}
+
+		if(enemyPosition.equals("OO")) {
 			defender_dmg = enemyCard.getAttackDamage();
 			if (defender_dmg < atk_dmg) {
-				lp[1 - currentPlayer] -= atk_dmg - defender_dmg;
-				board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);
-				Main.outputToUser(DuelMenuResponse.opponentMonsterDestroyed(atk_dmg - defender_dmg));
+				if(preventDeath){
+					lp[1 - currentPlayer] -= atk_dmg - defender_dmg;
+					preventDeath = false;
+				}
+				else{
+					lp[1 - currentPlayer] -= atk_dmg - defender_dmg;
+					board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);
+					Main.outputToUser(DuelMenuResponse.opponentMonsterDestroyed(atk_dmg - defender_dmg));
+				}
 			} else if (defender_dmg == atk_dmg) {
 				board[currentPlayer].removeCard("monsterGround", getSelectedCardLocation());
 				board[1 - currentPlayer].removeCard("monsterGround", defenderLocation);
@@ -393,8 +391,8 @@ public class Duel{
 		}
 
 		while(!chain.isEmpty()){
-			Card card = chain.pop();
 			effectStack.pop().doEffect();
+			Card card = chain.pop();
 		}
 	}
 
@@ -510,10 +508,77 @@ public class Duel{
 	}
 
 	public void killCard(int location, Ground ground, int player){
+		if(location == -1){
+			for(location = 0; location < 5; location++)
+				if(board[player].getCard(ground, player) != null)
+					break;
+		}
 		board[player].killCard(location, ground);
 	}
 
 	public void stopDamage(){
+		isDamageStopped = true;
+	}
 
+	public void stopAttack(){
+		isAttackBlocked = true;
+	}
+
+	public void setScanner(MonsterCard card, int player) {
+		for(int i = 0; i < 5; i++){
+			MonsterCard card1 = (MonsterCard) board[player].getCard(Ground.monsterGround, i);
+			if(card1.getName().equals("Scanner")) {
+				board[player].replaceCard(Ground.monsterGround, i, card);
+				scanner[player] = card1;
+				isScannerSet[player] = true;
+				return;
+			}
+		}
+	}
+
+	public void decreaseLp(int damage, int player) {
+		lp[player] -= damage;
+	}
+
+	public void stopMyDeath() {
+		preventDeath = true;
+	}
+
+	public MonsterCard getBeastKing(int player) {
+		for(int i = 0; i < 5; i++)
+			if(board[player].getCard(Ground.monsterGround, i).getName().equals("Beast King"))
+				return (MonsterCard) board[player].getCard(Ground.monsterGround, i);
+		return null;
+	}
+
+	public void killAllCardsOnGround(Ground ground, int player) {
+		for(int i = 0; i < 5; i++)
+			board[player].killCard(i, ground);
+	}
+
+	public void specialSummon(int ownerPlayer, Ground ground, int location) {
+		board[ownerPlayer].specialSummon(ground, location);
+	}
+
+	public boolean isThereCardOnLocation(int ownerPlayer, Ground ground, int location){
+		return board[ownerPlayer].isThereCardOnLocation(ground, location);
+	}
+
+	public int getLevelSum(Ground ground, int ownerPlayer) {
+		return board[ownerPlayer].getLevelSum(ground);
+	}
+
+	public void setCalculator(int ownerPlayer ,int damage) {
+		MonsterCard card = null;
+		for(int i = 0; i < 5; i++) {
+			card = (MonsterCard) board[ownerPlayer].getCard(Ground.monsterGround, i);
+			if(card.getName().equals("Calculator"))
+				break;
+		}
+		card.setAttackDamage(damage);
+	}
+
+	public void setCardBlockedStatus(int ownerPlayer, Ground ground, int location, boolean status) {
+		board[ownerPlayer].setCardBlockedStatus(ground, location, status);
 	}
 }
