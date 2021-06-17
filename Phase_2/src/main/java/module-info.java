@@ -3,7 +3,8 @@ module Phase_2{
         requires javafx.fxml;
         requires com.google.gson;
         requires javafx.media;
-        opens yugioh to com.google.gson, javafx.fxml;
+    requires opencsv;
+    opens yugioh to com.google.gson, javafx.fxml;
         opens yugioh.model to com.google.gson, javafx.fxml, javafx.base;
         opens yugioh.controller to javafx.fxml;
         exports yugioh.view to javafx.graphics;

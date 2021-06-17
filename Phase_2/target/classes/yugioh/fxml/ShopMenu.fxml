@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1590.0" style="-fx-background-color: #cb4a0e" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.ShopMenuController">
+   <children>
+      <GridPane fx:id="gridPane" layoutX="578.0" layoutY="78.0" prefHeight="375.0" prefWidth="986.0">
+
+      </GridPane>
+      <GridPane fx:id="gridPane2" layoutX="578.0" layoutY="500.0" prefHeight="375.0" prefWidth="986.0">
+
+      </GridPane>
+      <Label layoutX="578.0" layoutY="33.0" text="Monster Cards" textFill="WHITE">
+         <font>
+            <Font size="23.0" />
+         </font></Label>
+      <Label layoutX="578.0" layoutY="450.0" text="Spell Trap Cards" textFill="WHITE">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="cardImage" fitHeight="452.0" fitWidth="380.0" layoutX="110.0" layoutY="91.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="userMoneyLabel" layoutX="190.0" layoutY="30.0" textFill="WHITE">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="cardNameLabel" layoutX="190.0" layoutY="550.0" textFill="WHITE">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="cardPriceLabel" layoutX="190.0" layoutY="590.0" textFill="WHITE">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Label fx:id="cardNumberLabel" layoutX="170.0" layoutY="628.0" textFill="WHITE">
+         <font>
+            <Font size="23.0" />
+         </font>
+      </Label>
+      <Button layoutX="220.0" layoutY="678.0" mnemonicParsing="false" onMouseClicked="#buyCard" prefHeight="51.0" prefWidth="97.0" text="Buy">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

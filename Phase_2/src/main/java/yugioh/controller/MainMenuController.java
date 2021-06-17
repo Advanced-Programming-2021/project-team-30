@@ -9,6 +9,7 @@ import yugioh.model.Player;
 import yugioh.view.LoginMenuView;
 import yugioh.view.ProfileMenuView;
 import yugioh.view.ScoreBoardView;
+import yugioh.view.ShopMenuView;
 
 public class MainMenuController {
     public static Player currentUser;
@@ -35,7 +36,8 @@ public class MainMenuController {
         new ScoreBoardView().start(LoginMenuView.stage);
     }
 
-    public void gotoShop(ActionEvent actionEvent) {
+    public void gotoShop(ActionEvent actionEvent) throws Exception {
+        new ShopMenuView().start(LoginMenuView.stage);
     }
 
     public void gotoImportExport(ActionEvent actionEvent) {

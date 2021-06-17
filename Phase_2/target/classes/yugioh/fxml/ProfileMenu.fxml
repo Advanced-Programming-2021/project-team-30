@@ -37,7 +37,7 @@
                 <Font size="27.0" />
             </font>
         </Button>
-        <Button layoutX="717.0" layoutY="671.0" mnemonicParsing="false" onAction="#back" text="Back">
+        <Button layoutX="717.0" layoutY="674.0" mnemonicParsing="false" onAction="#back" text="Back">
             <font>
                 <Font size="37.0" />
             </font>
@@ -85,6 +85,7 @@
       <ImageView fx:id="profilePhoto" fitHeight="150.0" fitWidth="200.0" layoutX="431.0" layoutY="102.0" pickOnBounds="true" preserveRatio="true" />
       <Separator layoutX="219.0" layoutY="315.0" prefHeight="80.0" prefWidth="459.0" />
       <Separator layoutX="874.0" layoutY="204.0" prefHeight="80.0" prefWidth="459.0" />
+      <Separator layoutX="771.0" layoutY="138.0" orientation="VERTICAL" prefHeight="524.0" prefWidth="28.0" />
     </children>
 
 </AnchorPane>
