@@ -43,9 +43,14 @@
             <Font size="23.0" />
          </font>
       </Label>
-      <Button layoutX="220.0" layoutY="678.0" mnemonicParsing="false" onMouseClicked="#buyCard" prefHeight="51.0" prefWidth="97.0" text="Buy">
+      <Button fx:id="buyButton" layoutX="220.0" layoutY="678.0" mnemonicParsing="false" onMouseClicked="#buyCard" prefHeight="51.0" prefWidth="97.0" text="Buy">
          <font>
             <Font size="24.0" />
+         </font>
+      </Button>
+      <Button layoutX="1388.0" layoutY="396.0" mnemonicParsing="false" onAction="#back" text="Back">
+         <font>
+            <Font size="37.0" />
          </font>
       </Button>
    </children>

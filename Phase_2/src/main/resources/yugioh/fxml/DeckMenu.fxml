@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1590.0" style="-fx-background-color: #0ecbc5" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.DeckMenuController">
+   <children>
+      <Label layoutX="660" layoutY="55" text="Decks">
+         <font>
+            <Font size="50.0" />
+         </font>
+      </Label>
+      <TableView fx:id="table" layoutX="447.0" layoutY="205.0" prefHeight="406.0" prefWidth="555.0">
+      </TableView>
+      <Button layoutX="190.0" layoutY="316.0" mnemonicParsing="false" onMouseClicked="#editDeck" text="Edit Deck">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Button>
+      <Button layoutX="1080.0" layoutY="421.0" mnemonicParsing="false" onMouseClicked="#removeDeck" text="Remove Deck">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Button>
+      <Button layoutX="1072.0" layoutY="316.0" mnemonicParsing="false" onMouseClicked="#addNewDeck" text="Add New Deck">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Button>
+      <Button layoutX="660.0" layoutY="626.0" mnemonicParsing="false" onAction="#back" text="Back">
+         <font>
+            <Font size="37.0" />
+         </font>
+      </Button>
+      <Button layoutX="135.0" layoutY="421.0" mnemonicParsing="false" onMouseClicked="#setActive" text="Set To Active Deck">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Button>
+      <Label fx:id="activeDeckLabel" layoutX="569.0" layoutY="149.0" text="Active Deck : No Deck Activated">
+         <font>
+            <Font size="22.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

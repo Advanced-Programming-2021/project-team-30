@@ -7,6 +7,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -20,6 +21,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class ScoreBoardView extends Application {
+    public static int userRank = -1;
     public static Stage stage;
     public TableView<PlayerForScoreBoard> table = new TableView<>();
     public Label label = new Label();
@@ -103,8 +105,10 @@ public class ScoreBoardView extends Application {
             if (playerForScoreBoards.get(i).getNickname().equals(MainMenuController.currentUser.getNickname()))
                 currentPlayerIndex = i;
         }
-        if (currentPlayerIndex != -1)
+        if (currentPlayerIndex != -1) {
             table.getSelectionModel().select(currentPlayerIndex);
+            userRank = currentPlayerIndex;
+        }
         labelAndButtonInit();
         AnchorPane anchorPane = new AnchorPane();
         anchorPane.setPrefHeight(900);
@@ -123,6 +127,12 @@ public class ScoreBoardView extends Application {
         stage.setTitle("Scoreboard");
         stage.setMaximized(true);
         stage.setScene(returnScoreboardScene());
+        table.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                table.getSelectionModel().clearAndSelect(userRank);
+            }
+        });
         stage.show();
     }
 

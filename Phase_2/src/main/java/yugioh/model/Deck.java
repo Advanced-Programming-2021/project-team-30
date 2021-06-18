@@ -3,6 +3,7 @@ package yugioh.model;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class Deck {
@@ -108,32 +109,12 @@ public class Deck {
         return true;
     }
 
-    public String toStringForShowDecks(){
-        return getName() + ": main deck " + getMainDeck().size() + ", side deck " +
-                getSideDeck().size() + ", " + isValid() + "\n";
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Deck deck = (Deck) o;
+        return name.equals(deck.getName());
     }
-//    public String toStringMainDeck(){
-//        ArrayList<Card> monsters = new ArrayList<>();
-//        ArrayList<Card> nonMonsters = new ArrayList<>();
-//        for (Card card : getMainDeck()) {
-//            if (card instanceof MonsterCard)
-//                monsters.add(card);
-//            else if (card instanceof NonMonsterCard)
-//                nonMonsters.add(card);
-//        }
-//        return showDeckCards(monsters, nonMonsters, true);
-//
-//    }
-//    public String toStringSideDeck(){
-//        ArrayList<Card> monsters = new ArrayList<>();
-//        ArrayList<Card> nonMonsters = new ArrayList<>();
-//        for (Card card : getSideDeck()) {
-//            if (card instanceof MonsterCard)
-//                monsters.add(card);
-//            else if (card instanceof NonMonsterCard)
-//                nonMonsters.add(card);
-//        }
-//        return showDeckCards(monsters, nonMonsters, false);
-//    }
 
 }

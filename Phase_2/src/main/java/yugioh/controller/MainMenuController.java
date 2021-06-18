@@ -6,10 +6,9 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import yugioh.model.Player;
-import yugioh.view.LoginMenuView;
-import yugioh.view.ProfileMenuView;
-import yugioh.view.ScoreBoardView;
-import yugioh.view.ShopMenuView;
+import yugioh.view.*;
+
+import java.util.ArrayList;
 
 public class MainMenuController {
     public static Player currentUser;
@@ -22,6 +21,7 @@ public class MainMenuController {
     public Button profileButton;
     @FXML public ImageView profilePhoto;
     public void initialize(){
+        currentUser.decks = new ArrayList<>();
         profilePhoto.setImage(new Image(currentUser.profilePhotoPath));
     }
 
@@ -29,7 +29,8 @@ public class MainMenuController {
     public void startNewGame(ActionEvent actionEvent) {
     }
 
-    public void gotoDeck(ActionEvent actionEvent) {
+    public void gotoDeck(ActionEvent actionEvent) throws Exception {
+        new DeckMenuView().start(LoginMenuView.stage);
     }
 
     public void gotoScoreboard(ActionEvent actionEvent) throws Exception {

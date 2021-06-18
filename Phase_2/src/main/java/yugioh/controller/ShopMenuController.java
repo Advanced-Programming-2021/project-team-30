@@ -1,9 +1,10 @@
 package yugioh.controller;
 
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,9 +12,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import yugioh.model.Card;
 import yugioh.model.CardInitializer;
+import yugioh.view.LoginMenuView;
+import yugioh.view.MainMenuView;
 
 import java.io.File;
-import java.util.Random;
 
 public class ShopMenuController {
 
@@ -24,50 +26,35 @@ public class ShopMenuController {
     public Label cardNameLabel;
     public Label cardNumberLabel;
     public Label cardPriceLabel;
-//    public void setCardImages(GridPane cardGridPane, File folder, ){
-//
-//    }
-
-    public void initialize(){
-        userMoneyLabel.setText("Money : " + MainMenuController.currentUser.getMoney());
-        File monstersFolder = new File("src/main/resources/yugioh/assets/cards/Monsters");
-        File[] monsterFiles = monstersFolder.listFiles();
-        assert monsterFiles != null;
+    public Button buyButton;
+    public void setCardImages(GridPane cardGridPane, File folder){
+        File[] files = folder.listFiles();
+        assert files != null;
         ImageView[][] imageViews = new ImageView[4][12];
-        gridPane.setHgap(5);
-        gridPane.setVgap(5);
+        cardGridPane.setHgap(5);
+        cardGridPane.setVgap(5);
         int counter = 0;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 12; j++) {
-                if (counter < monsterFiles.length) {
-                    String path = "file:\\" + monsterFiles[counter].getAbsolutePath();
+                if (counter < files.length) {
+                    String path = "file:\\" + files[counter].getAbsolutePath();
                     imageViews[i][j] = new ImageView(new Image(path));
                     imageViews[i][j].setFitWidth(60);
                     imageViews[i][j].setFitHeight(80);
                     counter++;
-                    gridPane.add(imageViews[i][j], j, i);
+                    cardGridPane.add(imageViews[i][j], j, i);
                 }
             }
         }
+
+    }
+
+    public void initialize(){
+        userMoneyLabel.setText("Money : " + MainMenuController.currentUser.getMoney());
+        File monstersFolder = new File("src/main/resources/yugioh/assets/cards/Monsters");
         File spellTrapFolder = new File("src/main/resources/yugioh/assets/cards/SpellTrap");
-        File[] spellTrapFiles = spellTrapFolder.listFiles();
-        assert spellTrapFiles != null;
-        ImageView[][] imageViews2 = new ImageView[4][12];
-        gridPane2.setHgap(5);
-        gridPane2.setVgap(5);
-        counter = 0;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 12; j++) {
-                if (counter < spellTrapFiles.length) {
-                    String path = "file:\\" + spellTrapFiles[counter].getAbsolutePath();
-                    imageViews2[i][j] = new ImageView(new Image(path));
-                    imageViews2[i][j].setFitWidth(60);
-                    imageViews2[i][j].setFitHeight(80);
-                    counter++;
-                    gridPane2.add(imageViews2[i][j], j, i);
-                }
-            }
-        }
+        setCardImages(gridPane, monstersFolder);
+        setCardImages(gridPane2, spellTrapFolder);
         GridPane[] gridPanes = new GridPane[]{gridPane, gridPane2};
         for (GridPane pane : gridPanes) {
             for (Node child : pane.getChildren()) {
@@ -83,6 +70,7 @@ public class ShopMenuController {
                         cardNameLabel.setText("Card name : " + cardName);
                         Card card = CardInitializer.cardToBuild(cardName);
                         if (card != null) {
+                            buyButton.setDisable(card.getPrice() > MainMenuController.currentUser.getMoney());
                             cardPriceLabel.setText("Price : " + card.getPrice());
                             cardNumberLabel.setText("Number of card : " + returnNumberOfUserCard(cardName));
                         }
@@ -105,11 +93,13 @@ public class ShopMenuController {
         Card card = CardInitializer.cardToBuild(cardName);
         assert card != null;
         if (card.getPrice() > MainMenuController.currentUser.getMoney()){
+            buyButton.setDisable(true);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Buy Card Failed!");
             alert.setContentText("You don't have enough money!");
             alert.show();
         } else {
+            buyButton.setDisable(false);
             MainMenuController.currentUser.setMoney(MainMenuController.currentUser.getMoney() - card.getPrice());
             MainMenuController.currentUser.addCard(card);
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -120,5 +110,9 @@ public class ShopMenuController {
             userMoneyLabel.setText("Money : " + MainMenuController.currentUser.getMoney());
         }
 
+    }
+
+    public void back(ActionEvent actionEvent) throws Exception {
+        new MainMenuView().start(LoginMenuView.stage);
     }
 }
