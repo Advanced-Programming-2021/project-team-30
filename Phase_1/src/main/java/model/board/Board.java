@@ -7,6 +7,7 @@ import model.cards.MonsterCard.*;
 import model.cards.nonMonsterCard.NonMonsterCard;
 import model.cards.nonMonsterCard.Spell.*;
 import model.cards.nonMonsterCard.Trap.*;
+import model.regex.DuelMenuRegex;
 import model.response.DuelMenuResponse;
 import view.Main;
 import java.util.ArrayList;
@@ -68,7 +69,7 @@ public class Board{
 	public boolean checkRequirements(Card card){
 		if(card instanceof MonsterCard){
 			MonsterCard monster = (MonsterCard) card;
-			if(monster.getLevel() > 5 && !monster.isTributed())return false;
+			if(monster.getLevel() > 5 && !monster.checkTributes())return false;
 		}
 		if(card instanceof NormalCard)return true;
 		if(card instanceof RitualCard){
@@ -186,8 +187,8 @@ public class Board{
 				}
 		}
 		selectedCardOrigin = from;
-		if(opponent) selectedCardOwner = 0;
-		else selectedCardOwner = 1;
+		if(opponent) selectedCardOwner = 1 - duel.getCurrentPlayer();
+		else selectedCardOwner = duel.getCurrentPlayer();
 		selectedCardLocation = location;
 		Main.outputToUser(DuelMenuResponse.cardSelected);
 	}
@@ -255,11 +256,20 @@ public class Board{
 	}
 
 	public void summonFromHand(){
-		monsterPlayGround.addCard((MonsterCard) selectedCard, "OO");
-		Card card = getSelectedCard();
+		MonsterCard card = (MonsterCard) selectedCard;
+		askForTributes(card.getTributes());
+		monsterPlayGround.addCard(card, "OO");
 		card.setLocation(getSelectedCardLocation());
 		card.setGround(getSelectedCardOrigin());
 		this.deselect(false);
+	}
+
+	private void askForTributes(int tributes) {
+		while (tributes > 0){
+			DuelMenuRegex.getDesiredInput(DuelMenuResponse.askForTribute, new String[]{
+					"1", "2", "3", "4", "5"
+			});
+		}
 	}
 
 	public boolean setPosition(String newPosition){
@@ -319,10 +329,11 @@ public class Board{
     	Main.outputToUser(DuelMenuResponse.showGraveYard(cards));
     }
 
-    public void draw(){
+    public Card draw(){
 		Card drawn = getCard(Ground.mainDeckGround, 0);
 		removeCard(Ground.mainDeckGround, 0);
 		addCard(Ground.handGround, drawn, null);
+		return drawn;
 	}
 
 	public boolean doesCardWithNameExist(Ground from, String name){

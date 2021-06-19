@@ -5,11 +5,11 @@ import model.cards.nonMonsterCard.NonMonsterCard;
 import model.cards.nonMonsterCard.Spell.Spell;
 import model.cards.Card;
 
-import java.util.ArrayList;
 
 public class DuelMenuResponse {
     public static String noPlayer = "there is no player with this username";
     public static String invalidLocation = "the given location has no card on it!";
+    public static String askForTribute = "give the location for tributes";
 
     public static String hasNoActiveDeck(String username){
         return username + " has no active deck";
@@ -113,7 +113,7 @@ public class DuelMenuResponse {
         return name + "\n" + spellOrTrap + "\n" + type + "\n" + description + "\n";
     }
     public static String showGraveYard(Card[] cards){
-        StringBuilder answer = new StringBuilder("");
+        StringBuilder answer = new StringBuilder();
         for(int i = 0; i < cards.length; i++)
             answer.append(String.format("%d. <%s>:<%s>\n",i + 1, cards[i].getName(), cards[i].getDetails()));
 
@@ -121,11 +121,7 @@ public class DuelMenuResponse {
     }
 
 
-
-
-
-
-
-
-
+    public static String currentPhaseName(String phaseName) {
+        return String.format("phase: <<%s>>", phaseName);
+    }
 }

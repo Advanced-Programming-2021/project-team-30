@@ -12,5 +12,5 @@ public enum Command {
     deselect,
     setCardPosition,
     attack,
-    cardShowSelected,
+    cardShowSelected, nextPhase, summon,
 }

@@ -95,6 +95,12 @@ public class DuelMenuRegex {
                 "\\s*card show --selected\\s*",
                 "\\s*card show -s\\s*"
         });
+        put(Command.nextPhase, new String[]{
+                "\\s*next phase\\s*"
+        });
+        put(Command.summon, new String[]{
+                "\\s*summon\\s*"
+        });
     }};
 
     public static String getDesiredInput(String question, String[] desiredOutputs){

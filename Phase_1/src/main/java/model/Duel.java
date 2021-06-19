@@ -16,14 +16,13 @@ import java.util.regex.Matcher;
 
 
 public class Duel{
-	final static Event[] triggerEvents = {
-			OnGettingAttacked.getInstance(),
-			OnSummon.getInstance(),
-			OnDeath.getInstance(),
-			OnEnemyBattlePhase.getInstance(),
-			OnSpellActivation.getInstance(),
-			OnStandByPhase.getInstance(),
-			OnFlip.getInstance()
+	final static String[] phaseNames = {
+			"draw phase",
+			"standby phase",
+			"main phase 1",
+			"battle phase",
+			"main phase 2",
+			"end phase"
 	};
 	final int[] rotation = {0, 1, 3, 2, 5, 4};
 	// rotates the location; input: location as index, output: rotation of location
@@ -38,7 +37,7 @@ public class Duel{
 	private int currentPlayer, currentPhase, rounds;
 	private final int[] lp = new int[2];
 	private final Phases phase;
-	private boolean didItSummon, isAttackBlocked, isDamageStopped, preventDeath;
+	private boolean isTurnFinished, didItSummon, isAttackBlocked, isDamageStopped, preventDeath;
 	private final boolean[][] didItChangePosition = new boolean[2][5];
 	private final boolean[] didItAttack = new boolean[5], isScannerSet = new boolean[2];
 
@@ -63,21 +62,22 @@ public class Duel{
 	}
 
 	public void roundReset(){
-		this.chain.clear();
-		this.effectStack.clear();
-		this.lp[0] = 8000;
-		this.lp[1] = 8000;
-		this.currentPlayer = 0;
-		this.currentPhase = 0;
-		this.isAttackBlocked = false;
-		this.board[0].reset();
-		this.board[1].reset();
-		this.phase.reset();
+		chain.clear();
+		effectStack.clear();
+		lp[0] = 8000;
+		lp[1] = 8000;
+		currentPlayer = 0;
+		currentPhase = 0;
+		isAttackBlocked = false;
+		board[0].reset();
+		board[1].reset();
+		phase.reset();
 	}
 
 	public void turnReset(){
 		currentPhase = 0;
 		this.didItSummon = false;
+		deselect(false);
 		for(int player = 0; player < 2; player++)
 			if(isScannerSet[player]){
 				isScannerSet[player] = false;
@@ -89,17 +89,19 @@ public class Duel{
 			this.didItChangePosition[0][i] = false;
 			this.didItChangePosition[1][i] = false;
 		}
+		isTurnFinished = false;
+		Main.outputToUser(DuelMenuResponse.currentPhaseName(phaseNames[0]));
 	}
 	
 	public void run(){
 		int maxHealth1 = 0, maxHealth2 = 0;
-		while(this.rounds > 0){
+		while(rounds > 0){
 			//here we design the end of each round
 			roundReset();
 			startRound();
 			maxHealth1 = getMax(maxHealth1, this.lp[0]);
 			maxHealth2 = getMax(maxHealth2, this.lp[1]);
-			this.rounds--;
+			rounds--;
 		}
 	}
 
@@ -111,7 +113,30 @@ public class Duel{
 		while(checkPlayers()){
 			turnReset();
 			turn();
-			this.currentPlayer = 1 - this.currentPlayer;
+			currentPlayer = 1 - currentPlayer;
+		}
+	}
+
+	private void turn(){
+		while(!isTurnFinished){
+			if(currentPhase == 0){
+				Card card = draw();
+				Main.outputToUser(DuelMenuResponse.newCardAdded(card.getName()));
+				nextPhase();
+			}
+			else if(currentPhase == 1){
+				OnStandByPhase.isCalled = true;
+				for(int location: getTriggeredCardLocations(currentPlayer, Ground.monsterGround)){
+					Card card = getCard(Ground.monsterGround, location, currentPlayer);
+					card.doEffect(card.getEffect());
+				}
+				for(int location: getTriggeredCardLocations(currentPlayer, Ground.spellTrapGround)){
+					Card card = getCard(Ground.monsterGround, location, currentPlayer);
+					card.doEffect(card.getEffect());
+				}
+				OnStandByPhase.isCalled = false;
+			}
+			listen(true, null, null);
 		}
 	}
 
@@ -156,17 +181,44 @@ public class Duel{
 		Matcher matcher = DuelMenuCommand.matcher;
 		int location;
 		if(command == Command.selectMonster){
-			location = Integer.parseInt(matcher.group(1));
+			location = Integer.parseInt(matcher.group(1)) - 1;
 			selectCard(Ground.monsterGround, location, false, currentPlayer);
 		}
+		else if(command == Command.selectOpponentMonster){
+			location = Integer.parseInt(matcher.group(1)) - 1;
+			selectCard(Ground.monsterGround, location, true, currentPlayer);
+		}
 		else if(command == Command.selectSpell){
-			location = Integer.parseInt(matcher.group(1));
+			location = Integer.parseInt(matcher.group(1)) - 1;
 			selectCard(Ground.spellTrapGround, location, false, currentPlayer);
 		}
+		else if(command == Command.selectOpponentSpell){
+			location = Integer.parseInt(matcher.group(1)) - 1;
+			selectCard(Ground.spellTrapGround, location, true, currentPlayer);
+		}
+		else if(command == Command.selectField)
+			selectCard(Ground.fieldGround, 0, false, currentPlayer);
+		else if(command == Command.selectOpponentField)
+			selectCard(Ground.fieldGround, 0, true, currentPlayer);
+		else if(command == Command.selectHand){
+			location = Integer.parseInt(matcher.group(1)) - 1;
+			selectCard(Ground.handGround, location, false, currentPlayer);
+		}
+		else if(command == Command.deselect)
+			deselect(true);
+		else if(command == Command.nextPhase)
+			nextPhase();
+		else if(command == Command.summon)
+			summon();
 	}
 
-	private void turn(){
-		phase.run();
+	public void nextPhase(){
+		currentPhase++;
+		Main.outputToUser(DuelMenuResponse.currentPhaseName(phaseNames[currentPhase]));
+		if(currentPhase == 6){
+			Main.outputToUser(DuelMenuResponse.playerTurn(player[1 - currentPlayer].getNickname()));
+			isTurnFinished = true;
+		}
 	}
 
 	public void selectCard(Ground from, int location, boolean enemy, int ownerPlayer){
@@ -196,7 +248,10 @@ public class Duel{
 			return;
 		}
 
-		//if(card is not monster or cannot do normal summon)return;// message: you can't summon this card
+		if(getSelectedCardOrigin() != Ground.monsterGround || !(getSelectedCard() instanceof NormalCard)){
+			Main.outputToUser(DuelMenuResponse.cantSummon);
+			return;
+		}
 
 		if(currentPhase != 2 && currentPhase != 4){
 			Main.outputToUser(DuelMenuResponse.actionNotAllowedInPhase);
@@ -208,8 +263,13 @@ public class Duel{
 			return;	
 		}
 
-		if(this.didItSummon) {
+		if(didItSummon) {
 			Main.outputToUser(DuelMenuResponse.alreadySummoned);
+			return;
+		}
+
+		if(!((MonsterCard)getSelectedCard()).isItPossibleToTribute(board[currentPlayer].getNumberOfCards(Ground.monsterGround))){
+			Main.outputToUser(DuelMenuResponse.notEnoughTribute);
 			return;
 		}
 
@@ -217,7 +277,9 @@ public class Duel{
 		board[currentPlayer].summonFromHand();
 	}
 
-	public void draw(){ board[currentPlayer].draw(); }
+	public Card draw(){
+		return board[currentPlayer].draw();
+	}
 
 	public void flipSummon(){
 		if(board[currentPlayer].flipSummon()){
@@ -360,8 +422,7 @@ public class Duel{
 				effect.callEvent(false);
 				break;
 			}
-			Main.outputToUser(DuelMenuResponse.askForEffectActivation);
-			String ask = listen();
+			String ask = listen(false, DuelMenuResponse.askForEffectActivation, new String[]{"yes", "no"});
 			if(!ask.equals("yes"))
 				break;
 			int location = -1;

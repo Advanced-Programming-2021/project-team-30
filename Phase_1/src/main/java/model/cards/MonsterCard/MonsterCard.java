@@ -57,9 +57,15 @@ public class MonsterCard extends Card {
 
     public int getTributes(){ return tributes; }
 
-    public boolean isTributed() {
-        if(level >= 7) return tributes == 3;
-        else if(level >= 5) return tributes == 2;
+    public boolean checkTributes() {
+        if(level >= 7) return tributes == 2;
+        else if(level >= 5) return tributes == 1;
+        else return true;
+    }
+
+    public boolean isItPossibleToTribute(int totalCards){
+        if(level >= 7) return totalCards >= 2;
+        else if(level >= 5) return totalCards >= 1;
         else return true;
     }
 
