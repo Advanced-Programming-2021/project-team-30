@@ -1,5 +1,6 @@
 package model.board;
 
+import model.Ground;
 import model.cards.Card;
 
 import model.board.Board;
@@ -56,7 +57,7 @@ public class MonsterPlayground{
     }
 
     public boolean flipSummon(){
-        if(board.askPositionChange(board.getSelectedCardLocation(), 0) || !position[board.getSelectedCardLocation()].equals("DH")){
+        if(board.askPositionChange(Ground.monsterGround, board.getSelectedCardLocation()) || !position[board.getSelectedCardLocation()].equals("DH")){
             Main.outputToUser(DuelMenuResponse.cantFlipSummon);
             return false;
         }

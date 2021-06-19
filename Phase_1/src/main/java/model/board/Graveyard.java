@@ -1,5 +1,6 @@
 package model.board;
 
+import model.Ground;
 import model.cards.Card;
 import model.cards.MonsterCard.MonsterCard;
 import model.cards.nonMonsterCard.Spell.Spell;
@@ -49,11 +50,16 @@ public class Graveyard{
 
     public void specialSummon(int location) {
         Card card = getCard(location);
+        card.setLocation(location);
         removeCard(location);
-        if(card instanceof MonsterCard)
+        if(card instanceof MonsterCard){
             board.monsterPlayGround.addCard((MonsterCard) card, "OO");
-        else if(card instanceof Spell || card instanceof Trap)
+            card.setGround(Ground.monsterGround);
+        }
+        else if(card instanceof Spell || card instanceof Trap) {
             board.spellTrapPlayGround.addCard(card, "O");
+            card.setGround(Ground.spellTrapGround);
+        }
     }
 
     public boolean isThereCardOnLocation(int location) {

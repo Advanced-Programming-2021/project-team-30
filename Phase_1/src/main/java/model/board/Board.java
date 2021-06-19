@@ -24,7 +24,8 @@ public class Board{
 	final SpellTrapPlayground spellTrapPlayGround;
 	private Card selectedCard = null;
 	private int selectedCardLocation, selectedCardOwner;
-	private String selectedCardOrigin, selectedCardPosition;
+	private String selectedCardPosition;
+	private Ground selectedCardOrigin;
 	private static final String[] selectCardOptions =
 	{"monsterGround",
 	 "spellTrapGround",
@@ -60,8 +61,8 @@ public class Board{
 		spellTrapPlayGround.reset();
 	}
 
-	public boolean askPositionChange(int location, int ground){
-		return duel.askPositionChange(location, ground);
+	public boolean askPositionChange(Ground ground, int location){
+		return duel.askPositionChange(ground, location);
 	}
 
 	public boolean checkRequirements(Card card){
@@ -96,7 +97,7 @@ public class Board{
 		int n = cards.size(), location;
 		int[] levels = new int[n];
 		for(int i = 0; i < n; i++)levels[i] = cards.get(i).getLevel();
-		if(selectedCardOrigin.equals("handGround"))location = selectedCardLocation;
+		if(selectedCardOrigin == Ground.handGround)location = selectedCardLocation;
 		else location = -1;
 		if(!checkCardLevels(levels, ((MonsterCard)selectedCard).getLevel(), location)){
 			Main.outputToUser(DuelMenuResponse.noWayRitual);
@@ -122,20 +123,20 @@ public class Board{
 
 	public int power(int base, int exponent){ return (int) Math.pow(base, exponent); }
 
-	public void selectCard(int location, String from, boolean opponent){
+	public void selectCard(int location, Ground from, boolean opponent){
 		if(location < 0){
 			Main.outputToUser(DuelMenuResponse.invalidInput);
 			return;
 		}
-
-		selectedCardOrigin = "";
+		
+		selectedCardOrigin = null;
 		selectedCardLocation = -1;
 		selectedCardOwner = -1;
 		selectedCardPosition = "";
 
 		switch(from){
 			
-			case "monsterGround":
+			case monsterGround:
 				if(location > 4){
 					Main.outputToUser(DuelMenuResponse.invalidInput);
 					return;
@@ -148,7 +149,7 @@ public class Board{
 				}
 				selectedCardPosition = getPosition(location, Ground.monsterGround);
 
-			case "spellTrapGround":
+			case spellTrapGround:
 				if(location > 4) {
 					Main.outputToUser(DuelMenuResponse.invalidInput);
 					return;
@@ -163,21 +164,21 @@ public class Board{
 				selectedCardPosition = getPosition(location, Ground.spellTrapGround);
 				
 
-			case "handGround":
+			case handGround:
 				if(location >= hand.total()) {
 					Main.outputToUser(DuelMenuResponse.invalidInput);
 					return;
 				}
 				selectedCard = hand.getCard(location);
 
-			case "fieldGround":
+			case fieldGround:
 				selectedCard = fieldZone.getCard();
 				if(selectedCard == null){
 					Main.outputToUser(DuelMenuResponse.fieldZoneEmpty);
 					return;
 				}
 
-			case "graveYardGround":
+			case graveyardGround:
 				selectedCard = graveYard.getCard(location);
 				if(selectedCard == null){
 					Main.outputToUser(DuelMenuResponse.invalidInput);
@@ -207,7 +208,7 @@ public class Board{
 			return;
 		}
 
-		if(!selectedCardOrigin.equals("hand")){
+		if(selectedCardOrigin != Ground.handGround){
 			Main.outputToUser(DuelMenuResponse.cantSet);
 			return;
 		}
@@ -219,12 +220,10 @@ public class Board{
 
 		monsterPlayGround.set();
 		hand.removeCard(getSelectedCardLocation());
-		selectedCard = null;
-		selectedCardLocation = -1;
-		selectedCardOrigin = null;
+		deselect(false);
 	}
 
-	public int total(Ground from){
+	public int getNumberOfCards(Ground from){
 		return switch (from) {
 			case handGround -> hand.total();
 			case monsterGround -> monsterPlayGround.total();
@@ -246,7 +245,7 @@ public class Board{
 		return selectedCardLocation;
 	}
 
-	public String getSelectedCardOrigin(){
+	public Ground getSelectedCardOrigin(){
 		return selectedCardOrigin;
 	}
 
@@ -257,6 +256,9 @@ public class Board{
 
 	public void summonFromHand(){
 		monsterPlayGround.addCard((MonsterCard) selectedCard, "OO");
+		Card card = getSelectedCard();
+		card.setLocation(getSelectedCardLocation());
+		card.setGround(getSelectedCardOrigin());
 		this.deselect(false);
 	}
 
@@ -266,12 +268,12 @@ public class Board{
 			return false;
 		}
 
-		if(!selectedCardOrigin.equals("monsterGround")){
+		if(selectedCardOrigin != Ground.monsterGround){
 			Main.outputToUser(DuelMenuResponse.cantChangePosition);
 			return false;
 		}
 
-		if(duel.askPositionChange(selectedCardLocation, 0)){
+		if(duel.askPositionChange(Ground.monsterGround, getSelectedCardLocation())){
 			Main.outputToUser(DuelMenuResponse.alreadyChangedPos);
 			return false;
 		}
@@ -285,7 +287,7 @@ public class Board{
 			return false;
 		}
 
-		if(!selectedCardOrigin.equals("monsterGround")){
+		if(selectedCardOrigin != Ground.monsterGround){
 			Main.outputToUser(DuelMenuResponse.cantChangePosition);
 			return false;
 		}
@@ -299,15 +301,15 @@ public class Board{
 			return false;
 		}
 
-		removeCard("handGround", getSelectedCardLocation());
-		addCard("spellTrapGround", getSelectedCard(), "O");
+		removeCard(Ground.handGround, getSelectedCardLocation());
+		addCard(Ground.spellTrapGround, getSelectedCard(), "O");
 		Main.outputToUser(DuelMenuResponse.spellActivated);
 		return true;
 	}
 
 	public boolean setSpell(){
-		removeCard("handGround", getSelectedCardLocation());
-		addCard("spellTrapGround", getSelectedCard(), "H");
+		removeCard(Ground.handGround, getSelectedCardLocation());
+		addCard(Ground.spellTrapGround, getSelectedCard(), "H");
 		Main.outputToUser(DuelMenuResponse.spellSet);
 		return true;
 	}
@@ -319,8 +321,8 @@ public class Board{
 
     public void draw(){
 		Card drawn = getCard(Ground.mainDeckGround, 0);
-		removeCard("deckGround", 0);
-		addCard("handGround", drawn, null);
+		removeCard(Ground.mainDeckGround, 0);
+		addCard(Ground.handGround, drawn, null);
 	}
 
 	public boolean doesCardWithNameExist(Ground from, String name){
@@ -343,37 +345,37 @@ public class Board{
 		};
     }
 
-    public void removeCard(String from, int location){
+    public void removeCard(Ground from, int location){
     	switch(from) {
-			case "monsterGround":
+			case monsterGround:
 				monsterPlayGround.removeCard(location);
 
-			case "spellTrapGround":
+			case spellTrapGround:
 				spellTrapPlayGround.removeCard(location);
 
-			case "handGround":
+			case handGround:
 				hand.removeCard(location);
 
-			case "fieldGround":
+			case fieldGround:
 				fieldZone.removeCard();
 
-			case "graveYardGround":
+			case graveyardGround:
 				graveYard.removeCard(location);
 		}
     }
 
-    public void addCard(String to, Card card, String position){
+    public void addCard(Ground to, Card card, String position){
     	switch(to){
-    		case "monsterGround":
+			case monsterGround:
     			monsterPlayGround.addCard((MonsterCard) card, position);
 
-    		case "spellTrapGround":
+    		case spellTrapGround:
     			spellTrapPlayGround.addCard(card, position);
 
-    		case "graveYardGround":
+    		case graveyardGround:
     			graveYard.addCard(card);
 
-			case "handGround":
+			case handGround:
 				hand.addCard(card);
     	}
     }

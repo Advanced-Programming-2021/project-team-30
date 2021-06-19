@@ -1,5 +1,14 @@
 package model.regex;
 
+import model.Command;
+import model.DuelMenuCommand;
+import model.response.DuelMenuResponse;
+import view.Main;
+import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+
 public class DuelMenuRegex {
     public static String[] newDuel = {
             "duel --new --second-player (?<player2Name>.*) --rounds (?<round>\\d)",
@@ -34,45 +43,90 @@ public class DuelMenuRegex {
             "duel -r (?<round>\\d) -ai -n"
     };
 
-    public static String cardShow = "card show (?<cardName>.*)";
-    public static String selectMonster = "\\s*select --monster (\\d)\\s*";
-    public static String selectMonsterAbbr = "\\s*select -m (\\d)\\s*";
-    public static String[] selectOpponentMonster = {
-            "\\s*select --monster --opponent (\\d)\\s*",
-            "\\s*select --opponent --monster (\\d)\\s*"
-    };
-    public static String[] selectOpponentMonsterAbbr = {
-            "\\s*select -m -o (\\d)\\s*",
-            "\\s*select -o -m (\\d)\\s*"
-    };
-    public static String selectSpell = "\\s*select --spell (\\d)\\s*";
-    public static String selectSpellAbbr = "\\s*select -s (\\d)\\s*";
-    public static String[] selectOpponentSpell = {
-            "\\s*select --spell --opponent (\\d)\\s*",
-            "\\s*select --opponent --spell (\\d)\\s*"
-    };
-    public static String[] selectOpponentSpellAbbr = {
-            "\\s*select -s -o (\\d)\\s*",
-            "\\s*select -o -s (\\d)\\s*"
-    };
-    public static String selectField = "\\s*select --field\\s*";
-    public static String selectFieldAbbr = "\\s*select -f\\s*";
-    public static String[] selectOpponentField = {
-            "\\s*select --field --opponent\\s*",
-            "\\s*select --opponent --field\\s*"
-    };
-    public static String[] selectOpponentFieldAbbr = {
-            "\\s*select -f -o\\s*",
-            "\\s*select -o -f\\s*"
-    };
-    public static String selectHand = "\\s*select --hand (\\d)\\s*";
-    public static String selectHandAbbr = "\\s*select -h (\\d)\\s*";
-    public static String deselect = "\\s*select -d\\s*";
-    public static String setCardPosition = "\\s*set --position (attack|defense)\\s*";
-    public static String setCardPositionAbbr = "\\s*set -p (attack|defense)\\s*";
-    public static String attack = "\\s*attack (\\d)\\s*";
-    public static String cardShowSelected = "\\s*card show --selected\\s*";
-    public static String cardShowSelectedAbbr = "\\s*card show -s\\s*";
+    public static HashMap<Command, String[]> patterns = new HashMap<>(){{
+        put(Command.cardShow, new String[]{
+                "card show (?<cardName>.*)"
+        });
+        put(Command.selectMonster, new String[]{
+                "\\s*select --monster (\\d)\\s*",
+                "\\s*select -m (\\d)\\s*"
+        });
+        put(Command.selectOpponentMonster, new String[]{
+                "\\s*select --monster --opponent (\\d)\\s*",
+                "\\s*select --opponent --monster (\\d)\\s*",
+                "\\s*select -m -o (\\d)\\s*",
+                "\\s*select -o -m (\\d)\\s*"
+        });
+        put(Command.selectSpell, new String[]{
+                "\\s*select --spell (\\d)\\s*",
+                "\\s*select -s (\\d)\\s*"
+        });
+        put(Command.selectOpponentSpell, new String[]{
+                "\\s*select --spell --opponent (\\d)\\s*",
+                "\\s*select --opponent --spell (\\d)\\s*",
+                "\\s*select -s -o (\\d)\\s*",
+                "\\s*select -o -s (\\d)\\s*"
+        });
+       put(Command.selectField, new String[]{
+               "\\s*select --field\\s*",
+               "\\s*select -f\\s*"
+       });
+       put(Command.selectOpponentField, new String[]{
+               "\\s*select --field --opponent\\s*",
+               "\\s*select --opponent --field\\s*",
+               "\\s*select -f -o\\s*",
+               "\\s*select -o -f\\s*"
+       });
+       put(Command.selectHand, new String[]{
+               "\\s*select --hand (\\d)\\s*",
+               "\\s*select -h (\\d)\\s*"
+       });
+       put(Command.deselect, new String[]{
+               "\\s*select -d\\s*"
+       });
+       put(Command.setCardPosition, new String[]{
+               "\\s*set --position (attack|defense)\\s*",
+               "\\s*set -p (attack|defense)\\s*"
+       });
+        put(Command.attack, new String[]{
+                "\\s*attack (\\d)\\s*"
+        });
+        put(Command.cardShowSelected, new String[]{
+                "\\s*card show --selected\\s*",
+                "\\s*card show -s\\s*"
+        });
+    }};
 
+    public static String getDesiredInput(String question, String[] desiredOutputs){
+        Main.outputToUser(question + "\n(");
+        for(String desiredOutput: desiredOutputs)
+            Main.outputToUser(desiredOutput);
+        Main.outputToUser(")");
+        String input;
+        while(true){
+            input = Main.getInput();
+            for(String desiredOutput: desiredOutputs)
+                if(desiredOutput.equals(input))
+                    return desiredOutput;
+            Main.outputToUser(DuelMenuResponse.invalidInput);
+        }
+    }
 
+    public static void setCommandValues(String input){
+        Pattern pattern;
+        Matcher matcher;
+        String[] regexes;
+        for(Command key: patterns.keySet()){
+            regexes = patterns.get(key);
+            for(String regex: regexes){
+                pattern = Pattern.compile(regex);
+                matcher = pattern.matcher(input);
+                if(matcher.find()) {
+                    DuelMenuCommand.setParams(key, pattern.matcher(input));
+                    return;
+                }
+            }
+        }
+        Main.outputToUser(DuelMenuResponse.invalidInput);
+    }
 }

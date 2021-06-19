@@ -1,5 +1,6 @@
 package model.cards;
 
+import model.Ground;
 import model.Prototype;
 import java.lang.String;
 import java.util.ArrayList;
@@ -11,10 +12,12 @@ public class Card implements Prototype {
 
     protected ArrayList<Effect> effects = new ArrayList<>();
     protected boolean isInGraveyard = false, isBlocked = false;
-    protected Type cardType ;
-    protected Attribute status ;
-    protected int price , speed , cardNumber , quantity ;
-    protected String name , details ;
+    protected Type cardType;
+    protected Attribute status;
+    protected int price, speed, cardNumber, quantity ;
+    protected String name, details;
+    protected Ground ground;
+    protected int location;
     public Card(String name , int price ,String details) {
         setDetails(details);
         setName(name);
@@ -69,7 +72,6 @@ public class Card implements Prototype {
             effect.doEffect();
             return;
         }
-
     }
 
     public Effect getEffect(){
@@ -112,5 +114,13 @@ public class Card implements Prototype {
 
     public void setCardBlockedStatus(boolean status) {
         isBlocked = status;
+    }
+
+    public void setLocation(int location) {
+        this.location = location;
+    }
+
+    public void setGround(Ground ground){
+        this.ground = ground;
     }
 }
