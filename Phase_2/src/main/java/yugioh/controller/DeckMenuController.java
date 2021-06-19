@@ -6,6 +6,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import yugioh.model.Deck;
 import yugioh.model.DeckForDecksMenu;
+import yugioh.view.EditDeckView;
 import yugioh.view.LoginMenuView;
 import yugioh.view.MainMenuView;
 
@@ -44,19 +45,55 @@ public class DeckMenuController {
         td.setTitle("Create New Deck");
         td.setHeaderText("Enter Deck Name");
         td.showAndWait();
-        MainMenuController.currentUser.addToDecks(new Deck(td.getResult(), MainMenuController.currentUser));
-        table.getItems().add(new DeckForDecksMenu(td.getResult(), 0));
+        String deckName = td.getResult();
+        if (MainMenuController.currentUser.getPlayerDeckByName(deckName) != null){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setX(550);
+            alert.setY(300);
+            alert.setHeaderText("Add New Deck failed!");
+            alert.setContentText("Deck with this name already exists!");
+            alert.show();
+        } else {
+            MainMenuController.currentUser.addToDecks(new Deck(deckName, MainMenuController.currentUser));
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setX(550);
+            alert.setY(300);
+            alert.setHeaderText("Add New Deck Successful!");
+            alert.setContentText("Deck created successfully!");
+            alert.show();
+            table.getItems().add(new DeckForDecksMenu(td.getResult(), 0));
+        }
     }
 
     public void removeDeck(MouseEvent mouseEvent) {
-        String deckName = table.getSelectionModel().getSelectedItem().getName();
-        Deck deck = MainMenuController.currentUser.getPlayerDeckByName(deckName);
-        MainMenuController.currentUser.removeFromDecks(deck);
-        table.getItems().remove(table.getSelectionModel().getSelectedItem());
+        try {
+            String deckName = table.getSelectionModel().getSelectedItem().getName();
+            Deck deck = MainMenuController.currentUser.getPlayerDeckByName(deckName);
+            MainMenuController.currentUser.removeFromDecks(deck);
+            table.getItems().remove(table.getSelectionModel().getSelectedItem());
+        } catch (NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setX(550);
+            alert.setY(300);
+            alert.setHeaderText("An Error Occurred!");
+            alert.setContentText("Please select a deck!");
+            alert.show();
+        }
     }
 
-    public void editDeck(MouseEvent mouseEvent) {
-
+    public void editDeck(MouseEvent mouseEvent) throws Exception {
+        try {
+            String deckName = table.getSelectionModel().getSelectedItem().getName();
+            EditDeckController.currentDeck = MainMenuController.currentUser.getPlayerDeckByName(deckName);
+            new EditDeckView().start(LoginMenuView.stage);
+        } catch (NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setX(550);
+            alert.setY(300);
+            alert.setHeaderText("An Error Occurred!");
+            alert.setContentText("Please select a deck!");
+            alert.show();
+        }
     }
 
     public void back(ActionEvent actionEvent) throws Exception {
@@ -64,7 +101,17 @@ public class DeckMenuController {
     }
 
     public void setActive(MouseEvent mouseEvent) {
-        String deckName = table.getSelectionModel().getSelectedItem().getName();
-        activeDeckLabel.setText("Active Deck : " + deckName);
+        try {
+            String deckName = table.getSelectionModel().getSelectedItem().getName();
+            activeDeckLabel.setText("Active Deck : " + deckName);
+        } catch (NullPointerException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setX(550);
+            alert.setY(300);
+            alert.setHeaderText("An Error Occurred!");
+            alert.setContentText("Please select a deck!");
+            alert.show();
+        }
+
     }
 }

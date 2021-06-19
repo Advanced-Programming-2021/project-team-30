@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1590.0" style="-fx-background-color: #c49b06" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.EditDeckController">
+    <GridPane fx:id="mainDeckGridPane" layoutX="542.0" layoutY="78.0" prefHeight="428.0" prefWidth="850.0">
+
+    </GridPane>
+    <GridPane fx:id="sideDeckGridPane" layoutX="542.0" layoutY="583.0" prefHeight="292.0" prefWidth="906.0">
+
+    </GridPane>
+    <Label layoutX="542.0" layoutY="31.0" text="Main Deck" textFill="WHITE">
+        <font>
+            <Font size="31.0" />
+        </font></Label>
+    <Label layoutX="546.0" layoutY="536.0" text="Side Deck" textFill="WHITE">
+        <font>
+            <Font size="31.0" />
+        </font>
+    </Label>
+    <ImageView fx:id="cardImage" fitHeight="452.0" fitWidth="380.0" layoutX="116.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true" />
+   <Label fx:id="deckNameLabel" layoutX="50.0" layoutY="47.0" textFill="WHITE">
+      <font>
+         <Font size="31.0" />
+      </font>
+   </Label>
+    <Label fx:id="cardNameLabel" layoutX="190.0" layoutY="620.0" textFill="WHITE">
+        <font>
+            <Font size="25.0" />
+        </font>
+    </Label>
+    <Button layoutX="225.0" layoutY="689.0" mnemonicParsing="false" onAction="#back" text="Back">
+        <font>
+            <Font size="37.0" />
+        </font>
+    </Button>
+   <Button layoutX="1356.0" layoutY="176.0" mnemonicParsing="false" onMouseClicked="#addCardMainDeck" text="Add Card">
+      <font>
+         <Font size="26.0" />
+      </font>
+   </Button>
+   <Button layoutX="1331.0" layoutY="253.0" mnemonicParsing="false" onMouseClicked="#removeCardMainDeck" prefHeight="58.0" prefWidth="196.0" text="Remove Card">
+      <font>
+         <Font size="26.0" />
+      </font>
+   </Button>
+   <Separator layoutX="533.0" layoutY="491.0" minHeight="58.0" prefHeight="58.0" prefWidth="997.0" />
+   <Button layoutX="1357.0" layoutY="595.0" mnemonicParsing="false" onMouseClicked="#addCardSideDeck" text="Add Card">
+      <font>
+         <Font size="26.0" />
+      </font>
+   </Button>
+   <Button layoutX="1331.0" layoutY="672.0" mnemonicParsing="false" onMouseClicked="#removeCardSideDeck" prefHeight="58.0" prefWidth="196.0" text="Remove Card">
+      <font>
+         <Font size="26.0" />
+      </font>
+   </Button>
+
+
+</AnchorPane>

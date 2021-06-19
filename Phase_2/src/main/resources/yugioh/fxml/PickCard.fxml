@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1590.0" style="-fx-background-color: #ba562c" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.PickCardController">
+   <children>
+      <Label layoutX="918.0" layoutY="27.0" text="Pick A Card" textFill="WHITE">
+         <font>
+            <Font size="39.0" />
+         </font>
+      </Label>
+       <GridPane fx:id="gridPane" layoutX="523.0" layoutY="98.0" prefHeight="735.0" prefWidth="996.0">
+
+       </GridPane>
+       <ImageView fx:id="cardImage" fitHeight="452.0" fitWidth="380.0" layoutX="116.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="220.0" layoutY="656.0" onMouseClicked="#chooseCard" mnemonicParsing="false" text="Choose">
+         <font>
+            <Font size="29.0" />
+         </font>
+      </Button>
+       <Label fx:id="cardNameLabel" layoutX="190.0" layoutY="60.0" textFill="WHITE">
+           <font>
+               <Font size="25.0" />
+           </font>
+       </Label>
+
+   </children>
+</AnchorPane>
