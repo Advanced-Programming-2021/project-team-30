@@ -115,6 +115,8 @@ public class DuelMenuResponse {
         return name + "\n" + spellOrTrap + "\n" + type + "\n" + description + "\n";
     }
     public static String showGraveYard(Card[] cards){
+        if(cards == null)
+            return "graveyard is empty";
         StringBuilder answer = new StringBuilder();
         for(int i = 0; i < cards.length; i++)
             answer.append(String.format("%d. <%s>:<%s>\n",i + 1, cards[i].getName(), cards[i].getDetails()));

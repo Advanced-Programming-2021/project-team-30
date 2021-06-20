@@ -30,6 +30,7 @@ public class Duel{
 	final Player[] player = new Player[2];
 	public static int attackerLocation, defenderLocation;
 	private final Stack<Card> chain = new Stack<>();
+	private final Stack<Integer> locations = new Stack<>();
 	private final Stack<Effect> effectStack = new Stack<>();
 	final Board[] board = new Board[2];
 
@@ -38,7 +39,7 @@ public class Duel{
 	private final Phase phase;
 	private boolean isTurnFinished, didItSummon, isAttackBlocked, isDamageStopped, preventDeath;
 	private final boolean[][] didItChangePosition = new boolean[2][5];
-	private final boolean[] didItAttack = new boolean[5], isScannerSet = new boolean[2];
+	private final boolean[] didItAttack = new boolean[5], isScannerSet = new boolean[2], didSurrender = new boolean[2];
 
 	public static ArrayList<Duel> duels = new ArrayList<>();
 	public static MonsterCard[] scanner;
@@ -58,11 +59,15 @@ public class Duel{
 		}
 		this.rounds = rounds;
 		Duel.duels.add(this);
+		Phase.createPhases();
 	}
 
 	public void roundReset(){
+		didSurrender[0] = false;
+		didSurrender[1] = false;
 		chain.clear();
 		effectStack.clear();
+		locations.clear();
 		lp[0] = 8000;
 		lp[1] = 8000;
 		currentPlayer = 0;
@@ -90,6 +95,7 @@ public class Duel{
 		isTurnFinished = false;
 		Main.outputToUser(DuelMenuResponse.currentPhaseName(phaseNames[0]));
 	}
+	//TODO special summon
 	
 	public void run(){
 		int maxHealth1 = 0, maxHealth2 = 0;
@@ -139,8 +145,8 @@ public class Duel{
 	}
 
 	public boolean checkPlayers(){
-		boolean p1 = (lp[0] <= 0 || getNumberOfCards(Ground.allUsable, 0) == 0);
-		boolean p2 = (lp[1] <= 0 || getNumberOfCards(Ground.allUsable, 1) == 0);
+		boolean p1 = (lp[0] <= 0 || getNumberOfCards(Ground.allUsable, 0) == 0 && !didSurrender[0]);
+		boolean p2 = (lp[1] <= 0 || getNumberOfCards(Ground.allUsable, 1) == 0 && !didSurrender[1]);
 
 		return !(p1 || p2);
 	}
@@ -167,7 +173,7 @@ public class Duel{
 			while(true){
 				DuelMenuRegex.setCommandValues(Main.getInput());
 				if(DuelMenuCommand.isSet){
-					if(!checkPhaseValidity()){
+					if(checkPhaseValidity(DuelMenuCommand.commandName, currentPhase)){
 						callForMethod();
 						return null;
 					}
@@ -176,13 +182,16 @@ public class Duel{
 		return DuelMenuRegex.getDesiredInput(question, desiredOutputs);
 	}
 
-	private boolean checkPhaseValidity() {
-		Command command = DuelMenuCommand.commandName;
-		phase.checkPhsa
+	private boolean checkPhaseValidity(Command command, int phaseNum) {
+		return Phase.checkPhaseValidity(phaseNum, command);
 	}
 
 	private void callForMethod() {
 		Command command = DuelMenuCommand.commandName;
+		if(!checkPhaseValidity(command, currentPhase)) {
+			Main.outputToUser(DuelMenuResponse.actionNotAllowedInPhase);
+			return;
+		}
 		Matcher matcher = DuelMenuCommand.matcher;
 		int location;
 		if(command == Command.selectMonster){
@@ -231,6 +240,20 @@ public class Duel{
 			directAttack();
 		else if(command == Command.activateEffect)
 			activateSpell(true);
+		else if(command == Command.ritualSummon)
+			ritualSummon();
+		else if(command == Command.showGraveyard)
+			showGraveYard();
+		else if(command == Command.cardShowSelected)
+			showCard();
+		else if(command == Command.surrender)
+			surrender();
+	}
+	//TODO change phases properties
+
+	public void surrender(){
+		didSurrender[currentPlayer] = true;
+		isTurnFinished = true;
 	}
 
 	public void nextPhase(){
@@ -311,7 +334,31 @@ public class Duel{
 
 	public void ritualSummon(){
 		if(!board[currentPlayer].isRitualSummonPossible())return;
-		//waits for inputs
+		Main.outputToUser("select location of monster cards which you want to sacrifice");
+		boolean[] mark = new boolean[]{false, false, false, false, false};
+		int sum = 0;
+		while(true){
+			String ask = listen(false, "", new String[]{"1", "2", "3", "4", "5", "done"});
+			if(ask.equals("end"))
+				break;
+			int location = Integer.parseInt(ask);
+			if(mark[location]){
+				Main.outputToUser("already selected this card for sacrifice");
+				continue;
+			}
+			mark[location] = true;
+			sum += board[currentPlayer].getCardLevel(location);
+		}
+		if(sum != ((MonsterCard)getSelectedCard()).getLevel()){
+			Main.outputToUser("the sum of the selected card levels doesn't match the monster's level");
+			return;
+		}
+		for(int location = 0; location < 5; location++)
+			if(mark[location])
+				killCard(location, Ground.monsterGround, currentPlayer);
+		board[currentPlayer].killAdvancedRitualCard();
+		board[currentPlayer].addCard(Ground.monsterGround, getSelectedCard(), "OO");
+		Main.outputToUser(DuelMenuResponse.summonSuccessful);
 	}
 
 	public void set(){
@@ -428,6 +475,7 @@ public class Duel{
 		chain.add(getSelectedCard());
 		Effect effect = getSelectedCard().getEffect();
 		effectStack.add(effect);
+		locations.add(getSelectedCardLocation());
 		effect.callEvent(true);
 		deselect(false);
 		while(true){
@@ -445,10 +493,16 @@ public class Duel{
 			int location = -1;
 			Ground ground = Ground.fieldGround;
 			while(location == -1){
-				Main.outputToUser("which ground?");
-				ground = Ground.valueOf(listen());
-				Main.outputToUser("location:");
-				location = Integer.parseInt("location:");
+				ground = Ground.valueOf(listen(false, "which ground?", new String[]{
+						"monsterGround",
+						"spellTrapGround",
+						"handGround",
+						"graveyardGround",
+						"fieldGround"
+				}));
+				location = Integer.parseInt(listen(false, "which location?", new String[]{
+						"1", "2", "3", "4", "5"
+				})) - 1;
 				if(ground == Ground.monsterGround){
 					for(int i: triggeredMonsters)
 						if(location == i)
@@ -467,6 +521,7 @@ public class Duel{
 			effect = card.getEffect();
 			chain.add(card);
 			effectStack.add(effect);
+			locations.add(location);
 			effect.callEvent(true);
 			Main.outputToUser("added the card to chain\nnow it's player " + (1 - askedPlayer) + "'s turn to add to chain");
 			askedPlayer = 1 - askedPlayer;
@@ -592,8 +647,10 @@ public class Duel{
 	public void killCard(int location, Ground ground, int player){
 		if(location == -1){
 			for(location = 0; location < 5; location++)
-				if(board[player].getCard(ground, player) != null)
+				if(board[player].getCard(ground, player) != null){
+					board[player].killCard(location, ground);
 					break;
+				}
 		}
 		board[player].killCard(location, ground);
 	}
@@ -673,8 +730,9 @@ public class Duel{
 	}
 
     public void destroyRecentSpell() {
-		Card card = chain.pop();
+		chain.pop();
 		effectStack.pop();
-		killCard(card);
+		int location = locations.pop(), size = chain.size();
+		killCard(location, Ground.spellTrapGround, (size + 1 + currentPlayer) % 2);
     }
 }

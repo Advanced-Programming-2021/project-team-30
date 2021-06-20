@@ -118,6 +118,15 @@ public class DuelMenuRegex {
         put(Command.activateEffect, new String[]{
                 "\\s*activate effect\\s*"
         });
+        put(Command.ritualSummon, new String[]{
+                "\\s*ritual summon\\s*"
+        });
+        put(Command.showGraveyard, new String[]{
+                "\\s*show graveyard"
+        });
+        put(Command.surrender, new String[]{
+                "\\s*surrender\\s*"
+        });
     }};
 
     public static String getDesiredInput(String question, String[] desiredOutputs){

@@ -338,6 +338,11 @@ public class Board{
     public void showGraveYard(){
     	Card[] cards = graveYard.getAll().toArray(new Card[graveYard.total()]);
     	Main.outputToUser(DuelMenuResponse.showGraveYard(cards));
+    	while(true){
+    		String ask = Main.getInput();
+    		if(ask.equals("back"))
+    			break;
+		}
     }
 
     public Card draw(){
@@ -407,15 +412,14 @@ public class Board{
 			Main.outputToUser(DuelMenuResponse.noCardSelected);
     		return;
     	}
-    	if(selectedCardOwner == 1 && (selectedCardPosition.equals("DH") || selectedCardPosition.equals("H"))){
+    	if(selectedCardOwner != duel.getCurrentPlayer() && (selectedCardPosition.equals("DH") || selectedCardPosition.equals("H"))){
     		Main.outputToUser(DuelMenuResponse.cardInvisible);
     		return;
     	}
-		if(getSelectedCard() instanceof MonsterCard){
+		if(getSelectedCard() instanceof MonsterCard)
 			Main.outputToUser(DuelMenuResponse.showMonsterCard((MonsterCard)getSelectedCard()));
-		} else{
+		else
 			Main.outputToUser(DuelMenuResponse.showSpellTrapCard((NonMonsterCard)getSelectedCard()));
-		}
     	deselect(false);
     }
 
@@ -427,7 +431,16 @@ public class Board{
 		} else if(ground == Ground.spellTrapGround){
 			card = spellTrapPlayGround.getCard(location);
 			spellTrapPlayGround.killCard(location);
-		} else card = null;
+		}
+		else if(ground == Ground.handGround){
+			card = hand.getCard(location);
+			hand.removeCard(location);
+		}
+		else if(ground == Ground.graveyardGround){
+			card = graveYard.getCard(location);
+			graveYard.removeCard(location);
+		}
+		else card = null;
 
 		if(card != null)
 			graveYard.addCard(card);
@@ -477,5 +490,15 @@ public class Board{
 			monsterPlayGround.setCardBlockedStatus(location, status);
 		else if(ground == Ground.spellTrapGround)
 			spellTrapPlayGround.setCardBlockedStatus(location, status);
+	}
+
+	public int getCardLevel(int location) {
+		return monsterPlayGround.getCardLevel(location);
+	}
+
+	public void killAdvancedRitualCard() {
+		Card card = spellTrapPlayGround.getAdvancedRitualCard();
+		spellTrapPlayGround.killAdvancedRitualCard();
+		graveYard.addCard(card);
 	}
 }

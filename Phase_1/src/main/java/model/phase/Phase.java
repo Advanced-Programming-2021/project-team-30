@@ -5,7 +5,6 @@ import model.Duel;
 
 
 public class Phase {
-	final static Duel duel = Duel.getRecentDuel();
 	final static Phase[] phases = new Phase[5];
 	protected String name;
 	protected Command[] validCommands;

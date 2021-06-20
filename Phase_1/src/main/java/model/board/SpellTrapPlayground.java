@@ -77,4 +77,20 @@ public class SpellTrapPlayground{
         if(cards[location] != null)
             cards[location].setCardBlockedStatus(status);
     }
+
+    public void killAdvancedRitualCard() {
+        for(int location = 0; location < 5; location++)
+            if(cards[location].getName().equals("Advanced Ritual Card")) {
+                cards[location] = null;
+                position[location] = null;
+                return;
+            }
+    }
+
+    public Card getAdvancedRitualCard() {
+        for(Card card: cards)
+            if(card.getName().equals("Advanced Ritual Card"))
+                return card;
+        return null;
+    }
 }

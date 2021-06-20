@@ -16,5 +16,5 @@ public enum Command {
     summon,
     set,
     setCardPositionDefense,
-    setCardPositionAttack, flipSummon, directAttack, activateEffect,
+    setCardPositionAttack, flipSummon, directAttack, activateEffect, ritualSummon, showGraveyard, surrender,
 }

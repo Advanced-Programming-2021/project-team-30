@@ -119,4 +119,8 @@ public class MonsterPlayground{
         if(cards[location] != null)
             cards[location].setCardBlockedStatus(status);
     }
+
+    public int getCardLevel(int location) {
+        return cards[location].getLevel();
+    }
 }
