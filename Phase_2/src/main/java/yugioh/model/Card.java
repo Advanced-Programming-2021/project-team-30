@@ -1,5 +1,7 @@
 package yugioh.model;
 
+import java.util.Objects;
+
 public class Card {
     private String name;
     private int price;
@@ -43,4 +45,13 @@ public class Card {
                 ", description='" + description + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return price == card.price && name.equals(card.name) && description.equals(card.description);
+    }
+
 }
