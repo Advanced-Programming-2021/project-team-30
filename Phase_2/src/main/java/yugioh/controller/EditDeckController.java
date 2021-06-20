@@ -4,6 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -134,9 +135,16 @@ public class EditDeckController {
     }
 
     public void addCardMainDeck(MouseEvent mouseEvent) throws Exception {
-        PickCardController.deck = currentDeck.getMainDeck();
-        PickCardController.isMainDeck = true;
-        new PickCardView().start(LoginMenuView.stage);
+        if (currentDeck.getMainDeck().size() == 60) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Add Card Failed!");
+            alert.setContentText("Main Deck is full!");
+            alert.show();
+        } else {
+            PickCardController.deck = currentDeck.getMainDeck();
+            PickCardController.isMainDeck = true;
+            new PickCardView().start(LoginMenuView.stage);
+        }
     }
 
     public void removeCardMainDeck(MouseEvent mouseEvent) {
@@ -148,9 +156,16 @@ public class EditDeckController {
     }
 
     public void addCardSideDeck(MouseEvent mouseEvent) throws Exception {
-        PickCardController.deck = currentDeck.getSideDeck();
-        PickCardController.isMainDeck = false;
-        new PickCardView().start(LoginMenuView.stage);
+        if (currentDeck.getSideDeck().size() == 15) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Add Card Failed!");
+            alert.setContentText("Side Deck is full!");
+            alert.show();
+        } else {
+            PickCardController.deck = currentDeck.getSideDeck();
+            PickCardController.isMainDeck = false;
+            new PickCardView().start(LoginMenuView.stage);
+        }
     }
 
     public void removeCardSideDeck(MouseEvent mouseEvent) {

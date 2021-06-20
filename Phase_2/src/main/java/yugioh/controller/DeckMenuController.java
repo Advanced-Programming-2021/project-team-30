@@ -11,12 +11,18 @@ import yugioh.model.DeckForDecksMenu;
 import yugioh.view.*;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
 public class DeckMenuController {
-    public Deck activeDeck;
     public TableView<DeckForDecksMenu> table;
     public Label activeDeckLabel;
+    public static Stage deckCardsStage;
+    static {
+        deckCardsStage = new Stage();
+        deckCardsStage.setWidth(830);
+        deckCardsStage.setHeight(800);
+        deckCardsStage.setX(650);
+        deckCardsStage.setY(5);
+    }
 
     public static ArrayList<DeckForDecksMenu> returnDecks(ArrayList<Deck> decks){
         ArrayList<DeckForDecksMenu> deckForDecksMenus = new ArrayList<>();
@@ -36,6 +42,30 @@ public class DeckMenuController {
         table.getColumns().add(nameCol);
         table.getColumns().add(numberOfCardsCol);
         table.getItems().addAll(returnDecks(MainMenuController.currentUser.getDecks()));
+        table.setRowFactory(tableView -> {
+            TableRow<DeckForDecksMenu> row = new TableRow<>();
+            row.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent mouseEvent) {
+                    try {
+                        deckCardsStage.close();
+                        ShowDeckCardsController.currentDeck = MainMenuController.currentUser.getPlayerDeckByName(row.getItem().getName());
+                        new ShowDeckCardsView().start(deckCardsStage);
+                    } catch (NullPointerException nullPointerException){
+                        deckCardsStage.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            return row;
+        });
+        table.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                deckCardsStage.close();
+            }
+        });
     }
 
     public void addNewDeck(MouseEvent mouseEvent) {
@@ -103,6 +133,7 @@ public class DeckMenuController {
     public void setActive(MouseEvent mouseEvent) {
         try {
             String deckName = table.getSelectionModel().getSelectedItem().getName();
+            MainMenuController.currentUser.setActiveDeck(MainMenuController.currentUser.getPlayerDeckByName(deckName));
             activeDeckLabel.setText("Active Deck : " + deckName);
         } catch (NullPointerException e){
             Alert alert = new Alert(Alert.AlertType.ERROR);

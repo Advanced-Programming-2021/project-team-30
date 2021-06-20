@@ -2,6 +2,7 @@ package yugioh.controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -64,10 +65,17 @@ public class PickCardController {
         Card card = CardInitializer.cardToBuild(cardName);
         assert card != null;
         if (deck != null){
-            if (isMainDeck){
-                EditDeckController.currentDeck.addCardToMainDeck(card);
+            if (EditDeckController.currentDeck.returnCardCountDeck(cardName) == 3){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Add Card Failed!");
+                alert.setContentText("There are already three cards of this kind in deck!");
+                alert.show();
             } else {
-                EditDeckController.currentDeck.addCardToSideDeck(card);
+                if (isMainDeck) {
+                    EditDeckController.currentDeck.addCardToMainDeck(card);
+                } else {
+                    EditDeckController.currentDeck.addCardToSideDeck(card);
+                }
             }
         }
         new EditDeckView().start(LoginMenuView.stage);
