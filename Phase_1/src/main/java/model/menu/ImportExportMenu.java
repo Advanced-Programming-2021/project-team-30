@@ -1,6 +1,7 @@
 package model.menu;
 
 import com.google.gson.Gson;
+import model.Initializer;
 import model.cards.Card;
 import model.regex.ImportExportMenuRegex;
 import model.regex.MenuRegex;
@@ -16,20 +17,22 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class ImportExportMenu {
-    public ArrayList<Card> cards;
-    public Card getCardFromCards(String cardName){
-        for (Card card : cards) {
-            if (card.getName().equals(cardName))
-                return card;
-        }
-        return null;
-    }
     public void write(Matcher matcher){
         if (matcher.find()){
             String cardName = matcher.group("cardName");
-            Card card = getCardFromCards(cardName);
+            Card monsterCard = Initializer.monsterCardToBuild(cardName);
+            Card spellTrapCard = Initializer.spellTrapCardToBuild(cardName);
+            Card card = Initializer.cardToBuild(cardName);
+            String path = "";
+            if (monsterCard != null){
+                path = "src/main/resources/cards/Monster/" + cardName + ".json";
+            } else if (spellTrapCard != null){
+                path = "src/main/resources/cards/SpellTrap/" + cardName + ".json";
+            } else {
+                Main.outputToUser("Card with this name does not exist!");
+            }
             try {
-                FileWriter fileWriter = new FileWriter("Cards.json");
+                FileWriter fileWriter = new FileWriter(path);
                 fileWriter.write(new Gson().toJson(card));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -40,9 +43,24 @@ public class ImportExportMenu {
     public void read(Matcher matcher){
         if (matcher.find()){
             String cardName = matcher.group("cardName");
+            Card monsterCard = Initializer.monsterCardToBuild(cardName);
+            Card spellTrapCard = Initializer.spellTrapCardToBuild(cardName);
+            String path = "";
+            if (monsterCard != null){
+                path = "src/main/resources/cards/Monster/" + cardName + ".json";
+            } else if (spellTrapCard != null){
+                path = "src/main/resources/cards/SpellTrap/" + cardName + ".json";
+            } else {
+                Main.outputToUser("Card with this name does not exist!");
+            }
             try {
-                String json = new String(Files.readAllBytes(Paths.get("Cards.json")));
+                String json = new String(Files.readAllBytes(Paths.get(path)));
                 Card card = new Gson().fromJson(json, Card.class);
+                if (Initializer.monsterCardToBuild(card.getName()) != null){
+                    Initializer.monsterCards.add(card);
+                } else if (Initializer.spellTrapCardToBuild(card.getName()) != null){
+                    Initializer.spellTrapCards.add(card);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
