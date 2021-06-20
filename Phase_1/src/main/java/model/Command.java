@@ -10,7 +10,11 @@ public enum Command {
     selectOpponentField,
     selectHand,
     deselect,
-    setCardPosition,
     attack,
-    cardShowSelected, nextPhase, summon,
+    cardShowSelected,
+    nextPhase,
+    summon,
+    set,
+    setCardPositionDefense,
+    setCardPositionAttack, flipSummon, directAttack, activateEffect,
 }

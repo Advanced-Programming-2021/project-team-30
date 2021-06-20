@@ -1,6 +1,6 @@
 package model.phase;
 
-public class StandbyPhase extends Phases{
+public class StandbyPhase extends Phase {
     @Override
     public void run(){}
 

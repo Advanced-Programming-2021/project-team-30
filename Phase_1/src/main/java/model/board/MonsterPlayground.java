@@ -1,5 +1,6 @@
 package model.board;
 
+import model.Command;
 import model.Ground;
 import model.cards.Card;
 
@@ -67,13 +68,17 @@ public class MonsterPlayground{
         return true;
     }
 
-    public boolean setPosition(String newPosition){
-        if(newPosition.equals(position[board.getSelectedCardLocation()])){
+    public boolean setPosition(String newPosition, int location){
+        if(newPosition.equals(position[location])){
             Main.outputToUser(DuelMenuResponse.alreadyInWantedPos);
             return false;
         }
+        if(position[location].equals("DH")){
+            Main.outputToUser(DuelMenuResponse.invalidCommand(Command.flipSummon));
+            return false;
+        }
         Main.outputToUser(DuelMenuResponse.changePosSuccessful);
-        position[board.getSelectedCardLocation()] = newPosition;
+        position[location] = newPosition;
         return true;
     }
 

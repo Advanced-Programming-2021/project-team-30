@@ -1,8 +1,6 @@
 package model.phase;
-import model.cards.Card;
-import model.Duel;
 
-public class MainPhase1 extends Phases{
+public class MainPhase1 extends Phase {
 	@Override
 	public void run() {
 		String order = listen();

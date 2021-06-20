@@ -1,9 +1,7 @@
 package model.phase;
 
-public class BattlePhase extends Phases{
-    @Override
-    public void run(){
-
+public class BattlePhase extends Phase {
+    public BattlePhase(){
+        
     }
-    public BattlePhase(){ this.name = "battle phase"; }
 }

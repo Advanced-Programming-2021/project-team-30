@@ -213,13 +213,20 @@ public class Board{
 			Main.outputToUser(DuelMenuResponse.cantSet);
 			return;
 		}
-
-		if(monsterPlayGround.total() == 5){
-			Main.outputToUser(DuelMenuResponse.monsterZoneFull);
-			return;
+		if(selectedCard instanceof MonsterCard){
+			if(monsterPlayGround.total() == 5){
+				Main.outputToUser(DuelMenuResponse.monsterZoneFull);
+				return;
+			}
+			monsterPlayGround.addCard((MonsterCard) selectedCard, "DH");
 		}
-
-		monsterPlayGround.set();
+		else{
+			if(spellTrapPlayGround.total() == 5){
+				Main.outputToUser(DuelMenuResponse.monsterZoneFull);
+				return;
+			}
+			spellTrapPlayGround.addCard(selectedCard, "H");
+		}
 		hand.removeCard(getSelectedCardLocation());
 		deselect(false);
 	}
@@ -235,8 +242,6 @@ public class Board{
 			default -> monsterPlayGround.total() + spellTrapPlayGround.total() + hand.total() + mainDeck.total();
 		};
 	}
-
-	public int monstersInField(){ return monsterPlayGround.total(); }
 
 	public Card getSelectedCard(){
 		return selectedCard;
@@ -266,9 +271,15 @@ public class Board{
 
 	private void askForTributes(int tributes) {
 		while (tributes > 0){
-			DuelMenuRegex.getDesiredInput(DuelMenuResponse.askForTribute, new String[]{
+			int location = Integer.parseInt(DuelMenuRegex.getDesiredInput(DuelMenuResponse.askForTribute, new String[]{
 					"1", "2", "3", "4", "5"
-			});
+			}));
+			if(monsterPlayGround.isThereCardOnLocation(location)){
+				monsterPlayGround.killCard(location);
+				tributes--;
+			}
+			else
+				Main.outputToUser(DuelMenuResponse.noCardFound);
 		}
 	}
 
@@ -288,7 +299,7 @@ public class Board{
 			return false;
 		}
 
-		return monsterPlayGround.setPosition(newPosition);
+		return monsterPlayGround.setPosition(newPosition, selectedCardLocation);
 	}
 
 	public boolean flipSummon(){

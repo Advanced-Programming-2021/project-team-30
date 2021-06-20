@@ -44,6 +44,7 @@ public class DuelMenuRegex {
     };
 
     public static HashMap<Command, String[]> patterns = new HashMap<>(){{
+        //TODO fixing regexes
         put(Command.cardShow, new String[]{
                 "card show (?<cardName>.*)"
         });
@@ -67,29 +68,36 @@ public class DuelMenuRegex {
                 "\\s*select -s -o (\\d)\\s*",
                 "\\s*select -o -s (\\d)\\s*"
         });
-       put(Command.selectField, new String[]{
-               "\\s*select --field\\s*",
-               "\\s*select -f\\s*"
-       });
-       put(Command.selectOpponentField, new String[]{
-               "\\s*select --field --opponent\\s*",
-               "\\s*select --opponent --field\\s*",
-               "\\s*select -f -o\\s*",
-               "\\s*select -o -f\\s*"
-       });
-       put(Command.selectHand, new String[]{
-               "\\s*select --hand (\\d)\\s*",
-               "\\s*select -h (\\d)\\s*"
-       });
-       put(Command.deselect, new String[]{
-               "\\s*select -d\\s*"
-       });
-       put(Command.setCardPosition, new String[]{
-               "\\s*set --position (attack|defense)\\s*",
-               "\\s*set -p (attack|defense)\\s*"
-       });
+        put(Command.selectField, new String[]{
+                "\\s*select --field\\s*",
+                "\\s*select -f\\s*"
+        });
+        put(Command.selectOpponentField, new String[]{
+                "\\s*select --field --opponent\\s*",
+                "\\s*select --opponent --field\\s*",
+                "\\s*select -f -o\\s*",
+                "\\s*select -o -f\\s*"
+        });
+        put(Command.selectHand, new String[]{
+                "\\s*select --hand (\\d)\\s*",
+                "\\s*select -h (\\d)\\s*"
+        });
+        put(Command.deselect, new String[]{
+                "\\s*select -d\\s*"
+        });
+        put(Command.setCardPositionDefense, new String[]{
+                "\\s*set --position defense\\s*",
+                "\\s*set -p defense\\s*"
+        });
+        put(Command.setCardPositionAttack, new String[]{
+                "\\s*set --position attack\\s*",
+                "\\s*set -p attack\\s*"
+        });
         put(Command.attack, new String[]{
                 "\\s*attack (\\d)\\s*"
+        });
+        put(Command.set, new String[]{
+                "\\s*set\\s*"
         });
         put(Command.cardShowSelected, new String[]{
                 "\\s*card show --selected\\s*",
@@ -100,6 +108,15 @@ public class DuelMenuRegex {
         });
         put(Command.summon, new String[]{
                 "\\s*summon\\s*"
+        });
+        put(Command.flipSummon, new String[]{
+                "\\s*flip-summon\\s*"
+        });
+        put(Command.directAttack, new String[]{
+                "\\s*attack direct\\s*"
+        });
+        put(Command.activateEffect, new String[]{
+                "\\s*activate effect\\s*"
         });
     }};
 

@@ -14,7 +14,7 @@ public class MonsterCard extends Card {
         super(name, price, details);
     }
 
-    public void MonsterCard(int heath , int attackDamage , int defenseDamage ,int level ,ArrayList<Type> types , Attribute attribute ,String details ) {
+    public void MonsterCard(int health , int attackDamage , int defenseDamage ,int level ,ArrayList<Type> types , Attribute attribute ,String details ) {
     }
     public int showHealth() {
         return this.health ;

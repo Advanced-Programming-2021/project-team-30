@@ -1,9 +1,11 @@
 package model.response;
 
+import model.Command;
 import model.cards.MonsterCard.MonsterCard;
 import model.cards.nonMonsterCard.NonMonsterCard;
 import model.cards.nonMonsterCard.Spell.Spell;
 import model.cards.Card;
+import view.Main;
 
 
 public class DuelMenuResponse {
@@ -123,5 +125,9 @@ public class DuelMenuResponse {
 
     public static String currentPhaseName(String phaseName) {
         return String.format("phase: <<%s>>", phaseName);
+    }
+
+    public static String invalidCommand(Command command) {
+        return "invalid command; did you mean " + command.toString();
     }
 }

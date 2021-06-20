@@ -2,7 +2,7 @@ package model;
 
 import model.board.Board;
 import model.effect.Effect;
-import model.phase.Phases;
+import model.phase.Phase;
 import model.cards.MonsterCard.*;
 import model.cards.*;
 import model.regex.DuelMenuRegex;
@@ -33,10 +33,9 @@ public class Duel{
 	private final Stack<Effect> effectStack = new Stack<>();
 	final Board[] board = new Board[2];
 
-	private Matcher command;
 	private int currentPlayer, currentPhase, rounds;
 	private final int[] lp = new int[2];
-	private final Phases phase;
+	private final Phase phase;
 	private boolean isTurnFinished, didItSummon, isAttackBlocked, isDamageStopped, preventDeath;
 	private final boolean[][] didItChangePosition = new boolean[2][5];
 	private final boolean[] didItAttack = new boolean[5], isScannerSet = new boolean[2];
@@ -52,7 +51,7 @@ public class Duel{
 		//initialize
 		isScannerSet[0] = false;
 		isScannerSet[1] = false;
-		this.phase = new Phases();
+		this.phase = new Phase();
 		for(int i = 0; i < 2; i++){
 			this.player[i] = player[i];
 			this.board[i] = new Board(this, player[i]);
@@ -71,7 +70,6 @@ public class Duel{
 		isAttackBlocked = false;
 		board[0].reset();
 		board[1].reset();
-		phase.reset();
 	}
 
 	public void turnReset(){
@@ -169,11 +167,18 @@ public class Duel{
 			while(true){
 				DuelMenuRegex.setCommandValues(Main.getInput());
 				if(DuelMenuCommand.isSet){
-					callForMethod();
-					return null;
+					if(!checkPhaseValidity()){
+						callForMethod();
+						return null;
+					}
 				}
 			}
 		return DuelMenuRegex.getDesiredInput(question, desiredOutputs);
+	}
+
+	private boolean checkPhaseValidity() {
+		Command command = DuelMenuCommand.commandName;
+		phase.checkPhsa
 	}
 
 	private void callForMethod() {
@@ -210,6 +215,22 @@ public class Duel{
 			nextPhase();
 		else if(command == Command.summon)
 			summon();
+		else if(command == Command.set)
+			set();
+		else if(command == Command.setCardPositionAttack)
+			setPosition("OO");
+		else if(command == Command.setCardPositionDefense)
+			setPosition("DO");
+		else if(command == Command.flipSummon)
+			flipSummon();
+		else if(command == Command.attack){
+			location = Integer.parseInt(matcher.group(1)) - 1;
+			attack(location);
+		}
+		else if(command == Command.directAttack)
+			directAttack();
+		else if(command == Command.activateEffect)
+			activateSpell(true);
 	}
 
 	public void nextPhase(){
@@ -291,10 +312,6 @@ public class Duel{
 	public void ritualSummon(){
 		if(!board[currentPlayer].isRitualSummonPossible())return;
 		//waits for inputs
-	}
-
-	public void removeFromHand(int location){
-		board[currentPlayer].removeCard(Ground.handGround, location);
 	}
 
 	public void set(){
