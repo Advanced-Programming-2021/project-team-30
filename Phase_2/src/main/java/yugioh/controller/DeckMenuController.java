@@ -1,14 +1,14 @@
 package yugioh.controller;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import yugioh.model.Deck;
 import yugioh.model.DeckForDecksMenu;
-import yugioh.view.EditDeckView;
-import yugioh.view.LoginMenuView;
-import yugioh.view.MainMenuView;
+import yugioh.view.*;
 
 import java.util.ArrayList;
 import java.util.Optional;

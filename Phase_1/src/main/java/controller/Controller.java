@@ -1,5 +1,6 @@
 package controller;
 
+import model.Initializer;
 import model.Menu;
 import model.Player;
 import model.menu.*;
@@ -90,6 +91,7 @@ public class Controller {
 
 
     public void run(){
+        Initializer.readCardsFromCSV();
         Player.readPlayers();
         while (currentMenu != Menu.EXIT){
             String command = Main.getInput();
