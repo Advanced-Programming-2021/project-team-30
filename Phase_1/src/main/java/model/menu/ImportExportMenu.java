@@ -56,11 +56,7 @@ public class ImportExportMenu {
             try {
                 String json = new String(Files.readAllBytes(Paths.get(path)));
                 Card card = new Gson().fromJson(json, Card.class);
-                if (Initializer.monsterCardToBuild(card.getName()) != null){
-                    Initializer.monsterCards.add(card);
-                } else if (Initializer.spellTrapCardToBuild(card.getName()) != null){
-                    Initializer.spellTrapCards.add(card);
-                }
+                MainMenu.getCurrentUser().addCard(card);
             } catch (IOException e) {
                 e.printStackTrace();
             }
