@@ -5,13 +5,14 @@ import model.cards.MonsterCard.MonsterCard;
 import model.cards.nonMonsterCard.NonMonsterCard;
 import model.cards.nonMonsterCard.Spell.Spell;
 import model.cards.Card;
-import view.Main;
 
 
 public class DuelMenuResponse {
     public static String noPlayer = "there is no player with this username";
     public static String invalidLocation = "the given location has no card on it!";
     public static String askForTribute = "give the location for tributes";
+    public static String cantRitualSummon = "can't ritual summon";
+    public static String cantAttackDirect = "can't attack directly while there's still monster on enemy's ground";
 
     public static String hasNoActiveDeck(String username){
         return username + " has no active deck";
@@ -19,16 +20,16 @@ public class DuelMenuResponse {
     public static String hasInvalidDeck(String username){
         return username + "’s deck is invalid";
     }
-    public static String invalidRound = "number of rounds is not supported";
+    public static String newCardAdded(String cardName){
+        return "new card added to the hand : " + cardName;
+    }
 
+    public static String invalidRound = "number of rounds is not supported";
     public static String invalidSelection = "invalid selection";
     public static String cardSelected = "card selected";
     public static String noCardFound = "no card found in the given position";
     public static String cardDeselected = "card deselected";
     public static String noCardSelected = "no card is selected yet";
-    public static String newCardAdded(String cardName){
-        return "new card added to the hand : " + cardName;
-    }
     public static String cantSummon = "you can’t summon this card";
     public static String actionNotAllowedInPhase = "action not allowed in this phase";
     public static String monsterZoneFull = "monster card zone is full";

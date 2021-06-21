@@ -8,9 +8,9 @@ import model.cards.nonMonsterCard.Trap.Trap;
 import java.util.ArrayList;
 
 public class Hand{
-    private ArrayList<Card> cards = new ArrayList<>();
-    private ArrayList<Boolean> isRequirementsDone = new ArrayList<>();
-    private Board board;
+    private final ArrayList<Card> cards = new ArrayList<>();
+    private final ArrayList<Boolean> isRequirementsDone = new ArrayList<>();
+    private final Board board;
 
     public Hand(Board board){
         this.board = board;
@@ -37,7 +37,6 @@ public class Hand{
 
     public void addCard(Card card){
         cards.add(card);
-        isRequirementsDone.add(board.checkRequirements(card));
     }
 
     public ArrayList<MonsterCard> getAllMonsterCards(){

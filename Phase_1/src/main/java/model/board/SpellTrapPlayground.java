@@ -4,8 +4,8 @@ import model.cards.Card;
 
 public class SpellTrapPlayground{
     final Board board;
-    private Card[] cards = new Card[5];
-    private String[] position = new String[5];
+    private final Card[] cards = new Card[5];
+    private final String[] position = new String[5];
 
     public SpellTrapPlayground(Board board){
         this.board = board;
@@ -51,10 +51,6 @@ public class SpellTrapPlayground{
 
     public String getPosition(int location){
         return position[location];
-    }
-    
-    public boolean getRequirementsStatus(int location){
-        return board.checkRequirements(cards[location]);
     }
 
     public Card getCard(int location) {

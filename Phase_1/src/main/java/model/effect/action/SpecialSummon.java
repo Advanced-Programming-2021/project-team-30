@@ -26,16 +26,18 @@ public class SpecialSummon extends Action{
     public void doEffect() {
         Ground ground;
         int location;
-        Type type;
         Main.outputToUser(String.format("it is player <%d>'s choice for special summon", ownerPlayer));
         while(true){
-            try{
-                ground = Ground.valueOf(duel.listen());
-                location = Integer.parseInt(duel.listen());
-            } catch (Exception e){
-                Main.outputToUser(DuelMenuResponse.invalidInput);
-                continue;
-            }
+            ground = Ground.valueOf(duel.listen(false, "which ground?", new String[]{
+                Ground.monsterGround.toString(),
+                Ground.spellTrapGround.toString(),
+                Ground.handGround.toString(),
+                Ground.mainDeckGround.toString(),
+                Ground.graveyardGround.toString()
+            }));
+            location = Integer.parseInt(duel.listen(false, "which location?", new String[]{
+                    "1", "2", "3", "4", "5"
+            })) - 1;
             boolean isValid = false;
             for(Ground ground1: grounds)
                 if (ground1 == ground) {

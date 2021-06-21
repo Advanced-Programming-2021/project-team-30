@@ -2,8 +2,6 @@ package model.effect.action;
 
 import model.Ground;
 import model.cards.Type;
-import model.response.DuelMenuResponse;
-import view.Main;
 
 import java.util.ArrayList;
 
@@ -22,14 +20,9 @@ public class PickCardFromDeck extends Action{
     public void doEffect() {
         int location, total = this.total;
         while(total-- > 0){
-            while(true){
-                try{
-                    location = Integer.parseInt(duel.listen());
-                    break;
-                }catch (Exception e){
-                    Main.outputToUser(DuelMenuResponse.invalidInput);
-                }
-            }
+            location = Integer.parseInt(duel.listen(false, "which location?", new String[]{
+                    "1", "2", "3", "4", "5"
+            })) - 1;
             duel.addCard(ownerPlayer, Ground.handGround, duel.getCard(Ground.mainDeckGround, location, ownerPlayer), "");
             duel.removeCard(ownerPlayer, Ground.mainDeckGround, location);
         }

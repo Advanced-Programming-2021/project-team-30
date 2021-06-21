@@ -3,17 +3,16 @@ package model.board;
 import model.Command;
 import model.Ground;
 import model.cards.Card;
-
-import model.board.Board;
 import model.cards.MonsterCard.MonsterCard;
 import model.response.DuelMenuResponse;
 import view.Main;
 
+
 public class MonsterPlayground{
 
     final Board board;
-    private MonsterCard[] cards = new MonsterCard[5];
-    private String[] position = new String[5];
+    private final MonsterCard[] cards = new MonsterCard[5];
+    private final String[] position = new String[5];
 
     public void reset() {
         for(int i = 0; i < 5; i++){
@@ -52,20 +51,16 @@ public class MonsterPlayground{
         if(card == null) card = (MonsterCard) board.getSelectedCard();
         for(int i = 0; i < 5; i++)if(cards[i] == null) {
             cards[i] = card;
+            card.setLocation(i);
+            card.setGround(Ground.monsterGround);
             this.position[i] = position;
             return;
         }
     }
 
-    public boolean flipSummon(){
-        if(board.askPositionChange(Ground.monsterGround, board.getSelectedCardLocation()) || !position[board.getSelectedCardLocation()].equals("DH")){
-            Main.outputToUser(DuelMenuResponse.cantFlipSummon);
-            return false;
-        }
-
+    public void flipSummon(){
         position[board.getSelectedCardLocation()] = "OO";
         Main.outputToUser(DuelMenuResponse.flipSummonSuccessful);
-        return true;
     }
 
     public boolean setPosition(String newPosition, int location){
@@ -86,10 +81,6 @@ public class MonsterPlayground{
 
     public String getPosition(int location){
         return position[location];
-    }
-
-    public boolean getRequirementsStatus(int location){
-        return board.checkRequirements(cards[location]);
     }
 
     public void killCard(int location) {

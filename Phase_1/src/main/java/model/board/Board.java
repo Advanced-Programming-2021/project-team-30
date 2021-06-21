@@ -1,16 +1,17 @@
 package model.board;
+
+import model.Deck;
 import model.Duel;
 import model.Ground;
 import model.Player;
 import model.cards.*;
 import model.cards.MonsterCard.*;
 import model.cards.nonMonsterCard.NonMonsterCard;
-import model.cards.nonMonsterCard.Spell.*;
-import model.cards.nonMonsterCard.Trap.*;
 import model.regex.DuelMenuRegex;
 import model.response.DuelMenuResponse;
 import view.Main;
 import java.util.ArrayList;
+
 
 public class Board{
 
@@ -23,17 +24,18 @@ public class Board{
 	final MainDeck mainDeck;
 	final MonsterPlayground monsterPlayGround;
 	final SpellTrapPlayground spellTrapPlayGround;
+	final int player;
 	private Card selectedCard = null;
 	private int selectedCardLocation, selectedCardOwner;
 	private String selectedCardPosition;
 	private Ground selectedCardOrigin;
 	private static final String[] selectCardOptions =
-	{"monsterGround",
-	 "spellTrapGround",
-	 "handGround",
-	 "fieldGround",
- 	 "graveYardGround",
-	 "deckGround"};
+	{"monster",
+	 "spell-trap",
+	 "hand",
+	 "field",
+ 	 "graveyard",
+	 "deck"};
 
 	public ArrayList<Card> cloneArrayList(ArrayList<Card> original){
 		ArrayList<Card> copy = new ArrayList<>();
@@ -43,7 +45,7 @@ public class Board{
 		//needs to get deeper about type of card(e.g. monsterCard, TrapCard, etc). waiting for cards to be updated
 	}
 
-	public Board(Duel duel, Player player){
+	public Board(Duel duel, Player player, int boardPlayer){
 		this.duel = duel;
 		this.fieldZone = new FieldZone(this);
 		this.hand = new Hand(this);
@@ -51,6 +53,7 @@ public class Board{
 		this.mainDeck = new MainDeck(this, cloneArrayList(player.getActiveDeck().getAllCards()));
 		this.monsterPlayGround = new MonsterPlayground(this);
 		this.spellTrapPlayGround = new SpellTrapPlayground(this);
+		this.player = boardPlayer;
 	}
 
 	public void reset(){
@@ -64,28 +67,6 @@ public class Board{
 
 	public boolean askPositionChange(Ground ground, int location){
 		return duel.askPositionChange(ground, location);
-	}
-
-	public boolean checkRequirements(Card card){
-		if(card instanceof MonsterCard){
-			MonsterCard monster = (MonsterCard) card;
-			if(monster.getLevel() > 5 && !monster.checkTributes())return false;
-		}
-		if(card instanceof NormalCard)return true;
-		if(card instanceof RitualCard){
-			return ((RitualCard) card).isRitualDone();
-		}
-		if(card instanceof EffectCard){
-			//not sure if needed, putting it here for now
-			//checks effects
-			;
-		}
-		if(card instanceof Spell){
-			ArrayList<String> requirements = ((Spell)card).getRequirements();
-		}
-		if(card instanceof Trap){
-			ArrayList<String> requirements = ((Trap)card).getRequirements();
-		}
 	}
 
 	public boolean isRitualSummonPossible(){
@@ -124,7 +105,7 @@ public class Board{
 
 	public int power(int base, int exponent){ return (int) Math.pow(base, exponent); }
 
-	public void selectCard(int location, Ground from, boolean opponent){
+	public void selectCard(int location, Ground from){
 		if(location < 0){
 			Main.outputToUser(DuelMenuResponse.invalidInput);
 			return;
@@ -136,7 +117,6 @@ public class Board{
 		selectedCardPosition = "";
 
 		switch(from){
-			
 			case monsterGround:
 				if(location > 4){
 					Main.outputToUser(DuelMenuResponse.invalidInput);
@@ -187,8 +167,7 @@ public class Board{
 				}
 		}
 		selectedCardOrigin = from;
-		if(opponent) selectedCardOwner = 1 - duel.getCurrentPlayer();
-		else selectedCardOwner = duel.getCurrentPlayer();
+		selectedCardOwner = player;
 		selectedCardLocation = location;
 		Main.outputToUser(DuelMenuResponse.cardSelected);
 	}
@@ -219,6 +198,7 @@ public class Board{
 				return;
 			}
 			monsterPlayGround.addCard((MonsterCard) selectedCard, "DH");
+			Main.outputToUser(DuelMenuResponse.setSuccessful);
 		}
 		else{
 			if(spellTrapPlayGround.total() == 5){
@@ -226,6 +206,7 @@ public class Board{
 				return;
 			}
 			spellTrapPlayGround.addCard(selectedCard, "H");
+			Main.outputToUser(DuelMenuResponse.spellSet);
 		}
 		hand.removeCard(getSelectedCardLocation());
 		deselect(false);
@@ -264,23 +245,25 @@ public class Board{
 		MonsterCard card = (MonsterCard) selectedCard;
 		askForTributes(card.getTributes());
 		monsterPlayGround.addCard(card, "OO");
-		card.setLocation(getSelectedCardLocation());
-		card.setGround(getSelectedCardOrigin());
-		this.deselect(false);
+		deselect(false);
 	}
 
 	private void askForTributes(int tributes) {
+		boolean[] mark = {false, false, false, false, false};
 		while (tributes > 0){
 			int location = Integer.parseInt(DuelMenuRegex.getDesiredInput(DuelMenuResponse.askForTribute, new String[]{
 					"1", "2", "3", "4", "5"
-			}));
+			})) - 1;
 			if(monsterPlayGround.isThereCardOnLocation(location)){
-				monsterPlayGround.killCard(location);
+				mark[location] = true;
 				tributes--;
 			}
 			else
 				Main.outputToUser(DuelMenuResponse.noCardFound);
 		}
+		for(int i = 0; i < 5; i++)
+			if(mark[i])
+				killCard(i, Ground.monsterGround);
 	}
 
 	public boolean setPosition(String newPosition){
@@ -291,11 +274,6 @@ public class Board{
 
 		if(selectedCardOrigin != Ground.monsterGround){
 			Main.outputToUser(DuelMenuResponse.cantChangePosition);
-			return false;
-		}
-
-		if(duel.askPositionChange(Ground.monsterGround, getSelectedCardLocation())){
-			Main.outputToUser(DuelMenuResponse.alreadyChangedPos);
 			return false;
 		}
 
@@ -312,8 +290,13 @@ public class Board{
 			Main.outputToUser(DuelMenuResponse.cantChangePosition);
 			return false;
 		}
+		if(askPositionChange(Ground.monsterGround, getSelectedCardLocation()) || getPosition(getSelectedCardLocation(), Ground.monsterGround).equals("DH")){
+			Main.outputToUser(DuelMenuResponse.cantFlipSummon);
+			return false;
+		}
 
-		return monsterPlayGround.flipSummon();
+		monsterPlayGround.flipSummon();
+		return true;
 	}
 
 	public boolean activateSpell(){
@@ -325,13 +308,6 @@ public class Board{
 		removeCard(Ground.handGround, getSelectedCardLocation());
 		addCard(Ground.spellTrapGround, getSelectedCard(), "O");
 		Main.outputToUser(DuelMenuResponse.spellActivated);
-		return true;
-	}
-
-	public boolean setSpell(){
-		removeCard(Ground.handGround, getSelectedCardLocation());
-		addCard(Ground.spellTrapGround, getSelectedCard(), "H");
-		Main.outputToUser(DuelMenuResponse.spellSet);
 		return true;
 	}
 
@@ -500,5 +476,11 @@ public class Board{
 		Card card = spellTrapPlayGround.getAdvancedRitualCard();
 		spellTrapPlayGround.killAdvancedRitualCard();
 		graveYard.addCard(card);
+	}
+
+	public void setDecks(Deck deck) {
+		mainDeck.setCards(deck.getMainDeck());
+		for(int i = 0; i < 5; i++)
+			draw();
 	}
 }

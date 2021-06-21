@@ -1,7 +1,7 @@
 package model.cards.MonsterCard;
 
 public class NormalCard extends MonsterCard {
-    public void NormalCard() {
-        // ?
+    public NormalCard(String name, int price, String details) {
+        super(name, price, details);
     }
 }

@@ -12,8 +12,9 @@ public class ScannerOnThisRound extends Action {
 
     @Override
     public void doEffect() {
-        Main.outputToUser("choose a card from enemy graveyard");
-        int location = Integer.parseInt(duel.listen());
+        int location = Integer.parseInt(duel.listen(false, "choose a card location from enemy graveyard", new String[]{
+                "1", "2", "3", "4", "5"
+        }));
         Card card = duel.getCard(Ground.graveyardGround, location, 1 - ownerPlayer);
         duel.setScanner((MonsterCard) card, ownerPlayer);
     }

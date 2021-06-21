@@ -57,4 +57,8 @@ public class MainDeck{
         else if(card instanceof Spell || card instanceof Trap)
             board.spellTrapPlayGround.addCard(card, "O");
     }
+
+    public void setCards(ArrayList<Card> cards) {
+        this.cards = cards;
+    }
 }

@@ -1,10 +1,7 @@
 package model.cards.nonMonsterCard.Trap;
 
-import model.Event;
-
 public class AntiTrap extends Trap {
-    private Event event , trigger ;
-    public void activate() {
-        // ??
+    public AntiTrap(String name, int price, String details) {
+        super(name, price, details);
     }
 }

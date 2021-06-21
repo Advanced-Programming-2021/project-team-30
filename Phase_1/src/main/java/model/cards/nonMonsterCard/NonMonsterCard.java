@@ -6,6 +6,11 @@ public class NonMonsterCard extends Card {
 
     protected String type ;
     protected int speed ;
+
+    public NonMonsterCard(String name, int price, String details) {
+        super(name, price, details);
+    }
+
     public void summon() {
         // ??
     }
