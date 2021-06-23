@@ -120,9 +120,9 @@ public class Deck {
         List<Card> sortedNonMonsters = nonMonsters.stream().sorted(cardComparator).collect(Collectors.toList());
         StringBuilder stringBuilder = new StringBuilder();
         if (isMain)
-            stringBuilder.append("Deck: " + getName() + "Main deck:\nMonsters:\n");
+            stringBuilder.append("Deck: " + getName() + "\nMain deck:\nMonsters:\n");
         else
-            stringBuilder.append("Deck: " + getName() + "Side deck:\nMonsters:\n");
+            stringBuilder.append("Deck: " + getName() + "\nSide deck:\nMonsters:\n");
         for (Card sortedMonster : sortedMonsters) {
             stringBuilder.append(sortedMonster.getName() + ": " + sortedMonster.getDetails() + "\n");
         }
@@ -137,9 +137,9 @@ public class Deck {
         ArrayList<Card> monsters = new ArrayList<>();
         ArrayList<Card> nonMonsters = new ArrayList<>();
         for (Card card : getMainDeck()) {
-            if (card instanceof MonsterCard)
+            if (Initializer.monsterCardToBuild(card.getName()) != null)
                 monsters.add(card);
-            else if (card instanceof NonMonsterCard)
+            else if (Initializer.spellTrapCardToBuild(card.getName()) != null)
                 nonMonsters.add(card);
         }
         return showDeckCards(monsters, nonMonsters, true);
@@ -149,9 +149,9 @@ public class Deck {
         ArrayList<Card> monsters = new ArrayList<>();
         ArrayList<Card> nonMonsters = new ArrayList<>();
         for (Card card : getSideDeck()) {
-            if (card instanceof MonsterCard)
+            if (Initializer.monsterCardToBuild(card.getName()) != null)
                 monsters.add(card);
-            else if (card instanceof NonMonsterCard)
+            else if (Initializer.spellTrapCardToBuild(card.getName()) != null)
                 nonMonsters.add(card);
         }
         return showDeckCards(monsters, nonMonsters, false);

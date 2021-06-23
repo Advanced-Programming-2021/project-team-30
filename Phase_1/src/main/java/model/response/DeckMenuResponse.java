@@ -17,13 +17,13 @@ public class DeckMenuResponse {
     public static String mainDeckFull = "main deck is full";
     public static String sideDeckFull = "side deck is full";
     public static String cards3InDeck(String cardName, String deckName){
-        return "there are already three cards with name " + cardName + "in deck " + deckName;
+        return "there are already three cards with name " + cardName + " in deck " + deckName;
     }
     public static String cardRemoved = "card removed form deck successfully";
     public static String cardDoesNotExist(String cardName, boolean isMain){
         if (isMain)
-            return "card with name " + cardName + "does not exist in main deck";
-        return "card with name " + cardName + "does not exist in side deck";
+            return "card with name " + cardName + " does not exist in main deck";
+        return "card with name " + cardName + " does not exist in side deck";
     }
 
 
