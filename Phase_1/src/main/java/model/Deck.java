@@ -3,10 +3,7 @@ import model.cards.*;
 import model.cards.MonsterCard.MonsterCard;
 import model.cards.nonMonsterCard.NonMonsterCard;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
@@ -158,6 +155,14 @@ public class Deck {
                 nonMonsters.add(card);
         }
         return showDeckCards(monsters, nonMonsters, false);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Deck deck = (Deck) o;
+        return name.equals(deck.name) && Objects.equals(owner, deck.owner);
     }
 
 }

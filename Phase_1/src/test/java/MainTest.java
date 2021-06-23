@@ -109,25 +109,5 @@ public class MainTest {
 
 
     }
-    @Test
-    public void testDeckMenu(){
-        controller.navigate("menu enter Deck");
-        Assertions.assertEquals(Menu.DECK, Controller.currentMenu);
-        controller.deckMenu = new DeckMenu();
-        DeckMenu deckMenu = controller.deckMenu;
-        controller.setMenusCurrentUser();
-        deckMenu.run("deck create AliDeck");
-        Assertions.assertEquals(deckMenu.getCurrentPlayer().getDecks().get(0).getName(), "AliDeck");
-        Assertions.assertEquals("deck created successfully!\r\n", output.toString());
-        resetOutput();
-        deckMenu.run("deck delete AliDeck");
-        Assertions.assertEquals(deckMenu.getCurrentPlayer().getDecks().size(), 0);
-        resetOutput();
-        deckMenu.run("deck set-activate AliDeck");
-        Assertions.assertEquals("deck with name AliDeck does not exist\r\n", output.toString());
-        deckMenu.run("deck create Zia");
-        deckMenu.run("deck set-activate Zia");
-        Assertions.assertEquals("Zia", deckMenu.getCurrentPlayer().getActiveDeck().getName());
-        deckMenu.getCurrentPlayer().addCard(new Card("Battle OX", 2900 ,""));
-    }
+
 }

@@ -4,6 +4,7 @@ import model.Ground;
 import model.Prototype;
 import java.lang.String;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import model.effect.Effect;
 import model.effect.event.*;
@@ -123,4 +124,13 @@ public class Card implements Prototype {
     public void setGround(Ground ground){
         this.ground = ground;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Card card = (Card) o;
+        return price == card.price && name.equals(card.name) && details.equals(card.details);
+    }
+
 }
