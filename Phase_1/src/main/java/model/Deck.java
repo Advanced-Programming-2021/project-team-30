@@ -3,10 +3,7 @@ import model.cards.*;
 import model.cards.MonsterCard.MonsterCard;
 import model.cards.nonMonsterCard.NonMonsterCard;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.stream.Collectors;
 
@@ -109,13 +106,15 @@ public class Deck {
         owner.addCard(card);
         sideDeck.remove(card);
     }
-    public static boolean isDeckValid(Deck deck){
-        return true;
+    public String isValidToString(boolean isValid){
+        if (isValid)
+            return "valid";
+        return "invalid";
     }
 
     public String toStringForShowDecks(){
         return getName() + ": main deck " + getMainDeck().size() + ", side deck " +
-                getSideDeck().size() + ", " + isValid() + "\n";
+                getSideDeck().size() + ", " + isValidToString(isValid()) + "\n";
     }
     public String showDeckCards(ArrayList<Card> monsters, ArrayList<Card> nonMonsters, boolean isMain){
         Comparator<Card> cardComparator = Comparator.comparing(Card::getName);
@@ -123,9 +122,9 @@ public class Deck {
         List<Card> sortedNonMonsters = nonMonsters.stream().sorted(cardComparator).collect(Collectors.toList());
         StringBuilder stringBuilder = new StringBuilder();
         if (isMain)
-            stringBuilder.append("Deck: " + getName() + "Main deck:\nMonsters:\n");
+            stringBuilder.append("Deck: " + getName() + "\nMain deck:\nMonsters:\n");
         else
-            stringBuilder.append("Deck: " + getName() + "Side deck:\nMonsters:\n");
+            stringBuilder.append("Deck: " + getName() + "\nSide deck:\nMonsters:\n");
         for (Card sortedMonster : sortedMonsters) {
             stringBuilder.append(sortedMonster.getName() + ": " + sortedMonster.getDetails() + "\n");
         }
@@ -140,9 +139,9 @@ public class Deck {
         ArrayList<Card> monsters = new ArrayList<>();
         ArrayList<Card> nonMonsters = new ArrayList<>();
         for (Card card : getMainDeck()) {
-            if (card instanceof MonsterCard)
+            if (Initializer.monsterCardToBuild(card.getName()) != null)
                 monsters.add(card);
-            else if (card instanceof NonMonsterCard)
+            else if (Initializer.spellTrapCardToBuild(card.getName()) != null)
                 nonMonsters.add(card);
         }
         return showDeckCards(monsters, nonMonsters, true);
@@ -152,12 +151,20 @@ public class Deck {
         ArrayList<Card> monsters = new ArrayList<>();
         ArrayList<Card> nonMonsters = new ArrayList<>();
         for (Card card : getSideDeck()) {
-            if (card instanceof MonsterCard)
+            if (Initializer.monsterCardToBuild(card.getName()) != null)
                 monsters.add(card);
-            else if (card instanceof NonMonsterCard)
+            else if (Initializer.spellTrapCardToBuild(card.getName()) != null)
                 nonMonsters.add(card);
         }
         return showDeckCards(monsters, nonMonsters, false);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Deck deck = (Deck) o;
+        return name.equals(deck.name) && Objects.equals(owner, deck.owner);
     }
 
 }

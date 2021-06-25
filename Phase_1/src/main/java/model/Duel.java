@@ -194,8 +194,10 @@ public class Duel{
 		Matcher matcher = DuelMenuCommand.matcher;
 		int location;
 		if(command == Command.selectMonster){
-			location = Integer.parseInt(matcher.group(1)) - 1;
-			selectCard(Ground.monsterGround, location, false, currentPlayer);
+			if (matcher.find()) {
+				location = Integer.parseInt(matcher.group(1)) - 1;
+				selectCard(Ground.monsterGround, location, false, currentPlayer);
+			}
 		}
 		else if(command == Command.selectOpponentMonster){
 			location = Integer.parseInt(matcher.group(1)) - 1;

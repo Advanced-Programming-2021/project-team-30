@@ -11,6 +11,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Player {
     private static ArrayList<Player> players = new ArrayList<>();
@@ -75,7 +76,6 @@ public class Player {
     }
 
     public void setActiveDeck(Deck activeDeck) {
-        getDecks().remove(activeDeck);
         this.activeDeck = activeDeck;
     }
 
@@ -170,5 +170,12 @@ public class Player {
         }
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Player player = (Player) o;
+        return username.equals(player.username) && password.equals(player.password) && nickname.equals(player.nickname);
+    }
 
 }

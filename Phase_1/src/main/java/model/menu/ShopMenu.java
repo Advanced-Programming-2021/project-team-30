@@ -1,5 +1,6 @@
 package model.menu;
 
+import model.Initializer;
 import model.Player;
 import model.cards.Card;
 import model.regex.DebugRegex;
@@ -15,7 +16,13 @@ import java.util.regex.Matcher;
 
 public class ShopMenu {
     private Player currentPlayer;
-    public ArrayList<Card> cards;
+    public static ArrayList<Card> cards;
+    static {
+        cards = new ArrayList<>();
+        Initializer.readCardsFromCSV();
+        cards.addAll(Initializer.monsterCards);
+        cards.addAll(Initializer.spellTrapCards);
+    }
 
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;

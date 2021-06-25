@@ -154,6 +154,7 @@ public class DeckMenu {
         StringBuilder string = new StringBuilder("Decks:\nActive deck:\n");
         if (getCurrentPlayer().getActiveDeck() != null){
             string.append(getCurrentPlayer().getActiveDeck().toStringForShowDecks());
+            decks.remove(getCurrentPlayer().getActiveDeck());
         }
         string.append("Other decks:\n");
         Comparator<Deck> deckComparator = Comparator.comparing(Deck::getName);
@@ -162,6 +163,7 @@ public class DeckMenu {
             string.append(sortedDeck.toStringForShowDecks());
         }
         Main.outputToUser(string.toString());
+        decks.add(getCurrentPlayer().getActiveDeck());
     }
     private void showDeck(Matcher matcher, boolean isMain){
         if (matcher.find()){
@@ -210,21 +212,22 @@ public class DeckMenu {
         return chooseMatcher;
     }
     public boolean runAddRemoveCard(String command){
-        if (chooseAddRemoveCardMatcher(command).get("addCardMain").find())
+
+        if (chooseAddRemoveCardMatcher(command).get("addCardMain") != null)
             addCardMain(chooseAddRemoveCardMatcher(command).get("addCardMain"));
-        else if (chooseAddRemoveCardMatcher(command).get("addCardMainAbbr").find())
+        else if (chooseAddRemoveCardMatcher(command).get("addCardMainAbbr") != null)
             addCardMain(chooseAddRemoveCardMatcher(command).get("addCardMainAbbr"));
-        else if (chooseAddRemoveCardMatcher(command).get("addCardSide").find())
+        else if (chooseAddRemoveCardMatcher(command).get("addCardSide") != null)
             addCardSide(chooseAddRemoveCardMatcher(command).get("addCardSide"));
-        else if (chooseAddRemoveCardMatcher(command).get("addCardSideAbbr").find())
+        else if (chooseAddRemoveCardMatcher(command).get("addCardSideAbbr") != null)
             addCardSide(chooseAddRemoveCardMatcher(command).get("addCardSideAbbr"));
-        else if (chooseAddRemoveCardMatcher(command).get("removeCardMain").find())
+        else if (chooseAddRemoveCardMatcher(command).get("removeCardMain") != null)
             removeCardMain(chooseAddRemoveCardMatcher(command).get("removeCardMain"));
-        else if (chooseAddRemoveCardMatcher(command).get("removeCardMainAbbr").find())
+        else if (chooseAddRemoveCardMatcher(command).get("removeCardMainAbbr") != null)
             removeCardMain(chooseAddRemoveCardMatcher(command).get("removeCardMainAbbr"));
-        else if (chooseAddRemoveCardMatcher(command).get("removeCardSide").find())
+        else if (chooseAddRemoveCardMatcher(command).get("removeCardSide") != null)
             removeCardSide(chooseAddRemoveCardMatcher(command).get("removeCardSide"));
-        else if (chooseAddRemoveCardMatcher(command).get("removeCardSideAbbr").find())
+        else if (chooseAddRemoveCardMatcher(command).get("removeCardSideAbbr") != null)
             removeCardSide(chooseAddRemoveCardMatcher(command).get("removeCardSideAbbr"));
         else
             return true;
