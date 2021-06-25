@@ -1,5 +1,6 @@
 import controller.Controller;
 import model.Deck;
+import model.Duel;
 import model.Initializer;
 import model.Player;
 import model.cards.Card;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import view.Main;
 
 public class DuelTest {
     static Controller controller = new Controller();
@@ -40,6 +42,8 @@ public class DuelTest {
     }
     @Test
     public void test() {
+        Main.readFromConsole = false;
+        Main.setInput();
         Initializer.readCardsFromCSV();
         setDecks();
         controller.duelMenu = new DuelMenu();
@@ -47,6 +51,9 @@ public class DuelTest {
         controller.setMenusCurrentUser();
         Assertions.assertEquals(41, player.getActiveDeck().getMainDeck().size());
         duelMenu.run("duel --new --second-player reza --rounds 1");
+        Duel duel = Duel.getRecentDuel();
+        Assertions.assertNotNull(duel);
+        Assertions.assertNotNull(player.getActiveDeck());
 
     }
 }

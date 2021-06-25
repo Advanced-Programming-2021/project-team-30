@@ -60,7 +60,7 @@ public class Board{
 		fieldZone.reset();
 		hand.reset();
 		graveYard.reset();
-		mainDeck.reset();
+		//mainDeck.reset();
 		monsterPlayGround.reset();
 		spellTrapPlayGround.reset();
 	}

@@ -163,6 +163,7 @@ public class DeckMenu {
             string.append(sortedDeck.toStringForShowDecks());
         }
         Main.outputToUser(string.toString());
+        decks.add(getCurrentPlayer().getActiveDeck());
     }
     private void showDeck(Matcher matcher, boolean isMain){
         if (matcher.find()){
