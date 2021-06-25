@@ -11,7 +11,9 @@ public class CheckTargets extends Requirement{
     final ArrayList<Type> targets;
     private int targetLocation;
 
-    public CheckTargets(ArrayList<Type> targets){ this.targets = targets; }
+    public CheckTargets(ArrayList<Type> targets, int ownerPlayer){
+        super(ownerPlayer);
+        this.targets = targets; }
 
     public void setTargetLocation(int targetLocation){ this.targetLocation = targetLocation; }
 

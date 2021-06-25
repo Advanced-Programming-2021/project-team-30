@@ -8,7 +8,9 @@ public class RecentSummonedMinDamage extends Requirement{
 
     final int minDamage;
 
-    public RecentSummonedMinDamage(int minDamage){ this.minDamage = minDamage; }
+    public RecentSummonedMinDamage(int minDamage, int ownerPlayer){
+        super(ownerPlayer);
+        this.minDamage = minDamage; }
 
     public boolean check(){
         int damage = ((MonsterCard)duel.getCard(Ground.monsterGround, OnSummon.getPlayer(), OnSummon.getPlayer())).getAttackDamage();

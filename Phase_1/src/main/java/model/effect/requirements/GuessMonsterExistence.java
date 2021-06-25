@@ -6,6 +6,10 @@ public class GuessMonsterExistence extends Requirement{
 
     private String name;
 
+    public GuessMonsterExistence(int ownerPlayer) {
+        super(ownerPlayer);
+    }
+
     public void setName(String name){ this.name = name; }
 
     @Override

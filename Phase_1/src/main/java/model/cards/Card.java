@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import model.effect.Effect;
 import model.effect.event.*;
+import model.effect.requirements.Requirement;
 
 public class Card implements Prototype {
 
@@ -118,6 +119,8 @@ public class Card implements Prototype {
 
     public void setLocation(int location) {
         this.location = location;
+        for(Effect effect: effects)
+            effect.getRequirement().setMyLocation(location);
     }
 
     public void setGround(Ground ground){

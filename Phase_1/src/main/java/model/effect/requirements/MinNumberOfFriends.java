@@ -6,7 +6,8 @@ public class MinNumberOfFriends extends Requirement{
     final Ground ground;
     final int minRequired;
 
-    public MinNumberOfFriends(Ground ground, int minRequired){
+    public MinNumberOfFriends(Ground ground, int minRequired, int ownerPlayer){
+        super(ownerPlayer);
         this.ground = ground;
         this.minRequired = minRequired;
     }

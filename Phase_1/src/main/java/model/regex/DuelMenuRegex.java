@@ -153,7 +153,7 @@ public class DuelMenuRegex {
                 pattern = Pattern.compile(regex);
                 matcher = pattern.matcher(input);
                 if(matcher.find()) {
-                    DuelMenuCommand.setParams(key, pattern.matcher(input));
+                    DuelMenuCommand.setParams(key, matcher);
                     return;
                 }
             }

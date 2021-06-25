@@ -9,13 +9,15 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MainDeck{
-    private ArrayList<Card> cards = new ArrayList<Card>();
+    final ArrayList<Card> finalCards;
     final Board board;
     final Random rand = new Random();
+    private ArrayList<Card> cards = new ArrayList<Card>();
 
     public MainDeck(Board board, ArrayList<Card> cards){
         this.board = board;
         this.cards.addAll(cards);
+        this.finalCards = cards;
     }
 
     public boolean doesCardWithNameExist(String name){
@@ -25,6 +27,7 @@ public class MainDeck{
 
     public void reset(){
         cards.clear();
+        cards = finalCards;
     }
 
     public int total(){
@@ -38,10 +41,6 @@ public class MainDeck{
     public void addCard(Card card){ cards.add(card); }
 
     public void removeCard(Card card){ cards.remove(card); }
-
-    public void removeCards(ArrayList<Card> cards){
-        for(Card card: cards)removeCard(card);
-    }
 
     public void removeCard(int location){ cards.remove(location); }
 
