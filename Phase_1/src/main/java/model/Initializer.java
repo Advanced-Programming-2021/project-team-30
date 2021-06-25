@@ -10,6 +10,8 @@ public class Initializer {
     public static ArrayList<Card> monsterCards = new ArrayList<>();
     public static ArrayList<Card> spellTrapCards = new ArrayList<>();
     public static void readCardsFromCSV(){
+        monsterCards = new ArrayList<>();
+        spellTrapCards = new ArrayList<>();
         try {
             CSVReader csvReader = new CSVReader(new FileReader("src/main/resources/CSV/Monster.csv"));
             String[] reader;

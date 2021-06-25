@@ -154,6 +154,7 @@ public class DeckMenu {
         StringBuilder string = new StringBuilder("Decks:\nActive deck:\n");
         if (getCurrentPlayer().getActiveDeck() != null){
             string.append(getCurrentPlayer().getActiveDeck().toStringForShowDecks());
+            decks.remove(getCurrentPlayer().getActiveDeck());
         }
         string.append("Other decks:\n");
         Comparator<Deck> deckComparator = Comparator.comparing(Deck::getName);

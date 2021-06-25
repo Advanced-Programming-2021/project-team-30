@@ -106,13 +106,15 @@ public class Deck {
         owner.addCard(card);
         sideDeck.remove(card);
     }
-    public static boolean isDeckValid(Deck deck){
-        return true;
+    public String isValidToString(boolean isValid){
+        if (isValid)
+            return "valid";
+        return "invalid";
     }
 
     public String toStringForShowDecks(){
         return getName() + ": main deck " + getMainDeck().size() + ", side deck " +
-                getSideDeck().size() + ", " + isValid() + "\n";
+                getSideDeck().size() + ", " + isValidToString(isValid()) + "\n";
     }
     public String showDeckCards(ArrayList<Card> monsters, ArrayList<Card> nonMonsters, boolean isMain){
         Comparator<Card> cardComparator = Comparator.comparing(Card::getName);
