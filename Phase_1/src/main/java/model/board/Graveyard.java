@@ -48,20 +48,6 @@ public class Graveyard{
         return this.cards;
     }
 
-    public void specialSummon(int location) {
-        Card card = getCard(location);
-        card.setLocation(location);
-        removeCard(location);
-        if(card instanceof MonsterCard){
-            board.monsterPlayGround.addCard((MonsterCard) card, "OO");
-            card.setGround(Ground.monsterGround);
-        }
-        else if(card instanceof Spell || card instanceof Trap) {
-            board.spellTrapPlayGround.addCard(card, "O");
-            card.setGround(Ground.spellTrapGround);
-        }
-    }
-
     public boolean isThereCardOnLocation(int location) {
         return cards.size() > location;
     }

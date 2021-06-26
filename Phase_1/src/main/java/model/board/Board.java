@@ -433,13 +433,26 @@ public class Board{
 			spellTrapPlayGround.replaceCard(i, card);
 	}
 
-    public void specialSummon(Ground ground, int location) {
-		if(ground == Ground.graveyardGround)
-			graveYard.specialSummon(location);
-		else if(ground == Ground.handGround)
-			hand.specialSummon(location);
-		else if(ground == Ground.mainDeckGround)
-			mainDeck.specialSummon(location);
+	//TODO change of hearts effect
+    public void specialSummon(Ground ground, int location, String position) {
+		Card card = null;
+		if(ground == Ground.graveyardGround){
+			card = graveYard.getCard(location);
+			graveYard.removeCard(location);
+		}
+		else if(ground == Ground.handGround){
+			card = hand.getCard(location);
+			hand.removeCard(location);
+		}
+		else{
+			//main deck
+			mainDeck.getCard(location);
+			mainDeck.removeCard(location);
+		}
+		if(card instanceof MonsterCard)
+			monsterPlayGround.addCard((MonsterCard) card, position);
+		else
+			spellTrapPlayGround.addCard(card, position);
     }
 
 	public boolean isThereCardOnLocation(Ground ground, int location) {

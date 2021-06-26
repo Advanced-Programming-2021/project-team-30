@@ -10,28 +10,28 @@ import java.util.ArrayList;
 public class SacrificeCards extends Requirement{
     final int neededCards;
     final ArrayList<Ground> grounds;
-    final ArrayList<String> groundStrings = new ArrayList<>();
 
     public SacrificeCards(int neededCards, ArrayList<Ground> grounds, int ownerPlayer){
         super(ownerPlayer);
         this.neededCards = neededCards;
         this.grounds = grounds;
-        for(Ground ground: grounds)
-            groundStrings.add(ground.toString());
     }
 
     public boolean check(){
         boolean[] mark = {false, false, false, false, false};
         int x = neededCards;
         Main.outputToUser("please select the cards you like for sacrifice\noptions:");
-        for(Ground ground: grounds)
-            Main.outputToUser(ground.toString());
         while (x > 0){
-            Ground ground = Ground.valueOf(DuelMenuRegex.getDesiredInput("which ground?", (String[])groundStrings.toArray()));
-            int location = Integer.parseInt(DuelMenuRegex.getDesiredInput("location?", new String[]{
-                    "1", "2", "3", "4", "5"
-            })) - 1;
-            if(duel.getCard(ground, location, ownerPlayer) == null) {
+            int location;
+            try{
+                location = Integer.parseInt(DuelMenuRegex.getDesiredInput("location?", new String[]{
+                        "1", "2", "3", "4", "5", "cancel"
+                })) - 1;
+            }catch (Exception e){
+                Main.outputToUser("sacrifice canceled");
+                return false;
+            }
+            if(duel.getCard(Ground.monsterGround, location, ownerPlayer) == null) {
                 Main.outputToUser(DuelMenuResponse.noCardFound);
                 continue;
             }
@@ -42,6 +42,10 @@ public class SacrificeCards extends Requirement{
             x--;
             mark[location] = true;
         }
-        //TODO developing this one
+        for(int location = 0; location < 5; location++)
+            if(mark[location])
+                duel.killCard(location, Ground.monsterGround, ownerPlayer);
+        Main.outputToUser("sacrifice done successfully");
+        return true;
     }
 }

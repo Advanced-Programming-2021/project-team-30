@@ -14,12 +14,16 @@ import java.util.ArrayList;
 public class SpecialSummon extends Action{
     final ArrayList<Type> types;
     final ArrayList<Ground> grounds;
-    final String cardType;
-    public SpecialSummon(int ownerPlayer, boolean canBeUsedOncePerRound, ArrayList<Type> types, ArrayList<Ground> grounds, String cardType) {
+    final String cardType, position;
+    final int minLevel, maxLevel;
+    public SpecialSummon(int ownerPlayer, boolean canBeUsedOncePerRound, ArrayList<Type> types, ArrayList<Ground> grounds, String cardType, int minLevel, int maxLevel, String position) {
         super(ownerPlayer, canBeUsedOncePerRound);
         this.types = types;
         this.grounds = grounds;
         this.cardType = cardType;
+        this.minLevel = minLevel;
+        this.position = position;
+        this.maxLevel = maxLevel;
     }
 
     @Override
@@ -49,24 +53,24 @@ public class SpecialSummon extends Action{
                 continue;
             }
             if(!duel.isThereCardOnLocation(ownerPlayer, ground, location)){
-                Main.outputToUser(DuelMenuResponse.invalidLocation);
+                Main.outputToUser(DuelMenuResponse.noCardFound);
                 continue;
             }
             Card card = duel.getCard(ground, location, ownerPlayer);
             if(cardType.equals("monster")){
-                if(!(card instanceof MonsterCard)){
-                    Main.outputToUser("invalid card type selection, you can only select monsters with the current effect");
+                if(!(card instanceof MonsterCard) || ((MonsterCard)card).getLevel() < minLevel || ((MonsterCard)card).getLevel() > maxLevel){
+                    Main.outputToUser("invalid card for the given effect");
                     continue;
                 }
             } else if(cardType.equals("spellTrap")){
                 if(!(card instanceof Spell || card instanceof Trap)){
-                    Main.outputToUser("invalid card type selection, you can only select spells with the current effect");
+                    Main.outputToUser("invalid card for the given effect");
                     continue;
                 }
             }
             break;
         }
-        duel.specialSummon(ownerPlayer, ground, location);
+        duel.specialSummon(ownerPlayer, ground, location, position);
     }
 
     @Override

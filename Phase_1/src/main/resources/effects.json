@@ -226,49 +226,65 @@
     "Herald of Creation": [
         [],
         ["SacrificeCards"],
-        [],
-        [1, ["handGround"]],
+        ["SpecialSummon"],
+        [1,["any"], ["graveYardGround"], "monster", "7", "12", "OO"],
         true
     ],
     "Exploder Dragon": [
+        ["OnDeath"],
+        ["IsRecentDeadMe"],
+        ["DestroyRecentAttacker"],
         [],
-        [],
-        []
+        false
     ],
     "Warrior Dai Grepher": [
         [],
         [],
-        []
+        [],
+        [],
+        false
     ],
     "Dark Blade": [
         [],
         [],
-        []
+        [],
+        [],
+        false
     ],
     "Wattaildragon": [
         [],
         [],
-        []
+        [],
+        [],
+        false
     ],
     "Terratiger, the Empowered Warrior": [
-        [],
-        [],
-        []
+        ["OnSummon"],
+        ["IsRecentSummonedMe"],
+        ["SpecialSummon"],
+        [["any"], ["handGround"], "monster", 0, 4, "DO"],
+        false
     ],
     "The Tricky": [
         [],
         [],
-        []
+        [],
+        [],
+        false
     ],
     "Spiral Serpent": [
         [],
         [],
-        []
+        [],
+        [],
+        false
     ],
     "Command Knight": [
+        ["OnSummon", "OnGettingAttacked"],
+        ["IsRecentSummonedMe", "CommandKnight"],
+        ["AddAttackDamage", "BlockAttacker"],
         [],
-        [],
-        []
+        false
     ],
     "Trap Hole": [
         [],
@@ -333,57 +349,79 @@
     "Monster Reborn": [
         [],
         [],
-        []
+        ["SpecialSummon"],
+        [["any"], ["graveYardGround"], "monster", 0, 12, "OO"],
+        false
     ],
     "Terraforming": [
         [],
         [],
-        []
+        ["PickCardFromDeck"],
+        [1, "field"],
+        false
     ],
     "Pot of Greed": [
         [],
         [],
-        []
+        ["PickCardFromDeck"],
+        [2, "any"],
+        false
     ],
     "Raigeki": [
         [],
         [],
-        []
+        ["ClearEnemySpells"],
+        [],
+        false
     ],
     "Change of Heart": [
         [],
         [],
-        []
+        [],
+        [],
+        true
     ],
     "Swords of Revealing Light": [
+        ["OnStandByPhase"],
         [],
+        ["SwordsEffect"],
         [],
-        []
+        false
     ],
     "Harpie's Feather Duster": [
         [],
         [],
-        []
+        ["ClearEnemySpells"],
+        [],
+        false
     ],
     "Dark Hole": [
         [],
         [],
-        []
+        ["ClearAllMonsterGround"],
+        [],
+        false
     ],
     "Supply Squad": [
+        ["OnDeath"],
         [],
-        [],
-        []
+        ["PickCardFromDeck"],
+        [1],
+        true
     ],
     "Spell Absorption": [
+        ["OnSpellActivation"],
         [],
-        [],
-        []
+        ["AddLp"],
+        [500],
+        false
     ],
     "Messenger of peace": [
+        ["OnStandByPhase"],
         [],
+        ["MessengerEffect"],
         [],
-        []
+        false
     ],
     "Twin Twisters": [
         [],

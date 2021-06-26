@@ -24,7 +24,7 @@ public class Duel{
 			"main phase 2",
 			"end phase"
 	};
-	final int[] rotation = {0, 1, 3, 2, 5, 4};
+	final int[] rotation = {0, 2, 1, 4, 3};
 	// rotates the location; input: location as index, output: rotation of location
 
 	final Player[] player = new Player[2];
@@ -194,10 +194,8 @@ public class Duel{
 		Matcher matcher = DuelMenuCommand.matcher;
 		int location;
 		if(command == Command.selectMonster){
-			if (matcher.find()) {
-				location = Integer.parseInt(matcher.group(1)) - 1;
-				selectCard(Ground.monsterGround, location, false, currentPlayer);
-			}
+			location = Integer.parseInt(matcher.group(1)) - 1;
+			selectCard(Ground.monsterGround, location, false, currentPlayer);
 		}
 		else if(command == Command.selectOpponentMonster){
 			location = Integer.parseInt(matcher.group(1)) - 1;
@@ -680,8 +678,8 @@ public class Duel{
 			board[player].killCard(i, ground);
 	}
 
-	public void specialSummon(int ownerPlayer, Ground ground, int location) {
-		board[ownerPlayer].specialSummon(ground, location);
+	public void specialSummon(int ownerPlayer, Ground ground, int location, String position) {
+		board[ownerPlayer].specialSummon(ground, location, position);
 	}
 
 	public boolean isThereCardOnLocation(int ownerPlayer, Ground ground, int location){

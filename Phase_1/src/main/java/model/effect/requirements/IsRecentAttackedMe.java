@@ -3,8 +3,6 @@ package model.effect.requirements;
 import model.effect.event.OnGettingAttacked;
 
 public class IsRecentAttackedMe extends Requirement{
-    final int myLocation;
-
     public IsRecentAttackedMe(int myLocation, int ownerPlayer){
         super(ownerPlayer);
         this.myLocation = myLocation;

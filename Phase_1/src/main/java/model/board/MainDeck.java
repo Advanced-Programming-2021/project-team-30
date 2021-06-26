@@ -1,12 +1,9 @@
 package model.board;
 
 import model.cards.Card;
-import model.cards.MonsterCard.MonsterCard;
-import model.cards.nonMonsterCard.Spell.Spell;
-import model.cards.nonMonsterCard.Trap.Trap;
-
 import java.util.ArrayList;
 import java.util.Random;
+
 
 public class MainDeck{
     final ArrayList<Card> finalCards;
@@ -46,15 +43,6 @@ public class MainDeck{
 
     public boolean isThereCardOnLocation(int location) {
         return cards.size() > location;
-    }
-
-    public void specialSummon(int location) {
-        Card card = getCard(location);
-        removeCard(location);
-        if(card instanceof MonsterCard)
-            board.monsterPlayGround.addCard((MonsterCard) card, "OO");
-        else if(card instanceof Spell || card instanceof Trap)
-            board.spellTrapPlayGround.addCard(card, "O");
     }
 
     public void setCards(ArrayList<Card> cards) {
