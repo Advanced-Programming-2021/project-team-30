@@ -127,7 +127,7 @@ public class Duel{
 				Main.outputToUser(DuelMenuResponse.newCardAdded(card.getName()));
 				nextPhase();
 			}
-			else if(currentPhase == 1){
+			if(currentPhase == 1){
 				OnStandByPhase.isCalled = true;
 				for(int location: getTriggeredCardLocations(currentPlayer, Ground.monsterGround)){
 					Card card = getCard(Ground.monsterGround, location, currentPlayer);
@@ -257,7 +257,7 @@ public class Duel{
 	public void nextPhase(){
 		currentPhase++;
 		Main.outputToUser(DuelMenuResponse.currentPhaseName(phaseNames[currentPhase]));
-		if(currentPhase == 6){
+		if(currentPhase == 5){
 			Main.outputToUser(DuelMenuResponse.playerTurn(player[1 - currentPlayer].getNickname()));
 			isTurnFinished = true;
 		}

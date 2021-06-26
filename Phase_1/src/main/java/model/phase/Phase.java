@@ -5,7 +5,7 @@ import model.Duel;
 
 
 public class Phase {
-	final static Phase[] phases = new Phase[5];
+	final static Phase[] phases = new Phase[6];
 	protected String name;
 	protected Command[] validCommands;
 
@@ -23,6 +23,8 @@ public class Phase {
 	}
 
 	public static boolean checkPhaseValidity(int currentPhase, Command command){
+		if(currentPhase == 5)
+			return false;
 		return phases[currentPhase].checkPhaseCommand(command);
 	}
 
