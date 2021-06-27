@@ -10,7 +10,6 @@ import view.Main;
 
 public class MonsterPlayground{
 
-    final Board board;
     private final MonsterCard[] cards = new MonsterCard[5];
     private final String[] position = new String[5];
 
@@ -21,13 +20,10 @@ public class MonsterPlayground{
         }
     }
 
-    public MonsterPlayground(Board board){
-        this.board = board;
-        reset();
-    }
+    public MonsterPlayground(){ reset(); }
 
-    public void set(){
-        addCard((MonsterCard) board.getSelectedCard(), "DH");
+    public void set(MonsterCard card){
+        addCard(card, "DH");
     }
 
     public int total(){
@@ -37,18 +33,7 @@ public class MonsterPlayground{
         return counter;
     }
 
-    public void removeCard(int location){
-        cards[location].undoEffect();
-        cards[location] = null;
-        position[location] = "E";
-    }
-
-    public Card search(int location){
-        return cards[location];
-    }
-
     public void addCard(MonsterCard card, String position){
-        if(card == null) card = (MonsterCard) board.getSelectedCard();
         for(int i = 0; i < 5; i++)if(cards[i] == null) {
             cards[i] = card;
             card.setLocation(i);
@@ -58,8 +43,8 @@ public class MonsterPlayground{
         }
     }
 
-    public void flipSummon(){
-        position[board.getSelectedCardLocation()] = "OO";
+    public void flipSummon(int location){
+        position[location] = "OO";
         Main.outputToUser(DuelMenuResponse.flipSummonSuccessful);
     }
 
@@ -83,12 +68,29 @@ public class MonsterPlayground{
         return position[location];
     }
 
-    public void killCard(int location) {
+    public void removeCard(int location){
+        cards[location].undoEffect();
         cards[location] = null;
+        position[location] = "E";
+    }
+
+    public void removeCard(String cardName){
+        for(int location = 0; location < 5; location++)
+            if(cards[location] != null && cardName.equals(cards[location].getName())) {
+                removeCard(location);
+                return;
+            }
     }
 
     public Card getCard(int location) {
         return cards[location];
+    }
+
+    public MonsterCard getCard(String cardName){
+        for(int location = 0; location < 5; location++)
+            if(cards[location] != null && cardName.equals(cards[location].getName()))
+                return cards[location];
+        return null;
     }
 
     public void replaceCard(int i, Card card) {

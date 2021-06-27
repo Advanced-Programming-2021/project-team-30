@@ -1,7 +1,6 @@
 package model.phase;
 
 import model.Command;
-import model.Duel;
 
 
 public class Phase {

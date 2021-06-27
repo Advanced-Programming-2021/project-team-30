@@ -3,24 +3,16 @@ package model.board;
 import model.cards.Card;
 
 public class SpellTrapPlayground{
-    final Board board;
     private final Card[] cards = new Card[5];
     private final String[] position = new String[5];
 
-    public SpellTrapPlayground(Board board){
-        this.board = board;
-        reset();
-    }
+    public SpellTrapPlayground(){ reset(); }
 
     public void reset() {
         for(int i = 0; i < 5; i++){
             cards[i] = null;
             position[i] = "E";
         }
-    }
-
-    public Card search(int location){
-        return cards[location];
     }
 
     public int total(){
@@ -43,12 +35,6 @@ public class SpellTrapPlayground{
         }
     }
 
-    public void removeCard(int location){
-        cards[location].undoEffect();
-        cards[location] = null;
-        position[location] = "E";
-    }
-
     public String getPosition(int location){
         return position[location];
     }
@@ -57,8 +43,25 @@ public class SpellTrapPlayground{
         return cards[location];
     }
 
-    public void killCard(int location) {
+    public Card getCard(String cardName){
+        for(int location = 0; location < 5; location++)
+            if(cards[location] != null && cardName.equals(cards[location].getName()))
+                return cards[location];
+        return null;
+    }
+
+    public void removeCard(int location){
+        cards[location].undoEffect();
         cards[location] = null;
+        position[location] = "E";
+    }
+
+    public void removeCard(String cardName){
+        for(int location = 0; location < 5; location++)
+            if(cards[location] != null && cardName.equals(cards[location].getName())) {
+                removeCard(location);
+                return;
+            }
     }
 
     public void replaceCard(int i, Card card) {

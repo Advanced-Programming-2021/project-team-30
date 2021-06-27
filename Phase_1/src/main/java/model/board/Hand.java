@@ -2,18 +2,14 @@ package model.board;
 
 import model.cards.Card;
 import model.cards.MonsterCard.MonsterCard;
-import model.cards.nonMonsterCard.Spell.Spell;
-import model.cards.nonMonsterCard.Trap.Trap;
-
 import java.util.ArrayList;
+
 
 public class Hand{
     private final ArrayList<Card> cards = new ArrayList<>();
     private final ArrayList<Boolean> isRequirementsDone = new ArrayList<>();
-    private final Board board;
 
-    public Hand(Board board){
-        this.board = board;
+    public Hand(){
         reset();
     }
 
@@ -31,8 +27,23 @@ public class Hand{
         isRequirementsDone.remove(location);
     }
 
+    public void removeCard(String cardName){
+        for(Card card: cards)
+            if(card.getName().equals(cardName)) {
+                cards.remove(card);
+                return;
+            }
+    }
+
     public Card getCard(int location){
         return cards.get(location);
+    }
+
+    public Card getCard(String cardName){
+        for(Card card: cards)
+            if(card.getName().equals(cardName))
+                return card;
+        return null;
     }
 
     public void addCard(Card card){

@@ -11,7 +11,7 @@ public class SacrificeCards extends Requirement{
     final int neededCards;
     final ArrayList<Ground> grounds;
 
-    public SacrificeCards(int neededCards, ArrayList<Ground> grounds, int ownerPlayer){
+    public SacrificeCards(int ownerPlayer, int neededCards, ArrayList<Ground> grounds){
         super(ownerPlayer);
         this.neededCards = neededCards;
         this.grounds = grounds;

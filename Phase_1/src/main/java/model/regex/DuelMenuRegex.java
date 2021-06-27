@@ -160,4 +160,22 @@ public class DuelMenuRegex {
         }
         Main.outputToUser(DuelMenuResponse.invalidInput);
     }
+
+    public static Matcher getInputForCommand(Command command){
+        String[] regexes = patterns.get(command);
+        Pattern[] patterns = new Pattern[regexes.length];
+        for(int i = 0; i < patterns.length; i++)
+            patterns[i] = Pattern.compile(regexes[i]);
+        Matcher matcher;
+        String in;
+        while(true){
+            in = Main.getInput();
+            for(Pattern pattern: patterns){
+                matcher = pattern.matcher(in);
+                if(matcher.find())
+                    return matcher;
+            }
+            Main.outputToUser(DuelMenuResponse.invalidInput);
+        }
+    }
 }

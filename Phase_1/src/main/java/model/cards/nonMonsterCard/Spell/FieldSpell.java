@@ -7,10 +7,6 @@ public class FieldSpell extends Spell {
         super(name, price, details);
     }
 
-    public void normalSummon() {
-        // ?
-    }
-
     @Override
     public Effect getEffect(){
         return effects.get(0);

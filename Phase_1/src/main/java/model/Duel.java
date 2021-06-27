@@ -46,15 +46,11 @@ public class Duel{
 	public static Duel getRecentDuel(){return Duel.duels.get(duels.size() - 1);}
 	
 	public Duel(Player[] player, int rounds){
-		Deck[] decks = new Deck[]{player[0].getActiveDeck(), player[1].getActiveDeck()};
 		//NOTE: taking clones!!!!!
 		//initialize
-		isScannerSet[0] = false;
-		isScannerSet[1] = false;
 		for(int i = 0; i < 2; i++){
 			this.player[i] = player[i];
 			this.board[i] = new Board(this, player[i], i);
-			board[i].setDecks(decks[i]);
 		}
 		this.rounds = rounds;
 		Duel.duels.add(this);
@@ -74,6 +70,10 @@ public class Duel{
 		isAttackBlocked = false;
 		board[0].reset();
 		board[1].reset();
+		for(int i = 0; i < 5; i++) {
+			board[0].draw();
+			board[1].draw();
+		}
 	}
 
 	public void turnReset(){
@@ -265,10 +265,10 @@ public class Duel{
 
 	public void selectCard(Ground from, int location, boolean enemy, int callerPlayer){
 		if(enemy){
-			board[1 - callerPlayer].selectCard(getRotationLocation(location), from);
+			board[1 - callerPlayer].selectCard(from, getRotationLocation(location));
 			return;
 		}
-		board[callerPlayer].selectCard(location, from);
+		board[callerPlayer].selectCard(from, location);
 	}
 
 	public Card getSelectedCard(){
@@ -640,6 +640,12 @@ public class Duel{
 				}
 		}
 		board[player].killCard(location, ground);
+	}
+
+	public void killCard(String cardName, Ground ground, int player){
+		if(cardName == null)
+			return;
+		board[player].killCard(cardName, ground);
 	}
 
 	public void stopDamage(){

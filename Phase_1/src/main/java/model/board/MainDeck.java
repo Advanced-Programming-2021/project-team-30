@@ -7,12 +7,10 @@ import java.util.Random;
 
 public class MainDeck{
     final ArrayList<Card> finalCards;
-    final Board board;
     final Random rand = new Random();
-    private ArrayList<Card> cards = new ArrayList<Card>();
+    private ArrayList<Card> cards = new ArrayList<>();
 
-    public MainDeck(Board board, ArrayList<Card> cards){
-        this.board = board;
+    public MainDeck(ArrayList<Card> cards){
         this.cards.addAll(cards);
         this.finalCards = cards;
     }
@@ -37,15 +35,9 @@ public class MainDeck{
 
     public void addCard(Card card){ cards.add(card); }
 
-    public void removeCard(Card card){ cards.remove(card); }
-
     public void removeCard(int location){ cards.remove(location); }
 
     public boolean isThereCardOnLocation(int location) {
         return cards.size() > location;
-    }
-
-    public void setCards(ArrayList<Card> cards) {
-        this.cards = cards;
     }
 }

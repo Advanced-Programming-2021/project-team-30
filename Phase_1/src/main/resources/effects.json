@@ -425,28 +425,38 @@
     ],
     "Twin Twisters": [
         [],
-        [],
-        []
+        ["SacrificeCards"],
+        ["DestroyEnemySpells"],
+        [1, "any", 2],
+        false
     ],
     "Mystical space typhoon": [
         [],
         [],
-        []
+        ["DestroyEnemySpells"],
+        [1],
+        false
     ],
     "Ring of defense": [
+        ["OnSpellActivation"],
+        ["DoesRecentSpellCauseDamage"],
+        ["NeutralizeAttackerDamage"],
         [],
-        [],
-        []
+        false
     ],
     "Yami": [
         [],
         [],
-        []
+        [],
+        [],
+        false
     ],
     "Forest": [
         [],
         [],
-        []
+        [],
+        [],
+        false
     ],
     "Closed Forest": [
         [],

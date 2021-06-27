@@ -5,10 +5,8 @@ import view.Main;
 
 public class FieldZone{
     private Card field;
-    final Board board;
 
-    public FieldZone(Board board){
-        this.board = board;
+    public FieldZone(){
         reset();
     }
 

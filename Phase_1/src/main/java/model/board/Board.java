@@ -1,6 +1,5 @@
 package model.board;
 
-import model.Deck;
 import model.Duel;
 import model.Ground;
 import model.Player;
@@ -47,12 +46,12 @@ public class Board{
 
 	public Board(Duel duel, Player player, int boardPlayer){
 		this.duel = duel;
-		this.fieldZone = new FieldZone(this);
-		this.hand = new Hand(this);
-		this.graveYard = new Graveyard(this);
-		this.mainDeck = new MainDeck(this, cloneArrayList(player.getActiveDeck().getAllCards()));
-		this.monsterPlayGround = new MonsterPlayground(this);
-		this.spellTrapPlayGround = new SpellTrapPlayground(this);
+		fieldZone = new FieldZone();
+		hand = new Hand();
+		graveYard = new Graveyard();
+		mainDeck = new MainDeck(cloneArrayList(player.getActiveDeck().getAllCards()));
+		monsterPlayGround = new MonsterPlayground();
+		spellTrapPlayGround = new SpellTrapPlayground();
 		this.player = boardPlayer;
 	}
 
@@ -105,16 +104,13 @@ public class Board{
 
 	public int power(int base, int exponent){ return (int) Math.pow(base, exponent); }
 
-	public void selectCard(int location, Ground from){
+	public void selectCard(Ground from, int location){
 		if(location < 0){
 			Main.outputToUser(DuelMenuResponse.invalidInput);
 			return;
 		}
 		
-		selectedCardOrigin = null;
-		selectedCardLocation = -1;
-		selectedCardOwner = -1;
-		selectedCardPosition = "";
+		deselect(false);
 
 		switch(from){
 			case monsterGround:
@@ -122,7 +118,7 @@ public class Board{
 					Main.outputToUser(DuelMenuResponse.invalidInput);
 					return;
 				}
-				selectedCard = monsterPlayGround.search(location);
+				selectedCard = monsterPlayGround.getCard(location);
 
 				if(selectedCard == null) {
 					Main.outputToUser(DuelMenuResponse.noCardFound);
@@ -136,7 +132,7 @@ public class Board{
 					return;
 				}
 				
-				selectedCard = spellTrapPlayGround.search(location);
+				selectedCard = spellTrapPlayGround.getCard(location);
 				if(selectedCard == null){
 					Main.outputToUser(DuelMenuResponse.noCardFound);
 					return;
@@ -174,12 +170,18 @@ public class Board{
 
 
 	public void deselect(boolean msg){
-		if(selectedCard == null) return;//message: no card is selected yet
+		if(selectedCard == null) {
+			if(msg)
+				Main.outputToUser(DuelMenuResponse.noCardSelected);
+			return;
+		}
 		selectedCard = null;
 		selectedCardLocation = -1;
 		selectedCardOrigin = null;
+		selectedCardOwner = -1;
 		
-		if(msg) Main.outputToUser(DuelMenuResponse.cardDeselected);
+		if(msg)
+			Main.outputToUser(DuelMenuResponse.cardDeselected);
 	}
 
 	public void set(){
@@ -245,6 +247,7 @@ public class Board{
 		MonsterCard card = (MonsterCard) selectedCard;
 		askForTributes(card.getTributes());
 		monsterPlayGround.addCard(card, "OO");
+		removeCard(selectedCardOrigin, selectedCardLocation);
 		deselect(false);
 	}
 
@@ -295,7 +298,7 @@ public class Board{
 			return false;
 		}
 
-		monsterPlayGround.flipSummon();
+		monsterPlayGround.flipSummon(selectedCardLocation);
 		return true;
 	}
 
@@ -338,8 +341,8 @@ public class Board{
 
     public Card getCard(Ground from, int location){
 		return switch (from) {
-			case monsterGround -> monsterPlayGround.search(location);
-			case spellTrapGround -> spellTrapPlayGround.search(location);
+			case monsterGround -> monsterPlayGround.getCard(location);
+			case spellTrapGround -> spellTrapPlayGround.getCard(location);
 			case handGround -> hand.getCard(location);
 			case fieldGround -> fieldZone.getCard();
 			case graveyardGround -> graveYard.getCard(location);
@@ -403,10 +406,10 @@ public class Board{
 		Card card;
 		if(ground == Ground.monsterGround){
 			card = monsterPlayGround.getCard(location);
-			monsterPlayGround.killCard(location);
+			monsterPlayGround.removeCard(location);
 		} else if(ground == Ground.spellTrapGround){
 			card = spellTrapPlayGround.getCard(location);
-			spellTrapPlayGround.killCard(location);
+			spellTrapPlayGround.removeCard(location);
 		}
 		else if(ground == Ground.handGround){
 			card = hand.getCard(location);
@@ -415,6 +418,29 @@ public class Board{
 		else if(ground == Ground.graveyardGround){
 			card = graveYard.getCard(location);
 			graveYard.removeCard(location);
+		}
+		else card = null;
+
+		if(card != null)
+			graveYard.addCard(card);
+	}
+
+	public void killCard(String cardName, Ground ground){
+		Card card;
+		if(ground == Ground.monsterGround){
+			card = monsterPlayGround.getCard(cardName);
+			monsterPlayGround.removeCard(cardName);
+		} else if(ground == Ground.spellTrapGround){
+			card = spellTrapPlayGround.getCard(cardName);
+			spellTrapPlayGround.removeCard(cardName);
+		}
+		else if(ground == Ground.handGround){
+			card = hand.getCard(cardName);
+			hand.removeCard(cardName);
+		}
+		else if(ground == Ground.graveyardGround){
+			card = graveYard.getCard(cardName);
+			graveYard.removeCard(cardName);
 		}
 		else card = null;
 
@@ -489,11 +515,5 @@ public class Board{
 		Card card = spellTrapPlayGround.getAdvancedRitualCard();
 		spellTrapPlayGround.killAdvancedRitualCard();
 		graveYard.addCard(card);
-	}
-
-	public void setDecks(Deck deck) {
-		mainDeck.setCards(deck.getMainDeck());
-		for(int i = 0; i < 5; i++)
-			draw();
 	}
 }
