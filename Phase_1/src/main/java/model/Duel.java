@@ -625,7 +625,7 @@ public class Duel{
 				card = board[player].getCard(Ground.spellTrapGround, i);
 			else
 				card = board[player].getCard(Ground.monsterGround, i);
-			if(card.checkEffects())
+			if(card != null && card.checkEffects())
 				answer.add(i);
 		}
 		return answer;
