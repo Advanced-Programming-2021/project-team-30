@@ -1,0 +1,510 @@
+{
+    "Battle OX": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Axe Raider": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Yomi Ship": [
+        ["OnDeath"],
+        ["IsRecentDeadMe"],
+        ["DestroyRecentAttacker"],
+        [],
+        false
+    ],
+    "Horn Imp": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Silver Fang": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Suijin": [
+        ["OnGettingAttacked"],
+        ["IsRecentAttackedMe"],
+        ["NeutralizeAttackerDamage"],
+        [],
+        true
+    ],
+    "Fireyarou": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Curtain of the dark ones": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Feral Imp": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Dark magician": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Wattkid": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Baby dragon": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Hero of the east": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Battle warrior": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Crawling dragon": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Flame manipulator": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Blue-Eyes white dragon": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Crab Turtle": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Skull Guardian": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Slot Machine": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Haniwa": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Man-Eater Bug": [
+        ["OnFlip"],
+        ["IsRecentFlippedMe"],
+        ["DestroyRandomEnemyMonster"],
+        [],
+        false
+    ],
+    "Gate Guardian": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Scanner": [
+        ["OnStandByPhase"],
+        [null],
+        ["ScannerOnThisRound"],
+        [],
+        false
+    ],
+    "Bitron": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Marshmallon": [
+        ["OnFlip", "OnGettingAttacked"],
+        ["IsRecentAttackedMe", null],
+        ["DecreaseEnemyPlayerLp", "PreventDefenderDeath"],
+        [1000],
+        false
+    ],
+    "Beast King Barbaros": [
+        ["OnSummon"],
+        ["IsRecentSummonedMe"],
+        ["BeastKing"],
+        [],
+        false
+    ],
+    "Texchanger": [
+        ["OnGettingAttacked", "OnGettingAttacked"],
+        ["IsRecentAttackedMe", "OnGettingAttacked"],
+        ["NeutralizeAttackDamage", "SpecialSummon"],
+        [["Cyberse"], ["handGround", "mainDeckGround", "graveYardGround"], "monster"],
+        true
+    ],
+    "Leotron ": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "The Calculator": [
+        ["OnStandByPhase"],
+        [],
+        ["Calculator"],
+        [],
+        false
+    ],
+    "Alexandrite Dragon": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Mirage Dragon": [
+        [],
+        [],
+        ["BlockAllEnemySpells"],
+        [],
+        false
+    ],
+    "Herald of Creation": [
+        [],
+        ["SacrificeCards"],
+        ["SpecialSummon"],
+        [1,["any"], ["graveYardGround"], "monster", "7", "12", "OO"],
+        true
+    ],
+    "Exploder Dragon": [
+        ["OnDeath"],
+        ["IsRecentDeadMe"],
+        ["DestroyRecentAttacker"],
+        [],
+        false
+    ],
+    "Warrior Dai Grepher": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Dark Blade": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Wattaildragon": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Terratiger, the Empowered Warrior": [
+        ["OnSummon"],
+        ["IsRecentSummonedMe"],
+        ["SpecialSummon"],
+        [["any"], ["handGround"], "monster", 0, 4, "DO"],
+        false
+    ],
+    "The Tricky": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Spiral Serpent": [
+        [],
+        [],
+        [],
+        [],
+        false
+    ],
+    "Command Knight": [
+        ["OnSummon", "OnGettingAttacked"],
+        ["IsRecentSummonedMe", "CommandKnight"],
+        ["AddAttackDamage", "BlockAttacker"],
+        [],
+        false
+    ],
+    "Trap Hole": [
+        [],
+        [],
+        []
+    ],
+    "Mirror Force": [
+        [],
+        [],
+        []
+    ],
+    "Magic Cylinder": [
+        [],
+        [],
+        []
+    ],
+    "Mind Crush": [
+        [],
+        [],
+        []
+    ],
+    "Torrential Tribute": [
+        [],
+        [],
+        []
+    ],
+    "Time Seal": [
+        [],
+        [],
+        []
+    ],
+    "Negate Attack": [
+        [],
+        [],
+        []
+    ],
+    "Solemn Warning": [
+        [],
+        [],
+        []
+    ],
+    "Magic Jamamer": [
+        [],
+        [],
+        []
+    ],
+    "Call of The Haunted": [
+        [],
+        [],
+        []
+    ],
+    "Vanity's Emptiness": [
+        [],
+        [],
+        []
+    ],
+    "Wall of Revealing Light": [
+        [],
+        [],
+        []
+    ],
+    "Monster Reborn": [
+        [],
+        [],
+        ["SpecialSummon"],
+        [["any"], ["graveYardGround"], "monster", 0, 12, "OO"],
+        false
+    ],
+    "Terraforming": [
+        [],
+        [],
+        ["PickCardFromDeck"],
+        [1, "field"],
+        false
+    ],
+    "Pot of Greed": [
+        [],
+        [],
+        ["PickCardFromDeck"],
+        [2, "any"],
+        false
+    ],
+    "Raigeki": [
+        [],
+        [],
+        ["ClearEnemySpells"],
+        [],
+        false
+    ],
+    "Change of Heart": [
+        [],
+        [],
+        [],
+        [],
+        true
+    ],
+    "Swords of Revealing Light": [
+        ["OnStandByPhase"],
+        [],
+        ["SwordsEffect"],
+        [],
+        false
+    ],
+    "Harpie's Feather Duster": [
+        [],
+        [],
+        ["ClearEnemySpells"],
+        [],
+        false
+    ],
+    "Dark Hole": [
+        [],
+        [],
+        ["ClearAllMonsterGround"],
+        [],
+        false
+    ],
+    "Supply Squad": [
+        ["OnDeath"],
+        [],
+        ["PickCardFromDeck"],
+        [1],
+        true
+    ],
+    "Spell Absorption": [
+        ["OnSpellActivation"],
+        [],
+        ["AddLp"],
+        [500],
+        false
+    ],
+    "Messenger of peace": [
+        ["OnStandByPhase"],
+        [],
+        ["MessengerEffect"],
+        [],
+        false
+    ],
+    "Twin Twisters": [
+        [],
+        ["SacrificeCards"],
+        ["DestroyEnemySpells"],
+        [1, "any", 2],
+        false
+    ],
+    "Mystical space typhoon": [
+        [],
+        [],
+        ["DestroyEnemySpells"],
+        [1],
+        false
+    ],
+    "Ring of defense": [
+        ["OnSpellActivation"],
+        ["DoesRecentSpellCauseDamage"],
+        ["NeutralizeAttackerDamage"],
+        [],
+        false
+    ],
+    "Yami": [
+        [],
+        [],
+        ["ChangeTargetDamage"],
+        [["Fiend", "Spellcaster", "Fairy"], [200, 200, -200], [200, 200, -200], true],
+        false
+    ],
+    "Forest": [
+        [],
+        [],
+        ["ChangeTargetDamage"],
+        [["Insect", "Beast", "Beast_Warrior"],[200, 200, 200],[200, 200, 200], true],
+        false
+    ],
+    "Closed Forest": [
+        [],
+        [],
+        ["ChangeTargetDamage"],
+        [["Beast"],[0],[0], false],
+        false
+    ],
+    "Umiiruka": [
+        [],
+        [],
+        ["ChangeTargetDamage"],
+        [["Aqua"],[500],[-400], true],
+        false
+    ],
+    "Sword of dark destruction": [
+        [],
+        [],
+        ["ChangeTargetDamage"],
+        [["Fiend", "Spellcaster"],[400, 400],[-200, -200], true],
+        false
+    ],
+    "Black Pendant": [
+        [],
+        [],
+        ["ChangeTargetDamage"],
+        [["any"],[500],[0], true],
+        false
+    ],
+    "United We Stand": [
+        [],
+        [],
+        ["ChangeTargetDamage"],
+        [["any"],[-1],[-1], true],
+        false
+    ],
+    "Magnum Shield": [
+        [],
+        [],
+        ["ChangeTargetDamage"],
+        [["Warrior"],[-2],[-2], true],
+        false
+    ],
+    "Advanced Ritual Art": [
+        [],
+        [],
+        [],
+        [[],[],[], true],
+        false
+    ]
+}
