@@ -4,8 +4,8 @@ import model.Ground;
 import model.cards.MonsterCard.MonsterCard;
 
 public class BeastKing extends Action{
-    public BeastKing(int ownerPlayer, boolean canBeUsedOncePerRound) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public BeastKing(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
     }
 
     @Override

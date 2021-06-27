@@ -3,8 +3,8 @@ package model.effect.action;
 import model.Ground;
 
 public class BlockAllEnemySpells extends Action{
-    public BlockAllEnemySpells(int ownerPlayer, boolean canBeUsedOncePerRound) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public BlockAllEnemySpells(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
     }
 
     @Override

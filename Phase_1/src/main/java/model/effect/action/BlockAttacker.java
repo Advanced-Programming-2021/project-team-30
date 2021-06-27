@@ -1,8 +1,8 @@
 package model.effect.action;
 
 public class BlockAttacker extends Action {
-    public BlockAttacker(int ownerPlayer, boolean canBeUsedOncePerRound){
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public BlockAttacker(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName){
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
     }
 
     @Override

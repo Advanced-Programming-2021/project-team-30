@@ -8,8 +8,8 @@ public class AddAttackDamage extends Action {
     final ArrayList<Ground> targetGrounds;
     final boolean doForBoth;
 
-    public AddAttackDamage(int cardOwner, boolean canBeUsedOncePerRound,int damage, int location, ArrayList<Ground> targetGrounds, boolean doForBoth){
-        super(cardOwner, canBeUsedOncePerRound);
+    public AddAttackDamage(int cardOwner, boolean canBeUsedOncePerRound, String cardName, int damage, int location, ArrayList<Ground> targetGrounds, boolean doForBoth){
+        super(cardOwner, canBeUsedOncePerRound, cardName);
         this.damage = damage;
         this.location = location;
         this.targetGrounds = targetGrounds;

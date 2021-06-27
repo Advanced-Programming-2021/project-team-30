@@ -6,8 +6,8 @@ import model.cards.MonsterCard.MonsterCard;
 import view.Main;
 
 public class ScannerOnThisRound extends Action {
-    public ScannerOnThisRound(int ownerPlayer, boolean canBeUsedOncePerRound) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public ScannerOnThisRound(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
     }
 
     @Override

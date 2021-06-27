@@ -16,8 +16,8 @@ public class SpecialSummon extends Action{
     final ArrayList<Ground> grounds;
     final String cardType, position;
     final int minLevel, maxLevel;
-    public SpecialSummon(int ownerPlayer, boolean canBeUsedOncePerRound, ArrayList<Type> types, ArrayList<Ground> grounds, String cardType, int minLevel, int maxLevel, String position) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public SpecialSummon(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName, ArrayList<Type> types, ArrayList<Ground> grounds, String cardType, int minLevel, int maxLevel, String position) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
         this.types = types;
         this.grounds = grounds;
         this.cardType = cardType;

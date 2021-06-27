@@ -5,8 +5,8 @@ import model.Ground;
 
 public class DestroyRecentAttacker extends Action {
 
-    public DestroyRecentAttacker(int ownerPlayer, boolean canBeUsedOncePerRound){
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public DestroyRecentAttacker(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName){
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
     }
 
     @Override

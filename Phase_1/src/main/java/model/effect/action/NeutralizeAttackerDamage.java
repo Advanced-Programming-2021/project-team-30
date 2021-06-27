@@ -2,8 +2,8 @@ package model.effect.action;
 
 public class NeutralizeAttackerDamage extends Action {
 
-    public NeutralizeAttackerDamage(int ownerPlayer, boolean canBeUsedOncePerRound){
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public NeutralizeAttackerDamage(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName){
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
     }
 
     @Override

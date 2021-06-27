@@ -5,8 +5,8 @@ import model.Ground;
 public class ClearAllMonsterGround extends Action{
 
     final Ground ground;
-    public ClearAllMonsterGround(int ownerPlayer, boolean canBeUsedOncePerRound, Ground ground) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public ClearAllMonsterGround(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName, Ground ground) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
         this.ground = ground;
     }
 

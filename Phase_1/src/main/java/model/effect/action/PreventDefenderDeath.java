@@ -1,8 +1,8 @@
 package model.effect.action;
 
 public class PreventDefenderDeath extends Action{
-    public PreventDefenderDeath(int ownerPlayer, boolean canBeUsedOncePerRound) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public PreventDefenderDeath(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
     }
 
     @Override

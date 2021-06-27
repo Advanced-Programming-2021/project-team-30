@@ -3,8 +3,8 @@ package model.effect.action;
 import model.Ground;
 
 public class ClearEnemySpells extends Action{
-    public ClearEnemySpells(int ownerPlayer, boolean canBeUsedOncePerRound) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public ClearEnemySpells(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
     }
 
     @Override

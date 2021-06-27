@@ -10,8 +10,8 @@ import java.util.regex.Matcher;
 
 public class DestroyEnemySpells extends Action{
     final int totalCards;
-    public DestroyEnemySpells(int ownerPlayer, boolean canBeUsedOncePerRound, String ownerCard, int totalCards) {
-        super(ownerPlayer, canBeUsedOncePerRound, ownerCard);
+    public DestroyEnemySpells(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName, int totalCards) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
         this.totalCards = totalCards;
     }
 

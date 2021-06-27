@@ -3,8 +3,8 @@ package model.effect.action;
 public class AddLp extends Action{
     final int addedHealth;
 
-    public AddLp(int ownerPlayer, boolean canBeUsedOncePerRound, int addedHealth) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public AddLp(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName, int addedHealth) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
         this.addedHealth = addedHealth;
     }
 

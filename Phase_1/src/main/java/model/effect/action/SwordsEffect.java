@@ -4,8 +4,8 @@ import model.Ground;
 
 public class SwordsEffect extends Action{
     private int counter = 3;
-    public SwordsEffect(int ownerPlayer, boolean canBeUsedOncePerRound) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public SwordsEffect(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
     }
 
     @Override

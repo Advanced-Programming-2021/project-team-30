@@ -1,8 +1,8 @@
 package model.effect.action;
 
 public class DestroyRecentSpell extends Action{
-    public DestroyRecentSpell(int ownerPlayer, boolean canBeUsedOncePerRound) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public DestroyRecentSpell(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
     }
 
     @Override

@@ -7,22 +7,25 @@ import java.util.ArrayList;
 
 public class MonsterCard extends Card {
     protected int health , attackDamage , defenseDamage , level, tributes = 0;
-    protected ArrayList<Type> types = new ArrayList<Type>() ;
+    protected ArrayList<Type> types;
     protected Attribute attribute ;
 
-    public MonsterCard(String name, int price, String details) {
+    public MonsterCard(String name, int price, String details, int health , int attackDamage , int defenseDamage ,int level ,ArrayList<Type> types , Attribute attribute) {
         super(name, price, details);
+        this.health = health;
+        this.attackDamage = attackDamage;
+        this.defenseDamage = defenseDamage;
+        this.level = level;
+        this.types = types;
+        this.attribute = attribute;
     }
 
-    public void MonsterCard(int health , int attackDamage , int defenseDamage ,int level ,ArrayList<Type> types , Attribute attribute ,String details ) {
-    }
     public int showHealth() {
         return this.health ;
     }
+
     public void changeHealth(int change) { this.health = change; }
-    public void activeCard() {
-        /// ??
-    }
+
     public int getAttackDamage() {
         return attackDamage;
     }
@@ -30,6 +33,10 @@ public class MonsterCard extends Card {
     public int getDefenseDamage() {
         return defenseDamage;
     }
+
+    public void addAttackDamage(int damage){ this.attackDamage += damage; }
+
+    public void addDefenseDamage(int damage){ this.defenseDamage += damage; }
 
     public int getLevel() {
         return level;
@@ -42,18 +49,6 @@ public class MonsterCard extends Card {
     public Attribute getAttribute() {
         return attribute;
     }
-    public void summon() {
-        // ??
-    }
-    public void set() {
-        // ??
-    }
-
-    public void flip() {
-
-    }
-
-    public void addAttackDamage(int damage){ this.attackDamage += damage; }
 
     public int getTributes(){ return tributes; }
 

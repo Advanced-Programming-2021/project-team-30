@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class PickCardFromDeck extends Action{
     final int total;
     final String cardType;
-    public PickCardFromDeck(int ownerPlayer, boolean canBeUsedOncePerRound, int total, String cardType) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public PickCardFromDeck(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName, int total, String cardType) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
         this.total = total;
         this.cardType = cardType;
     }

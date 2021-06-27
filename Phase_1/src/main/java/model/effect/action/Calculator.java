@@ -3,8 +3,8 @@ package model.effect.action;
 import model.Ground;
 
 public class Calculator extends Action{
-    public Calculator(int ownerPlayer, boolean canBeUsedOncePerRound) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public Calculator(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
     }
 
     @Override

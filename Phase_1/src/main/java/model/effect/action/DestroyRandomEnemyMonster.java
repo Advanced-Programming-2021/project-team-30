@@ -5,8 +5,8 @@ import model.effect.event.OnFlip;
 import model.effect.event.OnSpellActivation;
 
 public class DestroyRandomEnemyMonster extends Action{
-    public DestroyRandomEnemyMonster(int ownerPlayer, boolean canBeUsedOncePerRound) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public DestroyRandomEnemyMonster(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
     }
 
     @Override

@@ -4,8 +4,8 @@ public class DecreaseEnemyPlayerLp extends Action{
 
     final int damage;
 
-    public DecreaseEnemyPlayerLp(int ownerPlayer, boolean canBeUsedOncePerRound, int damage) {
-        super(ownerPlayer, canBeUsedOncePerRound);
+    public DecreaseEnemyPlayerLp(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName, int damage) {
+        super(ownerPlayer, canBeUsedOncePerRound, cardName);
         this.damage = damage;
     }
 

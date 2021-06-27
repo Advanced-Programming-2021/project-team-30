@@ -447,50 +447,64 @@
     "Yami": [
         [],
         [],
-        [],
-        [],
+        ["ChangeTargetDamage"],
+        [["Fiend", "Spellcaster", "Fairy"], [200, 200, -200], [200, 200, -200], true],
         false
     ],
     "Forest": [
         [],
         [],
-        [],
-        [],
+        ["ChangeTargetDamage"],
+        [["Insect", "Beast", "Beast_Warrior"],[200, 200, 200],[200, 200, 200], true],
         false
     ],
     "Closed Forest": [
         [],
         [],
-        []
+        ["ChangeTargetDamage"],
+        [["Beast"],[0],[0], false],
+        false
     ],
     "Umiiruka": [
         [],
         [],
-        []
+        ["ChangeTargetDamage"],
+        [["Aqua"],[500],[-400], true],
+        false
     ],
     "Sword of dark destruction": [
         [],
         [],
-        []
+        ["ChangeTargetDamage"],
+        [["Fiend", "Spellcaster"],[400, 400],[-200, -200], true],
+        false
     ],
     "Black Pendant": [
         [],
         [],
-        []
+        ["ChangeTargetDamage"],
+        [["any"],[500],[0], true],
+        false
     ],
     "United We Stand": [
         [],
         [],
-        []
+        ["ChangeTargetDamage"],
+        [["any"],[-1],[-1], true],
+        false
     ],
     "Magnum Shield": [
         [],
         [],
-        []
+        ["ChangeTargetDamage"],
+        [["Warrior"],[-2],[-2], true],
+        false
     ],
     "Advanced Ritual Art": [
         [],
         [],
-        []
+        [],
+        [[],[],[], true],
+        false
     ]
 }
