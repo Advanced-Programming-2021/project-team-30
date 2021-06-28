@@ -12,10 +12,31 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import view.Main;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
 public class DuelTest {
     static Controller controller = new Controller();
     static Player player = new Player("ali", "1234", "ali");
     static Player secondPlayer = new Player("reza", "1111", "reza");
+    public int getIndexOfEnterInString(String str){
+        return str.indexOf("\n");
+    }
+    public int nthOccurrence(String str1, String str2, int n) {
+        String tempStr = str1;
+        int tempIndex = -1;
+        int finalIndex = 0;
+        for(int occurrence = 0; occurrence < n ; ++occurrence){
+            tempIndex = tempStr.indexOf(str2);
+            if(tempIndex==-1){
+                finalIndex = 0;
+                break;
+            }
+            tempStr = tempStr.substring(++tempIndex);
+            finalIndex+=tempIndex;
+        }
+        return --finalIndex;
+    }
     public String removeLineSeparators(String string){
         return string.replaceAll("\n", "").replaceAll("\r", "");
     }
@@ -42,6 +63,8 @@ public class DuelTest {
     }
     @Test
     public void test() {
+        ByteArrayOutputStream output = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(output));
         Main.readFromConsole = false;
         Main.setInput();
         Initializer.readCardsFromCSV();
@@ -54,6 +77,7 @@ public class DuelTest {
         Duel duel = Duel.getRecentDuel();
         Assertions.assertNotNull(duel);
         Assertions.assertNotNull(player.getActiveDeck());
-
+        String out = output.toString();
+        Assertions.assertEquals("card selectedyou can’t summon this card", removeLineSeparators(out.substring(nthOccurrence(out, "\n", 4) + 1, nthOccurrence(out, "\n", 6))));
     }
 }

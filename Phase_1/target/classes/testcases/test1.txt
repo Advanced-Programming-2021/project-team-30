@@ -1,2 +1,4 @@
+select --hand 1
+summon
 next phase
-select --monster 1
+surrender
