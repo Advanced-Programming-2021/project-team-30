@@ -389,7 +389,6 @@ public class Board{
 			Main.outputToUser(DuelMenuResponse.showMonsterCard((MonsterCard)getSelectedCard()));
 		else
 			Main.outputToUser(DuelMenuResponse.showSpellTrapCard((NonMonsterCard)getSelectedCard()));
-    	deselect(false);
     }
 
     public void killCard(int location, Ground ground){

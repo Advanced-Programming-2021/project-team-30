@@ -103,7 +103,7 @@ public class DuelMenuResponse {
         String def = "DEF: " + card.getDefenseDamage();
         String description = "Description: " + card.getDetails();
 
-        return name + "\n" + level + "\n" + type + "\n" + atk + "\n" + def + "\n" + description + "\n";
+        return String.format("<%s>\n<%s>\n<%s>\n<%s>\n<%s>\n<%s>\n", name, level, type, atk, def, description);
     }
     public static String showSpellTrapCard(NonMonsterCard card){
         String name = "Name: " + card.getName();

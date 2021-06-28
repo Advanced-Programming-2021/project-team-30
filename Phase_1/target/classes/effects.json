@@ -287,64 +287,74 @@
         false
     ],
     "Trap Hole": [
-        [],
-        [],
-        []
+        ["OnSummon", "OnFlip"],
+        ["MinAttackDamage", "MinAttackDamage"],
+        ["DestroyRecentMonster", "DestroyRecentMonster"],
+        [1000, 1000],
+        false
     ],
     "Mirror Force": [
+        ["OnGettingAttacked"],
         [],
-        [],
-        []
+        ["DestroyEnemyMonstersWithPosition"],
+        ["OO"],
+        false
     ],
     "Magic Cylinder": [
+        ["OnGettingAttacked"],
         [],
+        ["MirrorDamageOnPlayer"],
         [],
-        []
+        false
     ],
     "Mind Crush": [
         [],
         [],
-        []
+        ["DestroyCardWithGuessedName"],
+        [],
+        false
     ],
     "Torrential Tribute": [
+        ["OnSummon"],
         [],
+        ["ClearAllMonsterGround"],
         [],
-        []
+        false
     ],
     "Time Seal": [
         [],
         [],
-        []
+        ["BlockEnemyDraw"],
+        [],
+        false
     ],
     "Negate Attack": [
+        ["OnGettingAttacked"],
         [],
+        ["SkipEnemyBattlePhase"],
         [],
-        []
+        false
     ],
     "Solemn Warning": [
-        [],
-        [],
-        []
+        ["OnSummon", "OnSpecialSummon"],
+        ["PayLp", "PayLp"],
+        ["DestroyRecentSummoned", "DestroyRecentSummoned"],
+        [2000, 2000],
+        false
     ],
     "Magic Jamamer": [
-        [],
-        [],
-        []
+        ["OnSpellActivation"],
+        ["SacrificeCards"],
+        ["DestroyRecentSpell"],
+        [1],
+        false
     ],
     "Call of The Haunted": [
         [],
         [],
-        []
-    ],
-    "Vanity's Emptiness": [
-        [],
-        [],
-        []
-    ],
-    "Wall of Revealing Light": [
-        [],
-        [],
-        []
+        ["SpecialSummon"],
+        [["any"], ["graveYardGround"], "monster", 0, 12, "OO"],
+        false
     ],
     "Monster Reborn": [
         [],

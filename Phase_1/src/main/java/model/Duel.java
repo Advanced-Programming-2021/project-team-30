@@ -148,8 +148,8 @@ public class Duel{
 	}
 
 	public boolean checkPlayers(){
-		boolean p1 = (lp[0] <= 0 || getNumberOfCards(Ground.allUsable, 0) == 0 && !didSurrender[0]);
-		boolean p2 = (lp[1] <= 0 || getNumberOfCards(Ground.allUsable, 1) == 0 && !didSurrender[1]);
+		boolean p1 = (lp[0] <= 0 || getNumberOfCards(Ground.allUsable, 0) == 0 || didSurrender[0]);
+		boolean p2 = (lp[1] <= 0 || getNumberOfCards(Ground.allUsable, 1) == 0 || didSurrender[1]);
 
 		return !(p1 || p2);
 	}
