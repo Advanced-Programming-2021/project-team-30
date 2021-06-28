@@ -1,3 +1,2 @@
 next phase
-surrender
-next phase
+select --monster 1
