@@ -34,7 +34,7 @@ public class Duel{
 	private final Stack<Effect> effectStack = new Stack<>();
 	final Board[] board = new Board[2];
 
-	private int currentPlayer, currentPhase, rounds;
+	private int currentPlayer, currentPhase, rounds, p1win, p2win;
 	private final int[] lp = new int[2];
 	private boolean isTurnFinished, didItSummon, isAttackBlocked, isDamageStopped, preventDeath;
 	private final boolean[][] didItChangePosition = new boolean[2][5];
@@ -55,6 +55,8 @@ public class Duel{
 		this.rounds = rounds;
 		Duel.duels.add(this);
 		Phase.createPhases();
+		p1win = 0;
+		p2win = 0;
 	}
 
 	public void roundReset(){
@@ -98,7 +100,7 @@ public class Duel{
 	}
 	
 	public void run(){
-		int maxHealth1 = 0, maxHealth2 = 0;
+		int maxHealth1 = 0, maxHealth2 = 0, r = rounds;
 		while(rounds > 0){
 			//here we design the end of each round
 			roundReset();
@@ -107,6 +109,15 @@ public class Duel{
 			maxHealth2 = getMax(maxHealth2, this.lp[1]);
 			rounds--;
 		}
+		int p1money = 100, p2money = 100;
+		if(p1win > p2win)
+			p1money = 3 * r + 3 * maxHealth1;
+		else
+			p2money = 3 * r + 3 * maxHealth2;
+		player[0].setScore(player[0].getScore() + 1000 * p1win);
+		player[0].setMoney(player[0].getMoney() + p1money);
+		player[1].setScore(player[1].getScore() + 1000 * p2win);
+		player[1].setMoney(player[1].getMoney() + p2money);
 	}
 
 	public int getMax(int a, int b){
@@ -155,10 +166,14 @@ public class Duel{
 		boolean p1 = (lp[0] <= 0 || getNumberOfCards(Ground.allUsable, 0) == 0 || didSurrender[0]);
 		boolean p2 = (lp[1] <= 0 || getNumberOfCards(Ground.allUsable, 1) == 0 || didSurrender[1]);
 
-		if(p1)
+		if(p1) {
+			p2win++;
 			Main.outputToUser("player 1 lost this round");
-		else if(p2)
+		}
+		else if(p2) {
+			p1win++;
 			Main.outputToUser("player 2 lost this round");
+		}
 		return !(p1 || p2);
 	}
 
