@@ -19,9 +19,6 @@ public class DuelTest {
     static Controller controller = new Controller();
     static Player player = new Player("ali", "1234", "ali");
     static Player secondPlayer = new Player("reza", "1111", "reza");
-    public int getIndexOfEnterInString(String str){
-        return str.indexOf("\n");
-    }
     public int nthOccurrence(String str1, String str2, int n) {
         String tempStr = str1;
         int tempIndex = -1;
@@ -64,7 +61,7 @@ public class DuelTest {
     @Test
     public void test() {
         ByteArrayOutputStream output = new ByteArrayOutputStream();
-        //System.setOut(new PrintStream(output));
+        System.setOut(new PrintStream(output));
         Main.readFromConsole = false;
         Main.setInput();
         Initializer.readCardsFromCSV();
@@ -77,7 +74,10 @@ public class DuelTest {
         Duel duel = Duel.getRecentDuel();
         Assertions.assertNotNull(duel);
         Assertions.assertNotNull(player.getActiveDeck());
-        //String out = output.toString();
-        //Assertions.assertEquals("card selectedyou can’t summon this card", removeLineSeparators(out.substring(nthOccurrence(out, "\n", 4) + 1, nthOccurrence(out, "\n", 6))));
+        String out = output.toString();
+        String expected = "phase: <<standby phase>>phase: <<main phase 1>><reza>:<8000>\tc\tc\tc\tc\tcDN\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE GY\t\t\t\t\t\tFZ------------------------------FZ\t\t\t\t\t\tGY\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE \t\t\t\t\t\tDN\tc\tc\tc\tc\tc\tc<ali>:<8000>card selected<reza>:<8000>\tc\tc\tc\tc\tcDN\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE GY\t\t\t\t\t\tFZ------------------------------FZ\t\t\t\t\t\tGY\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE \t\t\t\t\t\tDN\tc\tc\tc\tc\tc\tc<ali>:<8000>you can’t summon this card<reza>:<8000>\tc\tc\tc\tc\tcDN\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE GY\t\t\t\t\t\tFZ------------------------------FZ\t\t\t\t\t\tGY\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE \t\t\t\t\t\tDN\tc\tc\tc\tc\tc\tc<ali>:<8000>phase: <<battle phase>><reza>:<8000>\tc\tc\tc\tc\tcDN\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE GY\t\t\t\t\t\tFZ------------------------------FZ\t\t\t\t\t\tGY\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE \t\t\t\t\t\tDN\tc\tc\tc\tc\tc\tc<ali>:<8000>Player <ali> surrenderedplayer 1 lost this round";
+        Assertions.assertEquals(expected, removeLineSeparators(out.substring(nthOccurrence(out, "\n", 2) + 1)));
+        Assertions.assertEquals(0, secondPlayer.getScore());
+        Assertions.assertEquals(0, player.getScore());
     }
 }
