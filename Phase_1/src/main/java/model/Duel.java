@@ -147,6 +147,7 @@ public class Duel{
 									  ,new String[][]{getPositions(currentPlayer, Ground.monsterGround), getPositions(1 - currentPlayer, Ground.monsterGround)}
 									  ,new String[][]{getPositions(currentPlayer, Ground.spellTrapGround), getPositions(1 - currentPlayer, Ground.spellTrapGround)}
 									  ,new String[]{player[currentPlayer].getNickname(), player[1 - currentPlayer].getNickname()});
+			listen(true, null, null);
 		}
 	}
 
