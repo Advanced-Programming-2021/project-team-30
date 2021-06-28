@@ -38,7 +38,7 @@ public class Duel{
 	private final int[] lp = new int[2];
 	private boolean isTurnFinished, didItSummon, isAttackBlocked, isDamageStopped, preventDeath;
 	private final boolean[][] didItChangePosition = new boolean[2][5];
-	private final boolean[] didItAttack = new boolean[5], isScannerSet = new boolean[2], didSurrender = new boolean[2];
+	private final boolean[] didItAttack = new boolean[5], isScannerSet = new boolean[2], didSurrender = new boolean[2], isDrawBlocked = new boolean[2];
 
 	public static ArrayList<Duel> duels = new ArrayList<>();
 	public static MonsterCard[] scanner;
@@ -70,6 +70,8 @@ public class Duel{
 		isAttackBlocked = false;
 		board[0].reset();
 		board[1].reset();
+		isDrawBlocked[0] = false;
+		isDrawBlocked[1] = false;
 		for(int i = 0; i < 5; i++) {
 			board[0].draw();
 			board[1].draw();
@@ -124,7 +126,8 @@ public class Duel{
 		while(!isTurnFinished){
 			if(currentPhase == 0){
 				Card card = draw();
-				Main.outputToUser(DuelMenuResponse.newCardAdded(card.getName()));
+				if(card != null)
+					Main.outputToUser(DuelMenuResponse.newCardAdded(card.getName()));
 				nextPhase();
 			}
 			if(currentPhase == 1){
@@ -138,6 +141,7 @@ public class Duel{
 					card.doEffect(card.getEffect());
 				}
 				OnStandByPhase.isCalled = false;
+				nextPhase();
 			}
 			listen(true, null, null);
 		}
@@ -315,7 +319,12 @@ public class Duel{
 	}
 
 	public Card draw(){
-		return board[currentPlayer].draw();
+		if(isDrawBlocked[currentPlayer]) {
+			isDrawBlocked[currentPlayer] = false;
+			return null;
+		}
+		else
+			return board[currentPlayer].draw();
 	}
 
 	public void flipSummon(){
@@ -724,4 +733,8 @@ public class Duel{
 		int location = locations.pop(), size = chain.size();
 		killCard(location, Ground.spellTrapGround, (size + 1 + currentPlayer) % 2);
     }
+
+	public void blockDraw(int player) {
+		isDrawBlocked[player] = true;
+	}
 }

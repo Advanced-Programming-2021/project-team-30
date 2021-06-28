@@ -11,5 +11,6 @@ public enum Requirements {
     IsRecentSummonedMe,
     MinNumberOfFriends,
     NumberOfSacrificedCard,
-    RecentSummonedMinDamage
+    RecentSummonedMinDamage,
+    MinAttackDamage
 }

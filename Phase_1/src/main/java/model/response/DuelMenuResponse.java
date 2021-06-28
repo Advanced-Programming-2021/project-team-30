@@ -27,7 +27,7 @@ public class DuelMenuResponse {
     public static String invalidRound = "number of rounds is not supported";
     public static String invalidSelection = "invalid selection";
     public static String cardSelected = "card selected";
-    public static String noCardFound = "no card found in the given position";
+    public static String noCardFound = "no card found in the given location";
     public static String cardDeselected = "card deselected";
     public static String noCardSelected = "no card is selected yet";
     public static String cantSummon = "you can’t summon this card";

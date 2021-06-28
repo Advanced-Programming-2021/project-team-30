@@ -1,7 +1,2 @@
 next phase
-select --monster 0
 select --monster 1
-select --monster 2
-select --monster 3
-select --monster 4
-select --monster 5

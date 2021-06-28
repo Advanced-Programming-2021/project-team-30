@@ -112,55 +112,50 @@ public class Board{
 		
 		deselect(false);
 
-		switch(from){
-			case monsterGround:
-				if(location > 4){
-					Main.outputToUser(DuelMenuResponse.invalidInput);
-					return;
-				}
-				selectedCard = monsterPlayGround.getCard(location);
-
-				if(selectedCard == null) {
-					Main.outputToUser(DuelMenuResponse.noCardFound);
-					return;
-				}
-				selectedCardPosition = getPosition(location, Ground.monsterGround);
-
-			case spellTrapGround:
-				if(location > 4) {
-					Main.outputToUser(DuelMenuResponse.invalidInput);
-					return;
-				}
-				
-				selectedCard = spellTrapPlayGround.getCard(location);
-				if(selectedCard == null){
-					Main.outputToUser(DuelMenuResponse.noCardFound);
-					return;
-				}
-
-				selectedCardPosition = getPosition(location, Ground.spellTrapGround);
-				
-
-			case handGround:
-				if(location >= hand.total()) {
-					Main.outputToUser(DuelMenuResponse.invalidInput);
-					return;
-				}
-				selectedCard = hand.getCard(location);
-
-			case fieldGround:
-				selectedCard = fieldZone.getCard();
-				if(selectedCard == null){
-					Main.outputToUser(DuelMenuResponse.fieldZoneEmpty);
-					return;
-				}
-
-			case graveyardGround:
-				selectedCard = graveYard.getCard(location);
-				if(selectedCard == null){
-					Main.outputToUser(DuelMenuResponse.invalidInput);
-					return;
-				}
+		if(from == Ground.monsterGround) {
+			if (location > 4) {
+				Main.outputToUser(DuelMenuResponse.invalidInput);
+				return;
+			}
+			selectedCard = monsterPlayGround.getCard(location);
+			if (selectedCard == null) {
+				Main.outputToUser(DuelMenuResponse.noCardFound);
+				return;
+			}
+			selectedCardPosition = getPosition(location, Ground.monsterGround);
+		}
+		else if(from == Ground.spellTrapGround) {
+			if (location > 4) {
+				Main.outputToUser(DuelMenuResponse.invalidInput);
+				return;
+			}
+			selectedCard = spellTrapPlayGround.getCard(location);
+			if (selectedCard == null) {
+				Main.outputToUser(DuelMenuResponse.noCardFound);
+				return;
+			}
+			selectedCardPosition = getPosition(location, Ground.spellTrapGround);
+		}
+		else if(from == Ground.handGround) {
+			if (location >= hand.total()) {
+				Main.outputToUser(DuelMenuResponse.invalidInput);
+				return;
+			}
+			selectedCard = hand.getCard(location);
+		}
+		else if(from == Ground.fieldGround) {
+			selectedCard = fieldZone.getCard();
+			if (selectedCard == null) {
+				Main.outputToUser(DuelMenuResponse.fieldZoneEmpty);
+				return;
+			}
+		}
+		else if(from == Ground.graveyardGround){
+			if(location >= graveYard.total()){
+				Main.outputToUser(DuelMenuResponse.invalidInput);
+				return;
+			}
+			selectedCard = graveYard.getCard(location);
 		}
 		selectedCardOrigin = from;
 		selectedCardOwner = player;
@@ -371,19 +366,14 @@ public class Board{
     }
 
     public void addCard(Ground to, Card card, String position){
-    	switch(to){
-			case monsterGround:
-    			monsterPlayGround.addCard((MonsterCard) card, position);
-
-    		case spellTrapGround:
-    			spellTrapPlayGround.addCard(card, position);
-
-    		case graveyardGround:
-    			graveYard.addCard(card);
-
-			case handGround:
-				hand.addCard(card);
-    	}
+		if(to == Ground.monsterGround)
+			monsterPlayGround.addCard((MonsterCard) card, position);
+		else if(to == Ground.spellTrapGround)
+			spellTrapPlayGround.addCard(card, position);
+		else if(to == Ground.graveyardGround)
+			graveYard.addCard(card);
+		else if(to == Ground.handGround)
+			hand.addCard(card);
     }
 
     public void showCard(){
@@ -410,16 +400,13 @@ public class Board{
 		} else if(ground == Ground.spellTrapGround){
 			card = spellTrapPlayGround.getCard(location);
 			spellTrapPlayGround.removeCard(location);
-		}
-		else if(ground == Ground.handGround){
+		} else if(ground == Ground.handGround){
 			card = hand.getCard(location);
 			hand.removeCard(location);
-		}
-		else if(ground == Ground.graveyardGround){
+		} else if(ground == Ground.graveyardGround){
 			card = graveYard.getCard(location);
 			graveYard.removeCard(location);
-		}
-		else card = null;
+		} else card = null;
 
 		if(card != null)
 			graveYard.addCard(card);
