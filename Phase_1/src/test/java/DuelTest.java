@@ -77,7 +77,9 @@ public class DuelTest {
         String out = output.toString();
         String expected = "phase: <<standby phase>>phase: <<main phase 1>><reza>:<8000>\tc\tc\tc\tc\tcDN\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE GY\t\t\t\t\t\tFZ------------------------------FZ\t\t\t\t\t\tGY\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE \t\t\t\t\t\tDN\tc\tc\tc\tc\tc\tc<ali>:<8000>card selected<reza>:<8000>\tc\tc\tc\tc\tcDN\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE GY\t\t\t\t\t\tFZ------------------------------FZ\t\t\t\t\t\tGY\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE \t\t\t\t\t\tDN\tc\tc\tc\tc\tc\tc<ali>:<8000>you can’t summon this card<reza>:<8000>\tc\tc\tc\tc\tcDN\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE GY\t\t\t\t\t\tFZ------------------------------FZ\t\t\t\t\t\tGY\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE \t\t\t\t\t\tDN\tc\tc\tc\tc\tc\tc<ali>:<8000>phase: <<battle phase>><reza>:<8000>\tc\tc\tc\tc\tcDN\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE GY\t\t\t\t\t\tFZ------------------------------FZ\t\t\t\t\t\tGY\tE \tE \tE \tE \tE \tE \tE \tE \tE \tE \t\t\t\t\t\tDN\tc\tc\tc\tc\tc\tc<ali>:<8000>Player <ali> surrenderedplayer 1 lost this round";
         Assertions.assertEquals(expected, removeLineSeparators(out.substring(nthOccurrence(out, "\n", 2) + 1)));
-        Assertions.assertEquals(0, secondPlayer.getScore());
+        Assertions.assertEquals(1000, secondPlayer.getScore());
         Assertions.assertEquals(0, player.getScore());
+        Assertions.assertEquals(100, player.getMoney());
+        Assertions.assertEquals(24003, secondPlayer.getMoney());
     }
 }
