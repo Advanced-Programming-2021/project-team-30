@@ -5,6 +5,7 @@ import model.cards.MonsterCard.MonsterCard;
 import model.cards.nonMonsterCard.NonMonsterCard;
 import model.cards.nonMonsterCard.Spell.Spell;
 import model.cards.Card;
+import view.Main;
 
 
 public class DuelMenuResponse {
@@ -113,7 +114,7 @@ public class DuelMenuResponse {
         String type = "Type: " + card.getType();
         String description = "Description: " + card.getDetails();
 
-        return name + "\n" + spellOrTrap + "\n" + type + "\n" + description + "\n";
+        return String.format("<%s>\n<%s>\n<%s>\n<%s>\n", name, spellOrTrap, type, description);
     }
     public static String showGraveYard(Card[] cards){
         if(cards == null)
@@ -132,5 +133,39 @@ public class DuelMenuResponse {
 
     public static String invalidCommand(Command command) {
         return "invalid command; did you mean " + command.toString();
+    }
+
+    public static void showBoard(int[] life, int[] hand, String[][] monsters, String[][] spells, String[] names){
+        StringBuilder board = new StringBuilder("");
+        board.append(String.format("<%s>:<%d>\n", names[1], life[1]));
+        while(hand[1]-- > 0)
+            board.append("\tc");
+        board.append("\nDN\n");
+        for(String pos: spells[1]) {
+            board.append("\t").append(pos);
+            if(pos.length() == 1)board.append(" ");
+        }
+        board.append("\n");
+        for(String pos: monsters[1]) {
+            board.append("\t").append(pos);
+            if(pos.length() == 1)board.append(" ");
+        }
+        board.append("\n");
+        board.append("GY\t\t\t\t\t\tFZ\n------------------------------\nFZ\t\t\t\t\t\tGY\n");
+        for(String pos: monsters[0]) {
+            board.append("\t").append(pos);
+            if(pos.length() == 1)board.append(" ");
+        }
+        board.append("\n");
+        for(String pos: spells[0]) {
+            board.append("\t").append(pos);
+            if(pos.length() == 1)board.append(" ");
+        }
+        board.append("\n\t\t\t\t\t\tDN\n");
+        while(hand[0]-- > 0)
+            board.append("\tc");
+        board.append("\n");
+        board.append(String.format("<%s>:<%d>\n", names[0], life[0]));
+        Main.outputToUser(board.toString());
     }
 }

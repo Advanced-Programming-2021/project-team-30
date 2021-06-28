@@ -96,7 +96,6 @@ public class Duel{
 		isTurnFinished = false;
 		Main.outputToUser(DuelMenuResponse.currentPhaseName(phaseNames[0]));
 	}
-	//TODO special summon
 	
 	public void run(){
 		int maxHealth1 = 0, maxHealth2 = 0;
@@ -143,7 +142,11 @@ public class Duel{
 				OnStandByPhase.isCalled = false;
 				nextPhase();
 			}
-			listen(true, null, null);
+			DuelMenuResponse.showBoard(new int[]{lp[currentPlayer], lp[1 - currentPlayer]}
+									  ,new int[]{board[currentPlayer].getNumberOfCards(Ground.handGround), board[1 - currentPlayer].getNumberOfCards(Ground.handGround)}
+									  ,new String[][]{getPositions(currentPlayer, Ground.monsterGround), getPositions(1 - currentPlayer, Ground.monsterGround)}
+									  ,new String[][]{getPositions(currentPlayer, Ground.spellTrapGround), getPositions(1 - currentPlayer, Ground.spellTrapGround)}
+									  ,new String[]{player[currentPlayer].getNickname(), player[1 - currentPlayer].getNickname()});
 		}
 	}
 
@@ -151,6 +154,10 @@ public class Duel{
 		boolean p1 = (lp[0] <= 0 || getNumberOfCards(Ground.allUsable, 0) == 0 || didSurrender[0]);
 		boolean p2 = (lp[1] <= 0 || getNumberOfCards(Ground.allUsable, 1) == 0 || didSurrender[1]);
 
+		if(p1)
+			Main.outputToUser("player 1 lost this round");
+		else if(p2)
+			Main.outputToUser("player 2 lost this round");
 		return !(p1 || p2);
 	}
 
@@ -251,11 +258,16 @@ public class Duel{
 			showCard();
 		else if(command == Command.surrender)
 			surrender();
+		else if(command == Command.cardShow) {
+			String name = matcher.group(1);
+			showCard(name);
+		}
 	}
 
 	public void surrender(){
 		didSurrender[currentPlayer] = true;
 		isTurnFinished = true;
+		Main.outputToUser(String.format("Player <%s> surrendered", player[currentPlayer].getUsername()));
 	}
 
 	public void nextPhase(){
@@ -380,6 +392,10 @@ public class Duel{
 
 	public String getPosition(int player, int location, Ground ground){
 		return board[player].getPosition(location, ground);
+	}
+
+	public String[] getPositions(int player, Ground ground){
+		return board[player].getPositions(ground);
 	}
 
 	public void blockAttack(){ this.isAttackBlocked = true; }
@@ -600,6 +616,10 @@ public class Duel{
 
 	public void showCard(){
 		board[currentPlayer].showCard();
+	}
+
+	public void showCard(String name){
+		board[currentPlayer].showCard(name);
 	}
 
 	public int getCurrentPlayer(){

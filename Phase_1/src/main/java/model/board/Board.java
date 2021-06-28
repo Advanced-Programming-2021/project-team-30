@@ -238,6 +238,11 @@ public class Board{
 		return spellTrapPlayGround.getPosition(location);
 	}
 
+	public String[] getPositions(Ground ground){
+		if(ground == Ground.monsterGround)return monsterPlayGround.getPositions();
+		return spellTrapPlayGround.getPositions();
+	}
+
 	public void summonFromHand(){
 		MonsterCard card = (MonsterCard) selectedCard;
 		askForTributes(card.getTributes());
@@ -391,6 +396,31 @@ public class Board{
 			Main.outputToUser(DuelMenuResponse.showSpellTrapCard((NonMonsterCard)getSelectedCard()));
     }
 
+    public void showCard(String name){
+		Card card;
+		for(int location = 0; location < hand.total(); location++) {
+			card = hand.getCard(location);
+			if (card.getName().equals(name)) {
+				if(card instanceof MonsterCard)
+					Main.outputToUser(DuelMenuResponse.showMonsterCard((MonsterCard) card));
+				else
+					Main.outputToUser(DuelMenuResponse.showSpellTrapCard((NonMonsterCard) card));
+			}
+		}
+		for(int location = 0; location < 5; location++) {
+			card = monsterPlayGround.getCard(location);
+			if (card.getName().equals(name))
+					Main.outputToUser(DuelMenuResponse.showMonsterCard((MonsterCard) card));
+		}
+
+		for(int location = 0; location < 5; location++) {
+			card = spellTrapPlayGround.getCard(location);
+			if (card.getName().equals(name))
+				Main.outputToUser(DuelMenuResponse.showSpellTrapCard((NonMonsterCard) card));
+		}
+		Main.outputToUser("no card found with the given name");
+	}
+
     public void killCard(int location, Ground ground){
 		Card card;
 		if(ground == Ground.monsterGround){
@@ -445,7 +475,6 @@ public class Board{
 			spellTrapPlayGround.replaceCard(i, card);
 	}
 
-	//TODO change of hearts effect
     public void specialSummon(Ground ground, int location, String position) {
 		Card card = null;
 		if(ground == Ground.graveyardGround){

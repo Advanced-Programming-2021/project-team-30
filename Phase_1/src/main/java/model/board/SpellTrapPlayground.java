@@ -39,6 +39,8 @@ public class SpellTrapPlayground{
         return position[location];
     }
 
+    public String[] getPositions(){ return position; }
+
     public Card getCard(int location) {
         return cards[location];
     }

@@ -10,6 +10,7 @@ import model.response.DuelMenuResponse;
 import model.response.MenuResponse;
 import view.Main;
 
+import java.io.FileNotFoundException;
 import java.util.regex.Matcher;
 
 public class DuelMenu {
@@ -18,7 +19,7 @@ public class DuelMenu {
     public DuelMenu(){
         currentPlayer = MainMenu.getCurrentUser();
     }
-    private void newDuel(Matcher matcher){
+    private void newDuel(Matcher matcher) throws FileNotFoundException {
         if (matcher.find()){
             String player2Username = matcher.group("player2Name");
             int round = Integer.parseInt(matcher.group("round"));
@@ -52,7 +53,7 @@ public class DuelMenu {
         }
 
     }
-    public void run(String command){
+    public void run(String command) throws FileNotFoundException {
         Matcher newDuel = Regex.getCommandMatcherRegexes(command, DuelMenuRegex.newDuel);
         Matcher newDuelAbbr = Regex.getCommandMatcherRegexes(command, DuelMenuRegex.newDuelAbbr);
         Matcher newDuelAI = Regex.getCommandMatcherRegexes(command, DuelMenuRegex.newDuelAI);

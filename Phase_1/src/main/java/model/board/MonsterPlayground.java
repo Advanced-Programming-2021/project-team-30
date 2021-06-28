@@ -68,6 +68,10 @@ public class MonsterPlayground{
         return position[location];
     }
 
+    public String[] getPositions(){
+        return position;
+    }
+
     public void removeCard(int location){
         cards[location].undoEffect();
         cards[location] = null;
