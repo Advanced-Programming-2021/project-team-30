@@ -4,7 +4,7 @@ import javafx.scene.Node;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import yugioh.model.Card;
+import yugioh.model.cards.Card;
 import yugioh.model.Deck;
 
 import java.util.ArrayList;

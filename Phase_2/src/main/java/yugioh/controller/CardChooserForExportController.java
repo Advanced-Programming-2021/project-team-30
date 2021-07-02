@@ -2,20 +2,17 @@ package yugioh.controller;
 
 import javafx.event.EventHandler;
 import javafx.scene.Node;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import yugioh.model.Card;
+import yugioh.model.cards.Card;
 import yugioh.model.CardInitializer;
-import yugioh.view.EditDeckView;
 import yugioh.view.ImportExportView;
 import yugioh.view.LoginMenuView;
 
 import java.io.File;
-import java.util.ArrayList;
 
 public class CardChooserForExportController {
     public GridPane gridPane;

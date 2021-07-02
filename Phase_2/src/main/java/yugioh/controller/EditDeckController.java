@@ -1,6 +1,5 @@
 package yugioh.controller;
 
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -10,7 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import yugioh.model.Card;
+import yugioh.model.cards.Card;
 import yugioh.model.CardInitializer;
 import yugioh.model.Deck;
 import yugioh.view.DeckMenuView;

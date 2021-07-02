@@ -1,11 +1,13 @@
-package yugioh.model;
+package yugioh.model.cards;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.regex.Matcher;
 
 public class Card {
     private String name;
     private int price;
     private String description;
+
 
     public Card(String name, int price, String description) {
         setName(name);

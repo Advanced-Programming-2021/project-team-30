@@ -11,4 +11,5 @@ module Phase_2{
         exports yugioh.controller to javafx.fxml;
 //        exports yugioh.model to javafx.fxml;
         exports yugioh;
+    opens yugioh.model.cards to com.google.gson, javafx.base, javafx.fxml;
 }

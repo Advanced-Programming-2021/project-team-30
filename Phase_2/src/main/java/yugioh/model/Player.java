@@ -2,6 +2,7 @@ package yugioh.model;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import yugioh.model.cards.Card;
 
 
 import java.io.File;

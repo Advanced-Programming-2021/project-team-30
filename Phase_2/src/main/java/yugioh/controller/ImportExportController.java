@@ -2,13 +2,12 @@ package yugioh.controller;
 
 import com.google.gson.Gson;
 import com.opencsv.CSVReader;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.FileChooser;
-import yugioh.model.Card;
+import yugioh.model.cards.Card;
 import yugioh.model.CardInitializer;
 import yugioh.view.CardChooserForExportView;
 import yugioh.view.LoginMenuView;

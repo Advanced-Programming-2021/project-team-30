@@ -1,5 +1,6 @@
 package yugioh.model;
 import com.opencsv.CSVReader;
+import yugioh.model.cards.Card;
 
 import java.io.FileReader;
 import java.util.ArrayList;
