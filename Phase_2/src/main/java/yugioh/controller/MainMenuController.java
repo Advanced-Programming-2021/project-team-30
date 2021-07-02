@@ -41,7 +41,8 @@ public class MainMenuController {
         new ShopMenuView().start(LoginMenuView.stage);
     }
 
-    public void gotoImportExport(ActionEvent actionEvent) {
+    public void gotoImportExport(ActionEvent actionEvent) throws Exception {
+        new ImportExportView().start(LoginMenuView.stage);
     }
 
     public void back(ActionEvent actionEvent) throws Exception {

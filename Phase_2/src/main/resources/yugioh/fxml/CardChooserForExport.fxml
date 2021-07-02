@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.image.ImageView?>
+<AnchorPane prefHeight="900.0" prefWidth="1590.0" style="-fx-background-color: #ba562c" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.CardChooserForExportController">
+    <children>
+        <GridPane fx:id="gridPane" layoutX="578.0" layoutY="78.0" prefHeight="375.0" prefWidth="986.0">
+
+        </GridPane>
+        <GridPane fx:id="gridPane2" layoutX="578.0" layoutY="500.0" prefHeight="375.0" prefWidth="986.0">
+
+        </GridPane>
+        <Label layoutX="578.0" layoutY="33.0" text="Monster Cards" textFill="WHITE">
+            <font>
+                <Font size="23.0" />
+            </font></Label>
+        <Label layoutX="578.0" layoutY="450.0" text="Spell Trap Cards" textFill="WHITE">
+            <font>
+                <Font size="23.0" />
+            </font>
+        </Label>
+        <ImageView fx:id="cardImage" fitHeight="452.0" fitWidth="380.0" layoutX="116.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true" />
+        <Button layoutX="220.0" layoutY="656.0" onMouseClicked="#chooseCard" mnemonicParsing="false" text="Choose">
+            <font>
+                <Font size="29.0" />
+            </font>
+        </Button>
+        <Label fx:id="cardNameLabel" layoutX="190.0" layoutY="60.0" textFill="WHITE">
+            <font>
+                <Font size="25.0" />
+            </font>
+        </Label>
+
+    </children>
+</AnchorPane>
