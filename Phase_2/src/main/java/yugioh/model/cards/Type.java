@@ -8,7 +8,7 @@ public enum Type {
     Fiend ,
     Aqua ,
     Pyro ,
-    Spellcaster ,
+    SpellCaster ,
     Thunder ,
     Dragon ,
     Machine ,
@@ -16,5 +16,7 @@ public enum Type {
     Insect ,
     Cyberse ,
     Beast_Warrior,
+    Sea_Serpent,
+    Fairy,
     any
 }
