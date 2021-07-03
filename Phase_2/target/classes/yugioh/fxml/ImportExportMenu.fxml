@@ -34,12 +34,12 @@
             <Font size="31.0" />
          </font>
       </Button>
-      <Button layoutX="1010.0" layoutY="716.0" mnemonicParsing="false" onMouseClicked="#exportCardToCSV" text="Export To CSV">
+      <Button layoutX="954.0" layoutY="718.0" mnemonicParsing="false" onMouseClicked="#exportCardToCSV" text="Export To CSV">
          <font>
             <Font size="26.0" />
          </font>
       </Button>
-      <Label fx:id="cardNameLabelImport" layoutX="346.0" layoutY="652.0" text="a" textFill="WHITE">
+      <Label fx:id="cardNameLabelImport" layoutX="346.0" layoutY="652.0" textFill="WHITE">
          <font>
             <Font size="32.0" />
          </font>
@@ -49,15 +49,19 @@
             <Font size="32.0" />
          </font>
       </Label>
-      <Separator layoutX="776.0" layoutY="59.0" orientation="VERTICAL" prefHeight="618.0" prefWidth="18.0" />
-      <Button layoutX="730.0" layoutY="704.0" mnemonicParsing="false" onMouseClicked="#back" text="Back">
+      <Button layoutX="703.0" layoutY="460.0" mnemonicParsing="false" onMouseClicked="#back" text="Back">
          <font>
-            <Font size="31.0" />
+            <Font size="38.0" />
          </font>
       </Button>
-      <Button layoutX="1218.0" layoutY="716.0" mnemonicParsing="false" onMouseClicked="#exportCardToJSON" text="Export To JSON">
+      <Button layoutX="1176.0" layoutY="718.0" mnemonicParsing="false" onMouseClicked="#exportCardToJSON" text="Export To JSON">
          <font>
             <Font size="26.0" />
+         </font>
+      </Button>
+      <Button layoutX="609.0" layoutY="356.0" mnemonicParsing="false" onMouseClicked="#createNewCard" text="Create New Card">
+         <font>
+            <Font size="36.0" />
          </font>
       </Button>
    </children>

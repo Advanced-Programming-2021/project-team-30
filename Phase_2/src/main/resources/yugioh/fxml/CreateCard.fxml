@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="pane" prefHeight="900.0" prefWidth="1590.0" style="-fx-background-color: #e012d6;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.CreateCardController">
+   <children>
+      <Separator layoutX="412.0" layoutY="472.0" prefHeight="50.0" prefWidth="1120.0" />
+      <Label layoutX="653.0" layoutY="52.0" text="Create New Card" textFill="WHITE">
+         <font>
+            <Font size="43.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="cardImage" fitHeight="488.0" fitWidth="342.0" layoutX="57.0" layoutY="116.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="169.0" layoutY="622.0" mnemonicParsing="false" onMouseClicked="#create" text="Create">
+         <font>
+            <Font size="28.0" />
+         </font>
+      </Button>
+      <Button layoutX="177.0" layoutY="703.0" mnemonicParsing="false" onMouseClicked="#back" text="Back">
+         <font>
+            <Font size="30.0" />
+         </font>
+      </Button>
+      <TextField layoutX="579.0" layoutY="144.0" prefHeight="50.0" prefWidth="325.0" />
+      <Label layoutX="429.0" layoutY="150.0" text="Card Name" textFill="WHITE">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Label layoutX="447.0" layoutY="287.0" text="Level" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+<!--      <Spinner fx:id="chooseLevel" layoutX="516.0" layoutY="287.0" prefHeight="35.0" prefWidth="102.0" />-->
+      <Label layoutX="771.0" layoutY="287.0" text="Attribute" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="chooseAttribute" layoutX="871.0" layoutY="287.0" prefHeight="35.0" prefWidth="150.0" />
+      <Label layoutX="1136.0" layoutY="287.0" text="Monster Type" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="chooseType" layoutX="1303.0" layoutY="287.0" prefHeight="35.0" prefWidth="162.0" />
+      <Label layoutX="447.0" layoutY="358.0" text="Normal/Effect" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="chooseHasEffect" layoutX="618.0" layoutY="358.0" prefHeight="35.0" prefWidth="150.0" />
+      <Label layoutX="884.0" layoutY="358.0" text="Attack" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="chooseAtk" layoutX="973.0" layoutY="358.0" prefHeight="35.0" prefWidth="102.0" />
+      <Label layoutX="1192.0" layoutY="358.0" text="Defense" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <TextField fx:id="chooseDfn" layoutX="1293.0" layoutY="358.0" prefHeight="35.0" prefWidth="102.0" />
+      <Label layoutX="447.0" layoutY="583.0" text="Spell/Trap" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="chooseIsSpell" layoutX="574.0" layoutY="583.0" prefHeight="35.0" prefWidth="150.0" />
+      <Label layoutX="814.0" layoutY="583.0" text="Icon" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="chooseIcon" layoutX="873.0" layoutY="583.0" prefHeight="35.0" prefWidth="175.0" />
+      <Label layoutX="1119.0" layoutY="583.0" text="Limited/Unlimited" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="chooseIsLimited" layoutX="1321.0" layoutY="583.0" prefHeight="35.0" prefWidth="191.0" />
+      <Label layoutX="447.0" layoutY="429.0" text="Description" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="chooseMonsterDescription" layoutX="595.0" layoutY="429.0" prefHeight="35.0" prefWidth="610.0" />
+      <Label layoutX="447.0" layoutY="654.0" text="Description" textFill="WHITE">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ChoiceBox fx:id="chooseNonMonsterDescription" layoutX="595.0" layoutY="654.0" prefHeight="35.0" prefWidth="610.0" />
+      <Label fx:id="priceLabel" layoutX="981.0" layoutY="144.0" prefHeight="51.0" prefWidth="254.0" text="Price : 0" textFill="WHITE">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <RadioButton fx:id="isMonsterCard" layoutX="412.0" layoutY="220.0" mnemonicParsing="false" text="Monster Card" textFill="WHITE">
+         <font>
+            <Font size="29.0" />
+         </font></RadioButton>
+      <RadioButton fx:id="isNonMonsterCard" layoutX="412.0" layoutY="522.0" mnemonicParsing="false" text="Spell Trap Card" textFill="WHITE">
+         <font>
+            <Font size="29.0" />
+         </font></RadioButton>
+   </children>
+</AnchorPane>

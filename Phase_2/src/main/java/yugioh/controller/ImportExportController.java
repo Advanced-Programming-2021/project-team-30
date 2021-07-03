@@ -14,6 +14,7 @@ import yugioh.model.CardInitializer;
 import yugioh.model.cards.MonsterCard.MonsterCard;
 import yugioh.model.cards.nonMonsterCard.NonMonsterCard;
 import yugioh.view.CardChooserForExportView;
+import yugioh.view.CreateCardView;
 import yugioh.view.LoginMenuView;
 import yugioh.view.MainMenuView;
 
@@ -188,7 +189,7 @@ public class ImportExportController {
         }
     }
 
-    public void createNewCard(MouseEvent mouseEvent) {
-
+    public void createNewCard(MouseEvent mouseEvent) throws Exception {
+        new CreateCardView().start(LoginMenuView.stage);
     }
 }
