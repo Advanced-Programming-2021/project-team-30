@@ -70,6 +70,47 @@ public class MonsterCard extends Card {
         this.attackDamage = damage;
     }
 
+    public String hasEffectToString(){
+        if (hasEffect)
+            return "Effect";
+        return "Normal";
+    }
+    public String typesToString(){
+        for (Type type : types) {
+            switch (type){
+                case Warrior -> {return "Warrior";}
+                case Effect -> {return "Effect";}
+                case Ritual -> {return "Ritual";}
+                case Beast -> {return "Beast";}
+                case Fiend -> {return "Fiend";}
+                case Aqua -> {return "Aqua";}
+                case Pyro -> {return "Pyro";}
+                case SpellCaster -> {return "Spellcaster";}
+                case Thunder -> {return "Thunder";}
+                case Dragon -> {return "Dragon";}
+                case Machine -> {return "Machine";}
+                case Rock -> {return "Rock";}
+                case Insect -> {return "Insect";}
+                case Cyberse -> {return "Cyberse";}
+                case Beast_Warrior -> {return "Beast-Warrior";}
+                case Fairy -> {return "Fairy";}
+                case Sea_Serpent -> {return "Sea Serpent";}
+            }
+        }
+        return "";
+    }
+    public String attributeToString(){
+        switch (attribute){
+            case DARK -> {return "DARK";}
+            case EARTH -> {return "EARTH";}
+            case FIRE -> {return "FIRE";}
+            case LIGHT -> {return "LIGHT";}
+            case WATER -> {return "WATER";}
+            case WIND -> {return "WIND";}
+            default -> {return "";}
+        }
+    }
+
     public static boolean stringToHasEffect(String string){
         return !string.equals("Normal");
     }

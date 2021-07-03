@@ -35,6 +35,29 @@ public class NonMonsterCard extends Card {
     public boolean isLimited() {
         return isLimited;
     }
+
+    public String isSpellToString(){
+        if (isSpell)
+            return "Spell";
+        return "Trap";
+    }
+    public String iconToString(){
+        switch (icon){
+            case Normal -> {return "Normal";}
+            case Counter -> {return "Counter";}
+            case Continuous -> {return "Continuous";}
+            case Quick_play -> {return "Quick_play";}
+            case Field -> {return "Field";}
+            case Equip -> {return "Equip";}
+            case Ritual -> {return "Ritual";}
+            default -> {return "";}
+        }
+    }
+    public String isLimitedToString(){
+        if (isLimited)
+            return "Limited";
+        return "Unlimited";
+    }
     public static boolean stringToIsSpell(String string){
         return string.equals("Spell");
     }
