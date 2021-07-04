@@ -1,5 +1,6 @@
 package yugioh.controller;
 
+import com.opencsv.CSVWriter;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.scene.control.*;
@@ -12,11 +13,9 @@ import yugioh.model.cards.Card;
 import yugioh.view.ImportExportView;
 import yugioh.view.LoginMenuView;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.*;
+import java.nio.channels.FileChannel;
+import java.util.*;
 
 public class CreateCardController {
     public ImageView cardImage;
@@ -35,6 +34,7 @@ public class CreateCardController {
     public RadioButton isMonsterCard;
     public RadioButton isNonMonsterCard;
     public Label priceLabel;
+    public TextField chooseName;
 
     public static ArrayList<String> getAllMonsterCardsDescriptions(){
         ArrayList<String> strings = new ArrayList<>();
@@ -117,14 +117,75 @@ public class CreateCardController {
         }
         return price;
     }
+    public List<String[]> returnCardStringList(){
+        List<String[]> line = new ArrayList<>();
+        if (isMonsterCard.isSelected()){
+            String[] details = new String[9];
+            details[0] = chooseName.getText();
+            details[1] = String.valueOf(chooseLevel.getValue());
+            details[2] = chooseAttribute.getValue();
+            details[3] = chooseType.getValue();
+            details[4] = chooseHasEffect.getValue();
+            details[5] = chooseAtk.getText();
+            details[6] = chooseDfn.getText();
+            details[7] = chooseMonsterDescription.getValue();
+            details[8] = priceLabel.getText().replace("Price : ", "");
+            line.add(details);
+        } else {
+            String[] details = new String[6];
+            details[0] = chooseName.getText();
+            details[1] = chooseIsSpell.getValue();
+            details[2] = chooseIcon.getValue();
+            details[3] = chooseNonMonsterDescription.getValue();
+            details[4] = chooseIsLimited.getValue();
+            details[5] = priceLabel.getText().replace("Price : ", "");
+            line.add(details);
+        }
+        return line;
+    }
+    public void copyAndRenameFile(File source, File destination, String newPath) throws Exception{
+        if (!destination.exists()) {
+            destination.createNewFile();
+        }
+        try (FileChannel sourceChannel = new FileInputStream(source).getChannel(); FileChannel destChannel = new FileOutputStream(destination).getChannel()) {
+            sourceChannel.transferTo(0, sourceChannel.size(), destChannel);
+        }
+        destination.renameTo(new File(newPath));
 
-    public void create(MouseEvent mouseEvent) {
-        int decrement = (int) (0.1 * Integer.parseInt(priceLabel.getText()));
-        MainMenuController.currentUser.setMoney(MainMenuController.currentUser.getMoney() - decrement);
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setHeaderText("Create Card Successful!");
-        alert.setContentText("Card Successfully created!");
-        alert.show();
+    }
+
+    public void create(MouseEvent mouseEvent) throws Exception {
+        int decrement = (int) (0.1 * Integer.parseInt(priceLabel.getText().replace("Price : ", "")));
+        if ((MainMenuController.currentUser.getMoney() - decrement) < 0){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Create Card Failed!");
+            alert.setContentText("You don't have enough money to create this card!");
+            alert.show();
+        } else {
+            MainMenuController.currentUser.setMoney(MainMenuController.currentUser.getMoney() - decrement);
+            FileWriter fileWriter;
+            String sourcePath = "src/main/resources/yugioh/assets/cards/Anonymous.jpg";
+            String destinationPath = "";
+            String newPath = "";
+            if (isMonsterCard.isSelected()){
+                fileWriter = new FileWriter("src/main/resources/yugioh/CSV/Monster.csv", true);
+                destinationPath = "src/main/resources/yugioh/assets/cards/Monsters/Anonymous.jpg";
+                newPath = "src/main/resources/yugioh/assets/cards/Monsters/" + chooseName.getText() + ".jpg";
+            } else {
+                fileWriter = new FileWriter("src/main/resources/yugioh/CSV/SpellTrap.csv", true);
+                destinationPath = "src/main/resources/yugioh/assets/cards/SpellTrap/Anonymous.jpg";
+                newPath = "src/main/resources/yugioh/assets/cards/SpellTrap/" + chooseName.getText() + ".jpg";
+            }
+            copyAndRenameFile(new File(sourcePath), new File(destinationPath), newPath);
+            fileWriter.write("\n");
+            CSVWriter csvWriter = new CSVWriter(fileWriter);
+            csvWriter.writeAll(returnCardStringList());
+            csvWriter.close();
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeaderText("Create Card Successful!");
+            alert.setContentText("Card Successfully created!");
+            alert.show();
+        }
     }
 
     public void back(MouseEvent mouseEvent) throws Exception {

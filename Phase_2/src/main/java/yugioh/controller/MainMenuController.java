@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import yugioh.model.CardInitializer;
 import yugioh.model.Player;
 import yugioh.view.*;
 
@@ -21,6 +22,7 @@ public class MainMenuController {
     public Button profileButton;
     @FXML public ImageView profilePhoto;
     public void initialize(){
+        CardInitializer.readCardsFromCSV();
         currentUser.decks = new ArrayList<>();
         profilePhoto.setImage(new Image(currentUser.profilePhotoPath));
     }
