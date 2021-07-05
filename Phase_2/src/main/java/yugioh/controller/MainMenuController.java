@@ -2,7 +2,7 @@ package yugioh.controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import yugioh.model.CardInitializer;
@@ -10,6 +10,9 @@ import yugioh.model.Player;
 import yugioh.view.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
 
 public class MainMenuController {
     public static Player currentUser;
@@ -28,7 +31,45 @@ public class MainMenuController {
     }
 
 
-    public void startNewGame(ActionEvent actionEvent) {
+    public void startNewGame(ActionEvent actionEvent) throws Exception {
+        List<String> strings = Arrays.asList("1 Player", "2 Player");
+
+        Dialog<String> dialog = new ChoiceDialog<>(strings.get(0), strings);
+        dialog.setTitle("Start New Duel");
+        dialog.setHeaderText("Select the number of players");
+        Optional<String> result = dialog.showAndWait();
+        String selected = "cancelled";
+        if (result.isPresent()) {
+            selected = result.get();
+        }
+        if (strings.contains(selected)) {
+            if (selected.equals("2 Player")){
+                dialog = new TextInputDialog("Username");
+                dialog.setTitle("Start New 2 Player Duel");
+                dialog.setHeaderText("Enter the second player's username");
+                result = dialog.showAndWait();
+                String entered = "";
+                if (result.isPresent()) {
+                    entered = result.get();
+                }
+                Player player = Player.getPlayerByUsername(entered);
+                if (player == null){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Start New Duel Failed!");
+                    alert.setContentText("There is no player with this username!");
+                    alert.show();
+                } else {
+                    NewDuelController.is2Player = true;
+                    NewDuelController.firstPlayer = MainMenuController.currentUser;
+                    NewDuelController.currentPlayer = NewDuelController.firstPlayer;
+                    NewDuelController.secondPlayer = player;
+                    new NewDuelView().start(LoginMenuView.stage);
+                }
+            } else {
+                NewDuelController.is2Player = false;
+                new NewDuelView().start(LoginMenuView.stage);
+            }
+        }
     }
 
     public void gotoDeck(ActionEvent actionEvent) throws Exception {

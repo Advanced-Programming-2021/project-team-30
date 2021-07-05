@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="pane" prefHeight="900.0" prefWidth="1590.0" style="-fx-background-color: #b1c1cf" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.NewDuelController">
+   <children>
+      <ImageView fx:id="playground" fitHeight="801.0" fitWidth="1590.0" pickOnBounds="true" preserveRatio="true">
+
+      </ImageView>
+      <ProgressBar layoutX="142.0" layoutY="61.0" prefHeight="25.0" prefWidth="211.0" progress="1.0" />
+      <Label layoutX="207.0" layoutY="6.0" text="8000" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+      </Label>
+      <ProgressBar layoutX="147.0" layoutY="762.0" prefHeight="25.0" prefWidth="211.0" progress="1.0" />
+      <Label layoutX="212.0" layoutY="707.0" text="8000" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+      </Label>
+      <Separator layoutX="1181.0" layoutY="157.0" prefHeight="52.0" prefWidth="391.0" />
+      <Separator layoutX="1181.0" layoutY="606.0" prefHeight="52.0" prefWidth="391.0" />
+      <Label layoutX="1226.0" layoutY="216.0" text="Current Phase :" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+      </Label>
+      <Label layoutX="1258.0" layoutY="290.0" text="Draw Phase" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="40.0" />
+         </font>
+      </Label>
+      <Button layoutX="1265.0" layoutY="365.0" mnemonicParsing="false" text="Next Phase">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Button>
+      <Button layoutX="1307.0" layoutY="491.0" mnemonicParsing="false" text="Back">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Button>
+      <ImageView fx:id="firstPlayerImage" fitHeight="150.0" fitWidth="136.0" layoutX="1184.0" layoutY="648.0" pickOnBounds="true" preserveRatio="true" />
+      <Label layoutX="1336.0" layoutY="654.0" text="Username :" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="firstPlayerUsernameLabel" layoutX="1336.0" layoutY="686.0" text="Username" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <Label layoutX="1336.0" layoutY="725.0" text="Nickname :" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="firstPlayerNicknameLabel" layoutX="1336.0" layoutY="757.0" text="Nickname" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="secondPlayerImage" fitHeight="150.0" fitWidth="136.0" layoutX="1181.0" layoutY="16.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="secondPlayerUsernameShowLabel" layoutX="1333.0" layoutY="22.0" text="Username :" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="secondPlayerUsernameLabel" layoutX="1333.0" layoutY="54.0" text="Username" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="secondPlayerNicknameShowLabel" layoutX="1333.0" layoutY="93.0" text="Nickname :" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="secondPlayerNicknameLabel" layoutX="1333.0" layoutY="125.0" text="Nickname" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <Label fx:id="BotLabel" layoutX="1311.0" layoutY="39.0" text="Bot" textFill="WHITE">
+         <font>
+            <Font size="73.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>
