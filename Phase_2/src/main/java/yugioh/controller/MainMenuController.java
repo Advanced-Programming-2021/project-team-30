@@ -33,7 +33,6 @@ public class MainMenuController {
 
     public void startNewGame(ActionEvent actionEvent) throws Exception {
         List<String> strings = Arrays.asList("1 Player", "2 Player");
-
         Dialog<String> dialog = new ChoiceDialog<>(strings.get(0), strings);
         dialog.setTitle("Start New Duel");
         dialog.setHeaderText("Select the number of players");
@@ -43,6 +42,8 @@ public class MainMenuController {
             selected = result.get();
         }
         if (strings.contains(selected)) {
+            NewDuelController.firstPlayer = MainMenuController.currentUser;
+            NewDuelController.currentPlayer = NewDuelController.firstPlayer;
             if (selected.equals("2 Player")){
                 dialog = new TextInputDialog("Username");
                 dialog.setTitle("Start New 2 Player Duel");
@@ -60,9 +61,9 @@ public class MainMenuController {
                     alert.show();
                 } else {
                     NewDuelController.is2Player = true;
-                    NewDuelController.firstPlayer = MainMenuController.currentUser;
-                    NewDuelController.currentPlayer = NewDuelController.firstPlayer;
+
                     NewDuelController.secondPlayer = player;
+                    NewDuelController.oppositePlayer = NewDuelController.secondPlayer;
                     new NewDuelView().start(LoginMenuView.stage);
                 }
             } else {
