@@ -40,7 +40,6 @@ public class LoginMenuController {
             alert.show();
         } else {
             MainMenuController.currentUser = player;
-            //MainMenuView.stage.setMaximized(true);
             new MainMenuView().start(LoginMenuView.stage);
         }
 

@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
@@ -19,10 +20,14 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import yugioh.model.CardInitializer;
+import yugioh.model.Deck;
+import yugioh.model.Phase;
 import yugioh.model.Player;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard.MonsterCard;
 import yugioh.model.cards.nonMonsterCard.NonMonsterCard;
+import yugioh.view.LoginMenuView;
+import yugioh.view.MainMenuView;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -36,8 +41,25 @@ public class NewDuelController {
     public static Player oppositePlayer;
     public static boolean is2Player;
     public static MediaPlayer themeSong = new MediaPlayer(new Media(new File("src/main/resources/yugioh/music/Theme.mp3").toURI().toString()));
+    public Phase currentPhase = Phase.DRAW;
     public int currentPlayerLP = 8000;
     public int oppositePlayerLP = 8000;
+    public ArrayList<Card> firstPlayerMGround = new ArrayList<>();
+    public ArrayList<Card> firstPlayerSTGround = new ArrayList<>();
+    public ArrayList<Card> secondPlayerMGround = new ArrayList<>();
+    public ArrayList<Card> secondPlayerSTGround = new ArrayList<>();
+    public ArrayList<Card> firstPlayerHandGround = new ArrayList<>();
+    public ArrayList<Card> secondPlayerHandGround = new ArrayList<>();
+    public Card firstPlayerGraveyard;
+    public Card secondPlayerGraveyard;
+    public ArrayList<Card> currentPlayerMGround = firstPlayerMGround;
+    public ArrayList<Card> currentPlayerSTGround = firstPlayerSTGround;
+    public ArrayList<Card> oppositePlayerMGround = secondPlayerMGround;
+    public ArrayList<Card> oppositePlayerSTGround = secondPlayerSTGround;
+    public ArrayList<Card> currentPlayerHandGround = firstPlayerHandGround;
+    public ArrayList<Card> oppositePlayerHandGround = secondPlayerHandGround;
+    public Card currentPlayerGraveyard = firstPlayerGraveyard;
+    public Card oppositePlayerGraveyard = secondPlayerGraveyard;
 
     public ImageView playground;
     public AnchorPane pane;
@@ -74,6 +96,17 @@ public class NewDuelController {
     public ImageView oppositeHand3;
     public ImageView oppositeHand4;
     public ImageView oppositeHand5;
+    public Label currentPhaseLabel;
+
+    public void setPhaseLabel(){
+        switch (currentPhase){
+            case DRAW -> currentPhaseLabel.setText("Draw Phase");
+            case STANDBY -> currentPhaseLabel.setText("StandBy Phase");
+            case MAIN1 -> currentPhaseLabel.setText("Main Phase 1");
+            case BATTLE -> currentPhaseLabel.setText("Battle Phase");
+            case MAIN2 -> currentPhaseLabel.setText("Main Phase 2");
+        }
+    }
 
     public void initializeIfIsBot(){
         firstPlayerUsernameLabel.setText(firstPlayer.getUsername());
@@ -96,14 +129,43 @@ public class NewDuelController {
             secondPlayerImage.setImage(new Image(secondPlayer.profilePhotoPath));
         }
     }
+    public void changePhase(){
+        switch (currentPhase){
+            case DRAW -> currentPhase = Phase.STANDBY;
+            case STANDBY -> currentPhase = Phase.MAIN1;
+            case MAIN1 -> currentPhase = Phase.BATTLE;
+            case BATTLE -> currentPhase = Phase.MAIN2;
+            case MAIN2 -> {
+                currentPhase = Phase.DRAW;
+                changeTurn();
+            }
+        }
+        setPhaseLabel();
+    }
     public void changeTurn(){
         if (is2Player){
             if (currentPlayer == firstPlayer){
                 currentPlayer = secondPlayer;
                 oppositePlayer = firstPlayer;
+                currentPlayerMGround = firstPlayerMGround;
+                currentPlayerSTGround = firstPlayerSTGround;
+                currentPlayerHandGround = firstPlayerHandGround;
+                currentPlayerGraveyard = firstPlayerGraveyard;
+                oppositePlayerMGround = secondPlayerMGround;
+                oppositePlayerSTGround = secondPlayerSTGround;
+                oppositePlayerHandGround = secondPlayerHandGround;
+                oppositePlayerGraveyard = secondPlayerGraveyard;
             } else {
                 currentPlayer = firstPlayer;
                 oppositePlayer = secondPlayer;
+                currentPlayerMGround = secondPlayerMGround;
+                currentPlayerSTGround = secondPlayerSTGround;
+                currentPlayerHandGround = secondPlayerHandGround;
+                currentPlayerGraveyard = secondPlayerGraveyard;
+                oppositePlayerMGround = firstPlayerMGround;
+                oppositePlayerSTGround = firstPlayerSTGround;
+                oppositePlayerHandGround = firstPlayerHandGround;
+                oppositePlayerGraveyard = firstPlayerGraveyard;
             }
         }
     }
@@ -119,7 +181,6 @@ public class NewDuelController {
         secondPlayerImage.setImage(new Image(currentPlayer.profilePhotoPath));
         oppositeLP.setText(String.valueOf(oppositePlayerLP));
         oppositeLPBar.setProgress((oppositePlayerLP * 1.0) / 8000);
-        //TODO change hand cards
     }
     public void showSelectedCardDetails(Card card){
         String imagePath = EditDeckController.cardNameToImage(card.getName());
@@ -143,57 +204,84 @@ public class NewDuelController {
         cardDetails.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
     }
-
-    public void initialize(){
-        File file = new File("src/main/resources/yugioh/assets/playground.jpg");
-        String path = "file:\\" + file.getAbsolutePath();
-        playground.setImage(new Image(path));
-        Timer timer = new Timer();
-        initializeIfIsBot();
-        themeSong.setOnEndOfMedia(() -> themeSong.seek(Duration.ZERO));
-        themeSong.play();
-        String s = "file:\\C:\\Users\\acer\\Desktop\\project-team-30-main\\project-team-30\\Phase_2\\src\\main\\resources\\yugioh\\assets\\cards\\Monsters\\Alexandrite Dragon.jpg";
-        String ss = "file:\\C:\\Users\\acer\\Desktop\\project-team-30-main\\project-team-30\\Phase_2\\src\\main\\resources\\yugioh\\assets\\cards\\Unknown.jpg";
-        //cardShowImage.setImage(new Image(s));
+    public void setCurrentPlayerGround(){
         ImageView[] currentMonsterGroundImages = new ImageView[5];
         ImageView[] currentSpellGroundImages = new ImageView[5];
-        ImageView[] oppositeMonsterGroundImages = new ImageView[5];
-        ImageView[] oppositeSpellGroundImages = new ImageView[5];
         currentPlayerMonsterGround.setSpacing(42.5);
         currentPlayerSpellGround.setSpacing(42.5);
+        currentPlayerMonsterGround.getChildren().clear();
+        currentPlayerSpellGround.getChildren().clear();
+        int counter = 0;
+        for (int i = 0; i < 5; i++) {
+            if (counter < currentPlayerMGround.size()) {
+                String path = EditDeckController.cardNameToImage(currentPlayerMGround.get(counter).getName());
+                currentMonsterGroundImages[i] = new ImageView(new Image(path));
+                currentMonsterGroundImages[i].setFitWidth(60);
+                currentMonsterGroundImages[i].setFitHeight(85);
+                currentPlayerMonsterGround.getChildren().add(i, currentMonsterGroundImages[i]);
+                counter++;
+            }
+        }
+        counter = 0;
+        for (int i = 0; i < 5; i++) {
+            if (counter < currentPlayerSTGround.size()) {
+                String path = EditDeckController.cardNameToImage(currentPlayerSTGround.get(counter).getName());
+                currentSpellGroundImages[i] = new ImageView(new Image(path));
+                currentSpellGroundImages[i].setFitWidth(60);
+                currentSpellGroundImages[i].setFitHeight(85);
+                currentPlayerSpellGround.getChildren().add(i, currentSpellGroundImages[i]);
+                counter++;
+            }
+        }
+        if (currentPlayerGraveyard != null)
+            currentGraveyard.setImage(new Image(EditDeckController.cardNameToImage(currentPlayerGraveyard.getName())));
+        try {
+            currentHand1.setImage(new Image(EditDeckController.cardNameToImage(currentPlayerHandGround.get(0).getName())));
+            currentHand2.setImage(new Image(EditDeckController.cardNameToImage(currentPlayerHandGround.get(1).getName())));
+            currentHand3.setImage(new Image(EditDeckController.cardNameToImage(currentPlayerHandGround.get(2).getName())));
+            currentHand4.setImage(new Image(EditDeckController.cardNameToImage(currentPlayerHandGround.get(3).getName())));
+            currentHand5.setImage(new Image(EditDeckController.cardNameToImage(currentPlayerHandGround.get(4).getName())));
+        } catch (Exception ignored){
+        }
+
+    }
+    public void setOppositePlayerGround(){
+        ImageView[] oppositeMonsterGroundImages = new ImageView[5];
+        ImageView[] oppositeSpellGroundImages = new ImageView[5];
         oppositePlayerMonsterGround.setSpacing(42.5);
         oppositePlayerSpellGround.setSpacing(42.5);
+        String path = "file:\\" + new File("src/main/resources/yugioh/assets/cards/Unknown.jpg").getAbsolutePath();
+        int counter = 0;
         for (int i = 0; i < 5; i++) {
-            currentMonsterGroundImages[i] = new ImageView(new Image(s));
-            currentMonsterGroundImages[i].setFitWidth(60);
-            currentMonsterGroundImages[i].setFitHeight(85);
-            currentPlayerMonsterGround.getChildren().add(i, currentMonsterGroundImages[i]);
-            currentSpellGroundImages[i] = new ImageView(new Image(s));
-            currentSpellGroundImages[i].setFitWidth(60);
-            currentSpellGroundImages[i].setFitHeight(85);
-            currentPlayerSpellGround.getChildren().add(i, currentSpellGroundImages[i]);
-            oppositeMonsterGroundImages[i] = new ImageView(new Image(ss));
-            oppositeMonsterGroundImages[i].setFitWidth(60);
-            oppositeMonsterGroundImages[i].setFitHeight(85);
-            oppositePlayerMonsterGround.getChildren().add(i, oppositeMonsterGroundImages[i]);
-            oppositeSpellGroundImages[i] = new ImageView(new Image(ss));
-            oppositeSpellGroundImages[i].setFitWidth(60);
-            oppositeSpellGroundImages[i].setFitHeight(85);
-            oppositePlayerSpellGround.getChildren().add(i, oppositeSpellGroundImages[i]);
-
+            if (counter < oppositePlayerMGround.size()) {
+                oppositeMonsterGroundImages[i] = new ImageView(new Image(path));
+                oppositeMonsterGroundImages[i].setFitWidth(60);
+                oppositeMonsterGroundImages[i].setFitHeight(85);
+                oppositePlayerMonsterGround.getChildren().add(i, oppositeMonsterGroundImages[i]);
+                counter++;
+            }
         }
-        currentGraveyard.setImage(new Image(s));
-        oppositeGraveyard.setImage(new Image(ss));
-        currentHand1.setImage(new Image(s));
-        currentHand2.setImage(new Image(s));
-        currentHand3.setImage(new Image(s));
-        currentHand4.setImage(new Image(s));
-        currentHand5.setImage(new Image(s));
-        oppositeHand1.setImage(new Image(ss));
-        oppositeHand2.setImage(new Image(ss));
-        oppositeHand3.setImage(new Image(ss));
-        oppositeHand4.setImage(new Image(ss));
-        oppositeHand5.setImage(new Image(ss));
+        counter = 0;
+        for (int i = 0; i < 5; i++) {
+            if (counter < oppositePlayerSTGround.size()) {
+                oppositeSpellGroundImages[i] = new ImageView(new Image(path));
+                oppositeSpellGroundImages[i].setFitWidth(60);
+                oppositeSpellGroundImages[i].setFitHeight(85);
+                oppositePlayerSpellGround.getChildren().add(i, oppositeSpellGroundImages[i]);
+                counter++;
+            }
+        }
+        oppositeGraveyard.setImage(new Image(path));
+        try {
+            oppositeHand1.setImage(new Image(path));
+            oppositeHand2.setImage(new Image(path));
+            oppositeHand3.setImage(new Image(path));
+            oppositeHand4.setImage(new Image(path));
+            oppositeHand5.setImage(new Image(path));
+        } catch (Exception ignored){
+        }
+    }
+    public void setOnMouseEnteredForCards(){
         ArrayList<ImageView> imageViews = new ArrayList<>(){{
             add(currentHand1);
             add(currentHand2);
@@ -214,10 +302,9 @@ public class NewDuelController {
 
         }};
         for (ImageView imageView : imageViews) {
-            imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent mouseEvent) {
-                    cardShowImage.setImage(imageView.getImage());
+            imageView.setOnMouseEntered(mouseEvent -> {
+                cardShowImage.setImage(imageView.getImage());
+                if (cardShowImage.getImage() != null) {
                     String name = cardShowImage.getImage().getUrl();
                     File file = new File(name);
                     String cardName = file.getName().replace(".jpg", "");
@@ -227,12 +314,86 @@ public class NewDuelController {
                 }
             });
         }
+    }
+    public void sendCardToGround(){
+        ArrayList<ImageView> imageViews = new ArrayList<>(){{
+            add(currentHand1);
+            add(currentHand2);
+            add(currentHand3);
+            add(currentHand4);
+            add(currentHand5);
+        }};
+        for (ImageView imageView : imageViews) {
+            imageView.setOnMouseClicked(mouseEvent -> {
+                String name = imageView.getImage().getUrl();
+                File file = new File(name);
+                String cardName = file.getName().replace(".jpg", "");
+                Card card = CardInitializer.cardToBuild(cardName);
+                if (card != null){
+                    if (card instanceof MonsterCard) {
+                        currentPlayerMGround.add(card);
+                        currentPlayerHandGround.remove(card);
+                        currentPlayer.getActiveDeck().removeCardFromMainDeck(card);
+                        currentPlayer.getActiveDeck().removeCardFromSideDeck(card);
+                    }
+                    else if (card instanceof NonMonsterCard) {
+                        currentPlayerSTGround.add(card);
+                        currentPlayerHandGround.remove(card);
+                        currentPlayer.getActiveDeck().removeCardFromMainDeck(card);
+                        currentPlayer.getActiveDeck().removeCardFromSideDeck(card);
+                    }
+                }
+            });
+        }
+    }
+    public void setPlayersHand(){
+        firstPlayerHandGround.clear();
+        for (int i = 0; i < 5; i++) {
+            firstPlayerHandGround.add(firstPlayer.getActiveDeck().getMainDeck().get(i));
+        }
+        if (is2Player) {
+            secondPlayerHandGround.clear();
+            for (int i = 0; i < 5; i++) {
+                secondPlayerHandGround.add(secondPlayer.getActiveDeck().getMainDeck().get(i));
+            }
+        } else {
+            secondPlayerHandGround.clear();
+            for (int i = 0; i < 5; i++) {
+                secondPlayerHandGround.add(firstPlayer.getActiveDeck().getMainDeck().get(i));
+            }
+        }
 
+    }
 
+    public void initialize(){
+        setPhaseLabel();
+        setPlayersHand();
+        File file = new File("src/main/resources/yugioh/assets/playground.jpg");
+        String path = "file:\\" + file.getAbsolutePath();
+        playground.setImage(new Image(path));
+        initializeIfIsBot();
+        themeSong.setOnEndOfMedia(() -> themeSong.seek(Duration.ZERO));
+        themeSong.play();
+        setOnMouseEnteredForCards();
+        sendCardToGround();
+        Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
-                Platform.runLater(() -> showDetailsInTurnChange());
+                Platform.runLater(() -> {
+                    setPlayersHand();
+                    showDetailsInTurnChange();
+                    setCurrentPlayerGround();
+                    setOppositePlayerGround();
+                });
             }
         }, 0, 50);
+    }
+
+    public void nextPhase(MouseEvent mouseEvent) {
+        changePhase();
+    }
+
+    public void back(MouseEvent mouseEvent) throws Exception {
+        new MainMenuView().start(LoginMenuView.stage);
     }
 }
