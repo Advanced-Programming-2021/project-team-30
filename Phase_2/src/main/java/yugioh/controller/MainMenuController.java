@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import yugioh.model.CardInitializer;
 import yugioh.model.Player;
 import yugioh.view.*;
@@ -16,6 +17,14 @@ import java.util.Optional;
 
 public class MainMenuController {
     public static Player currentUser;
+    public static Stage rockScissorPaperStage = new Stage();
+    static {
+        rockScissorPaperStage.setX(200);
+        rockScissorPaperStage.setY(80);
+        rockScissorPaperStage.setWidth(1150);
+        rockScissorPaperStage.setHeight(720);
+    }
+
     public Button duelButton;
     public Button deckButton;
     public Button scoreboardButton;
@@ -42,8 +51,7 @@ public class MainMenuController {
             selected = result.get();
         }
         if (strings.contains(selected)) {
-            NewDuelController.firstPlayer = MainMenuController.currentUser;
-            NewDuelController.currentPlayer = NewDuelController.firstPlayer;
+            RockScissorPaperController.firstPlayer = MainMenuController.currentUser;
             if (selected.equals("2 Player")){
                 dialog = new TextInputDialog("Username");
                 dialog.setTitle("Start New 2 Player Duel");
@@ -61,14 +69,14 @@ public class MainMenuController {
                     alert.show();
                 } else {
                     NewDuelController.is2Player = true;
-
-                    NewDuelController.secondPlayer = player;
-                    NewDuelController.oppositePlayer = NewDuelController.secondPlayer;
-                    new NewDuelView().start(LoginMenuView.stage);
+                    RockScissorPaperController.is2Player = true;
+                    RockScissorPaperController.secondPlayer = player;
+                    new RockScissorPaperView().start(rockScissorPaperStage);
                 }
             } else {
                 NewDuelController.is2Player = false;
-                new NewDuelView().start(LoginMenuView.stage);
+                RockScissorPaperController.is2Player = false;
+                new RockScissorPaperView().start(rockScissorPaperStage);
             }
         }
     }

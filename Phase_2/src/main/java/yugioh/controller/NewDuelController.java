@@ -4,10 +4,7 @@ import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -138,6 +135,10 @@ public class NewDuelController {
             case MAIN2 -> {
                 currentPhase = Phase.DRAW;
                 changeTurn();
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Turn Changed!");
+                alert.setContentText("Now it's " + currentPlayer.getNickname() + "'s turn!");
+                alert.show();
             }
         }
         setPhaseLabel();
@@ -394,6 +395,7 @@ public class NewDuelController {
     }
 
     public void back(MouseEvent mouseEvent) throws Exception {
+        themeSong.stop();
         new MainMenuView().start(LoginMenuView.stage);
     }
 }
