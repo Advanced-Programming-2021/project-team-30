@@ -8,6 +8,5 @@ public class Main{
     public static void main(String[] args) {
         Player.readPlayers();
         LoginMenuView.main(args);
-        Player.writePlayers();
     }
 }

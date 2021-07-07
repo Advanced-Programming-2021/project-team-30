@@ -6,7 +6,7 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="850.0" prefWidth="1590.0" style="-fx-background-color: blue;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.LoginMenuController">
     <children>
-      <Separator layoutX="777.0" layoutY="124.0" orientation="VERTICAL" prefHeight="622.0" prefWidth="13.0" />
+      <Separator layoutX="777.0" layoutY="124.0" orientation="VERTICAL" prefHeight="566.0" prefWidth="14.0" />
         <Button fx:id="Register" layoutX="241.0" layoutY="616.0" mnemonicParsing="false" onAction="#register" prefHeight="80.0" prefWidth="294.0" text="Register">
             <font>
                 <Font size="28.0" />
@@ -68,11 +68,10 @@
                 <Font size="40.0" />
             </font>
         </Label>
-<!--        <Label layoutX="595.0" layoutY="730.0" prefHeight="46.0" prefWidth="354.0" text="Developed By : Group 30" textFill="WHITE" textOverrun="CLIP">-->
-<!--            <font>-->
-<!--                <Font size="32.0" />-->
-<!--            </font>-->
-<!--        </Label>-->
-
+      <Button layoutX="734.0" layoutY="696.0" mnemonicParsing="false" onMouseClicked="#exit" text="Exit">
+         <font>
+            <Font size="33.0" />
+         </font>
+      </Button>
     </children>
 </AnchorPane>

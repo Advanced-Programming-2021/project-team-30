@@ -1,15 +1,12 @@
 package yugioh.controller;
 
 import javafx.application.Platform;
-import javafx.event.EventHandler;
-import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -17,7 +14,6 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 import yugioh.model.CardInitializer;
-import yugioh.model.Deck;
 import yugioh.model.Phase;
 import yugioh.model.Player;
 import yugioh.model.cards.Card;
@@ -36,11 +32,14 @@ public class NewDuelController {
     public static Player secondPlayer;
     public static Player currentPlayer;
     public static Player oppositePlayer;
+    public static Player winnerPlayer;
     public static boolean is2Player;
+
     public static MediaPlayer themeSong = new MediaPlayer(new Media(new File("src/main/resources/yugioh/music/Theme.mp3").toURI().toString()));
+
     public Phase currentPhase = Phase.DRAW;
-    public int currentPlayerLP = 8000;
-    public int oppositePlayerLP = 8000;
+    public static int currentPlayerLP = 8000;
+    public static int oppositePlayerLP = 8000;
     public ArrayList<Card> firstPlayerMGround = new ArrayList<>();
     public ArrayList<Card> firstPlayerSTGround = new ArrayList<>();
     public ArrayList<Card> secondPlayerMGround = new ArrayList<>();
@@ -95,6 +94,7 @@ public class NewDuelController {
     public ImageView oppositeHand5;
     public Label currentPhaseLabel;
 
+
     public void setPhaseLabel(){
         switch (currentPhase){
             case DRAW -> currentPhaseLabel.setText("Draw Phase");
@@ -106,6 +106,7 @@ public class NewDuelController {
     }
 
     public void initializeIfIsBot(){
+        if (firstPlayer == null) return;
         firstPlayerUsernameLabel.setText(firstPlayer.getUsername());
         firstPlayerNicknameLabel.setText(firstPlayer.getNickname());
         firstPlayerImage.setImage(new Image(firstPlayer.profilePhotoPath));
@@ -348,22 +349,40 @@ public class NewDuelController {
         }
     }
     public void setPlayersHand(){
+        if (is2Player && (firstPlayer.getActiveDeck() == null || secondPlayer.getActiveDeck() == null)) return;
+        if (firstPlayer == null) return;
         firstPlayerHandGround.clear();
         for (int i = 0; i < 5; i++) {
+            if (i == firstPlayer.getActiveDeck().getMainDeck().size()) break;
             firstPlayerHandGround.add(firstPlayer.getActiveDeck().getMainDeck().get(i));
         }
         if (is2Player) {
             secondPlayerHandGround.clear();
             for (int i = 0; i < 5; i++) {
+                if (i == secondPlayer.getActiveDeck().getMainDeck().size()) break;
                 secondPlayerHandGround.add(secondPlayer.getActiveDeck().getMainDeck().get(i));
             }
         } else {
             secondPlayerHandGround.clear();
             for (int i = 0; i < 5; i++) {
+                if (i == firstPlayer.getActiveDeck().getMainDeck().size()) break;
                 secondPlayerHandGround.add(firstPlayer.getActiveDeck().getMainDeck().get(i));
             }
         }
 
+    }
+    public void setIfAPlayerWins(){
+        if (winnerPlayer != null){
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setContentText("Game Ended");
+            alert.setContentText(winnerPlayer.getNickname() + " won!");
+            alert.show();
+            try {
+                new MainMenuView().start(LoginMenuView.stage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     public void initialize(){
@@ -377,6 +396,8 @@ public class NewDuelController {
         themeSong.play();
         setOnMouseEnteredForCards();
         sendCardToGround();
+
+
         Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             public void run() {
@@ -385,6 +406,7 @@ public class NewDuelController {
                     showDetailsInTurnChange();
                     setCurrentPlayerGround();
                     setOppositePlayerGround();
+                    setIfAPlayerWins();
                 });
             }
         }, 0, 50);

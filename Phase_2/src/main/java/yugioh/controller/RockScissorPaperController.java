@@ -5,6 +5,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 import yugioh.model.Player;
 import yugioh.view.LoginMenuView;
 import yugioh.view.NewDuelView;
@@ -17,6 +18,7 @@ public class RockScissorPaperController {
     public static Player firstPlayer;
     public static Player secondPlayer;
     public static boolean is2Player;
+
 
     public static String rockImage = "file:\\" + new File("src/main/resources/yugioh/assets/RockPaperScissor/jya_gu_2.bmp").getAbsolutePath();
     public static String scissorImage = "file:\\" + new File("src/main/resources/yugioh/assets/RockPaperScissor/jya_cyo_2.bmp").getAbsolutePath();
@@ -41,11 +43,6 @@ public class RockScissorPaperController {
         secondPlayerWon,
         tie
     }
-    public void setResult(){
-
-
-    }
-
     public void initialize(){
         if (is2Player) {
             secondRock.setImage(new Image(rockImage));
@@ -77,9 +74,6 @@ public class RockScissorPaperController {
             firstScissor.setOnMouseClicked(mouseEvent -> firstResult = "Scissor");
             firstPaper.setOnMouseClicked(mouseEvent -> firstResult = "Paper");
         }
-
-        //setResult();
-
     }
     public Result returnResult(String firstPlayerResult, String secondPlayerResult){
         if (firstPlayerResult.equals("Rock") && secondPlayerResult.equals("Rock"))
@@ -109,6 +103,31 @@ public class RockScissorPaperController {
             default -> {return "Paper";}
         }
     }
+    public void showAlertIfThereAreNoActiveDecks() throws Exception {
+        if (is2Player){
+            if (firstPlayer.getActiveDeck() == null || (!firstPlayer.getActiveDeck().isValid())
+                    || secondPlayer.getActiveDeck() == null || (!secondPlayer.getActiveDeck().isValid())){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Start New Game Failed!");
+                alert.setContentText("One of the players doesn't have a valid active deck!");
+                alert.show();
+            } else {
+                MainMenuController.rockScissorPaperStage.close();
+                new NewDuelView().start(LoginMenuView.stage);
+            }
+        } else {
+            if (firstPlayer.getActiveDeck() == null || (!firstPlayer.getActiveDeck().isValid())){
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Start New Game Failed!");
+                alert.setContentText("You don't have a valid active deck!");
+                alert.show();
+            } else {
+                MainMenuController.rockScissorPaperStage.close();
+                new NewDuelView().start(LoginMenuView.stage);
+            }
+        }
+
+    }
     public void determineResult() throws Exception {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         Result result = returnResult(firstResult, secondResult);
@@ -125,14 +144,14 @@ public class RockScissorPaperController {
                     NewDuelController.currentPlayer = NewDuelController.firstPlayer;
                     NewDuelController.secondPlayer = secondPlayer;
                     NewDuelController.oppositePlayer = NewDuelController.secondPlayer;
-                    new NewDuelView().start(LoginMenuView.stage);
+                    showAlertIfThereAreNoActiveDecks();
                 }
                 case secondPlayerWon -> {
                     NewDuelController.firstPlayer = secondPlayer;
                     NewDuelController.currentPlayer = NewDuelController.firstPlayer;
                     NewDuelController.secondPlayer = firstPlayer;
                     NewDuelController.oppositePlayer = NewDuelController.secondPlayer;
-                    new NewDuelView().start(LoginMenuView.stage);
+                    showAlertIfThereAreNoActiveDecks();
                 }
                 case tie -> new RockScissorPaperView().start(MainMenuController.rockScissorPaperStage);
             }
@@ -144,14 +163,11 @@ public class RockScissorPaperController {
             }
             alert.show();
             switch (result) {
-                case firstPlayerWon -> {
+                case firstPlayerWon, secondPlayerWon -> {
                     NewDuelController.firstPlayer = firstPlayer;
                     NewDuelController.currentPlayer = NewDuelController.firstPlayer;
-                    NewDuelController.secondPlayer = secondPlayer;
-                    NewDuelController.oppositePlayer = NewDuelController.secondPlayer;
-                    new NewDuelView().start(LoginMenuView.stage);
+                    showAlertIfThereAreNoActiveDecks();
                 }
-                case secondPlayerWon -> new NewDuelView().start(LoginMenuView.stage);
                 case tie -> new RockScissorPaperView().start(MainMenuController.rockScissorPaperStage);
             }
         }
@@ -187,7 +203,4 @@ public class RockScissorPaperController {
         determineResult();
     }
 
-    public void startGame(MouseEvent mouseEvent) {
-
-    }
 }
