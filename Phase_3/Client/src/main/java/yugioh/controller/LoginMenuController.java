@@ -1,4 +1,5 @@
 package yugioh.controller;
+import static yugioh.controller.MainController.*;
 
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
@@ -46,7 +47,7 @@ public class LoginMenuController {
 
     }
 
-    public void register(ActionEvent actionEvent) {
+    public void register(ActionEvent actionEvent) throws Exception {
         String username = usernameField2.getText();
         String password = passwordField2.getText();
         String nickName = nickNameField.getText();
@@ -55,23 +56,26 @@ public class LoginMenuController {
             alert.setHeaderText("Register failed!");
             alert.setContentText("Please fill the fields!");
             alert.show();
-        } else if (Player.getPlayerByUsername(username) != null || Player.getPlayerByNickname(nickName) != null){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Register failed!");
-            alert.setContentText("User already exists!");
-            alert.show();
         } else {
-            new Player(username, password, nickName);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("User successfully created!");
-            alert.setContentText("Now you can login!");
+            objectOutputStream.writeObject(new String[]{username, password, nickName});
+            objectOutputStream.flush();
+            String result = objectInputStream.readUTF();
+            Alert alert;
+            if (!result.equals("success")) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Register failed!");
+                alert.setContentText("User already exists!");
+            } else {
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("User successfully created!");
+                alert.setContentText("Now you can login!");
+            }
             alert.show();
         }
 
     }
 
     public void exit(MouseEvent mouseEvent) {
-        Player.writePlayers();
         System.exit(0);
     }
 }
