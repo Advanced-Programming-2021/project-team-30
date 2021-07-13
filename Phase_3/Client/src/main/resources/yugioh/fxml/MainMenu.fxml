@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1590.0" style="-fx-background-color: #3c1191;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.MainMenuController">
+    <children>
+        <Label layoutX="649.0" layoutY="48.0" prefHeight="74.0" prefWidth="260.0" text="Main Menu" textFill="#ed7777">
+            <font>
+                <Font size="50.0" />
+            </font>
+        </Label>
+        <Button fx:id="duelButton" layoutX="315.0" layoutY="166.0" mnemonicParsing="false" onAction="#startNewGame" prefHeight="87.0" prefWidth="350.0" text="Duel Menu">
+            <font>
+                <Font size="33.0" />
+            </font>
+        </Button>
+        <Button fx:id="deckButton" layoutX="315.0" layoutY="290.0" mnemonicParsing="false" onAction="#gotoDeck" prefHeight="87.0" prefWidth="350.0" text="Deck Menu">
+            <font>
+                <Font size="33.0" />
+            </font>
+        </Button>
+        <Button fx:id="scoreboardButton" layoutX="886.0" layoutY="166.0" mnemonicParsing="false" onAction="#gotoScoreboard" prefHeight="87.0" prefWidth="350.0" text="Scoreboard Menu">
+            <font>
+                <Font size="33.0" />
+            </font>
+        </Button>
+        <Button fx:id="shopButton" layoutX="315.0" layoutY="414.0" mnemonicParsing="false" onAction="#gotoShop" prefHeight="87.0" prefWidth="350.0" text="Shop Menu">
+            <font>
+                <Font size="33.0" />
+            </font>
+        </Button>
+        <Button fx:id="importExportButton" layoutX="886.0" layoutY="414.0" mnemonicParsing="false" onAction="#gotoImportExport" prefHeight="87.0" prefWidth="350.0" text="Import/Export Menu">
+            <font>
+                <Font size="33.0" />
+            </font>
+        </Button>
+        <Button fx:id="back" layoutX="595.0" layoutY="539.0" mnemonicParsing="false" onAction="#back" prefHeight="87.0" prefWidth="350.0" text="Logout">
+            <font>
+                <Font size="35.0" />
+            </font>
+        </Button>
+        <Button fx:id="profileButton" layoutX="886.0" layoutY="290.0" mnemonicParsing="false" onAction="#gotoProfile" prefHeight="87.0" prefWidth="350.0" text="Profile Menu">
+            <font>
+                <Font size="33.0" />
+            </font></Button>
+      <ImageView fx:id="profilePhoto" fitHeight="150.0" fitWidth="200.0" layoutX="63.0" layoutY="47.0" pickOnBounds="true" preserveRatio="true" />
+    </children>
+
+</AnchorPane>

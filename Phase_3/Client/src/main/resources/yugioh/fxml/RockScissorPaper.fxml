@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="633.0" prefWidth="1008.0" style="-fx-background-color: #9a9a1e" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.RockScissorPaperController">
+   <children>
+      <ImageView fx:id="secondRock" fitHeight="204.0" fitWidth="205.0" layoutX="214.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="secondScissor" fitHeight="204.0" fitWidth="205.0" layoutX="458.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="secondPaper" fitHeight="204.0" fitWidth="205.0" layoutX="703.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="secondLabel" layoutX="442.0" layoutY="30.0" text="Second Player Choice" textFill="WHITE">
+         <font>
+            <Font size="25.0" />
+         </font></Label>
+      <ImageView fx:id="firstRock" fitHeight="204.0" fitWidth="205.0" layoutX="213.0" layoutY="393.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="firstScissor" fitHeight="204.0" fitWidth="205.0" layoutX="457.0" layoutY="393.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="firstPaper" fitHeight="204.0" fitWidth="205.0" layoutX="702.0" layoutY="393.0" pickOnBounds="true" preserveRatio="true" />
+      <Label fx:id="firstLabel" layoutX="459.0" layoutY="334.0" text="First Player Choice" textFill="WHITE">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Label>
+      <Button layoutX="511.0" layoutY="605.0" mnemonicParsing="false" onMouseClicked="#done" text="Done">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
