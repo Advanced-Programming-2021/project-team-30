@@ -15,13 +15,11 @@ import java.util.List;
 import java.util.Random;
 
 public class Player {
-    private static ArrayList<Player> players = new ArrayList<>();
     private String username;
     private String password;
     private int score;
     private String nickname;
     private int money;
-    private Board board;
     public transient ArrayList<Deck> decks = new ArrayList<>();
     private ArrayList<Card> cards;
     private Deck activeDeck;
@@ -33,7 +31,6 @@ public class Player {
         setScore(0);
         setMoney(0);
         cards = new ArrayList<>();
-        players.add(this);
         setProfilePhotoPath();
     }
 
@@ -95,10 +92,6 @@ public class Player {
         return activeDeck;
     }
 
-    public Board getBoard() {
-        return board;
-    }
-
     public ArrayList<Card> getCards() {
         return cards;
     }
@@ -123,9 +116,6 @@ public class Player {
         addCards(deck.getMainDeck());
     }
 
-    public static ArrayList<Player> getPlayers() {
-        return players;
-    }
     public Deck getPlayerDeckByName(String deckName){
         for (Deck deck : getDecks()) {
             if (deck.getName().equals(deckName))
@@ -141,46 +131,6 @@ public class Player {
         return null;
     }
 
-    public static Player getPlayerByUsername(String username){
-        for (Player player : getPlayers()) {
-            if (player.getUsername().equals(username))
-                return player;
-        }
-        return null;
-    }
-    public static Player getPlayerByNickname(String nickname){
-        for (Player player : getPlayers()) {
-            if (player.getNickname().equals(nickname))
-                return player;
-        }
-        return null;
-    }
-
-    public void showDecks(){
-
-    }
-    public static void writePlayers(){
-        try {
-            FileWriter fileWriter = new FileWriter("src/main/resources/yugioh/players.json");
-            fileWriter.write(new Gson().toJson(players));
-            fileWriter.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-    public static void readPlayers(){
-        try {
-            String json = new String(Files.readAllBytes(Paths.get("src/main/resources/yugioh/players.json")));
-            ArrayList<Player> playerArrayList;
-            playerArrayList = new Gson().fromJson(json, new TypeToken<List<Player>>(){}.getType());
-            if (playerArrayList == null)
-                playerArrayList = new ArrayList<>();
-            players.addAll(playerArrayList);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
 }

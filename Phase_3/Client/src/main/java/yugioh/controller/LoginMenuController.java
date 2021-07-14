@@ -11,6 +11,8 @@ import yugioh.model.Player;
 import yugioh.view.LoginMenuView;
 import yugioh.view.MainMenuView;
 
+import java.io.IOException;
+
 public class LoginMenuController {
     public Button Register;
     public TextField usernameField;
@@ -24,25 +26,26 @@ public class LoginMenuController {
     public void login(ActionEvent actionEvent) throws Exception {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        Player player = Player.getPlayerByUsername(username);
         if (username.isEmpty() && password.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Login failed!");
             alert.setContentText("Please fill the fields!");
             alert.show();
-        } else if (player == null){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Login failed!");
-            alert.setContentText("Username and password didn't match!");
-            alert.show();
-        } else if (!(player.getPassword().equals(password))){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Login failed!");
-            alert.setContentText("Username and password didn't match!");
-            alert.show();
         } else {
-            MainMenuController.currentUser = player;
-            new MainMenuView().start(LoginMenuView.stage);
+            objectOutputStream.writeObject(new String[]{"Login", username, password});
+            objectOutputStream.flush();
+            Object object = objectInputStream.readObject();
+            if (object == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Login failed!");
+                alert.setContentText("Username and password didn't match!");
+                alert.show();
+            } else {
+                Object[] objects = (Object[]) object;
+                MainMenuController.currentUser = (Player) objects[0];
+                MainMenuController.currentUserToken = (String) objects[1];
+                new MainMenuView().start(LoginMenuView.stage);
+            }
         }
 
     }
@@ -57,9 +60,9 @@ public class LoginMenuController {
             alert.setContentText("Please fill the fields!");
             alert.show();
         } else {
-            objectOutputStream.writeObject(new String[]{username, password, nickName});
+            objectOutputStream.writeObject(new String[]{"Register", username, password, nickName});
             objectOutputStream.flush();
-            String result = objectInputStream.readUTF();
+            String result = (String) objectInputStream.readObject();
             Alert alert;
             if (!result.equals("success")) {
                 alert = new Alert(Alert.AlertType.ERROR);
@@ -75,7 +78,9 @@ public class LoginMenuController {
 
     }
 
-    public void exit(MouseEvent mouseEvent) {
+    public void exit(MouseEvent mouseEvent) throws IOException {
+        objectOutputStream.writeObject("Exit");
+        objectOutputStream.flush();
         System.exit(0);
     }
 }

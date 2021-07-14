@@ -17,6 +17,7 @@ import java.util.Optional;
 
 public class MainMenuController {
     public static Player currentUser;
+    public static String currentUserToken;
     public static Stage rockScissorPaperStage = new Stage();
     static {
         rockScissorPaperStage.setX(200);

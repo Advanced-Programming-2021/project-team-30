@@ -1,5 +1,7 @@
 package yugioh.controller;
 
+import static yugioh.controller.MainController.*;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -14,6 +16,7 @@ import yugioh.view.LoginMenuView;
 import yugioh.view.MainMenuView;
 
 import java.io.File;
+import java.io.IOException;
 
 
 public class ProfileMenuController {
@@ -46,42 +49,48 @@ public class ProfileMenuController {
         new MainMenuView().start(LoginMenuView.stage);
     }
 
-    public void changePassword(ActionEvent actionEvent) {
+    public void changePassword(ActionEvent actionEvent) throws Exception {
         String oldPassword = oldPasswordField.getText();
         String newPassword = newPasswordField.getText();
-        Player currentUser = MainMenuController.currentUser;
-        if (!currentUser.getPassword().equals(oldPassword)){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Password change failed!");
-            alert.setContentText("Old password is incorrect!");
-            alert.show();
-        } else if (oldPassword.equals(newPassword)){
+        objectOutputStream.writeObject(new String[]{"ChangePassword", MainMenuController.currentUserToken, oldPassword, newPassword});
+        objectOutputStream.flush();
+        String result = (String) objectInputStream.readObject();
+        if (oldPassword.equals(newPassword)){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Password change failed!");
             alert.setContentText("Please enter a new password!");
             alert.show();
         } else {
-            currentUser.setPassword(newPassword);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeaderText("Password change successful!");
-            alert.setContentText("Password successfully changed!");
+            Alert alert;
+            if (!result.equals("success")) {
+                alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Password change failed!");
+                alert.setContentText("Old password is incorrect!");
+            } else {
+                MainMenuController.currentUser.setPassword(newPassword);
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setHeaderText("Password change successful!");
+                alert.setContentText("Password successfully changed!");
+            }
             alert.show();
         }
-
     }
-    public void changeNickname(ActionEvent actionEvent){
+    public void changeNickname(ActionEvent actionEvent) throws Exception{
         String newNickname = newNicknameField.getText();
-        if (Player.getPlayerByNickname(newNickname) != null){
-            Alert alert = new Alert(Alert.AlertType.ERROR);
+        objectOutputStream.writeObject(new String[]{"ChangeNickname", MainMenuController.currentUserToken, newNickname});
+        objectOutputStream.flush();
+        String result = (String) objectInputStream.readObject();
+        Alert alert;
+        if (!result.equals("success")){
+            alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Nickname change failed!");
             alert.setContentText("user with this nickname already exists!");
-            alert.show();
         } else {
             MainMenuController.currentUser.setNickname(newNickname);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setHeaderText("Nickname change successful!");
             alert.setContentText("Nickname successfully changed!");
-            alert.show();
         }
+        alert.show();
     }
 }

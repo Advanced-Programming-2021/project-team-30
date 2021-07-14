@@ -5,7 +5,6 @@ import yugioh.model.cards.Card;
 import java.util.ArrayList;
 
 public class Deck {
-    private static ArrayList<Deck> decks = new ArrayList<>();
     private ArrayList<Card> mainDeck;
     private ArrayList<Card> sideDeck;
     private String name;
@@ -15,7 +14,6 @@ public class Deck {
         setOwner(owner);
         mainDeck = new ArrayList<>();
         sideDeck = new ArrayList<>();
-        decks.add(this);
     }
     public void setName(String name) {
         this.name = name;
