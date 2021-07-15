@@ -1,11 +1,9 @@
 package view;
 
 import controller.Controller;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class Main {

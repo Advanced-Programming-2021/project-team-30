@@ -9,8 +9,6 @@ import javafx.stage.Stage;
 import yugioh.model.CardInitializer;
 import yugioh.model.Player;
 import yugioh.view.*;
-
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +33,6 @@ public class MainMenuController {
     @FXML public ImageView profilePhoto;
     public void initialize(){
         CardInitializer.readCardsFromCSV();
-        currentUser.decks = new ArrayList<>();
         profilePhoto.setImage(new Image(currentUser.profilePhotoPath));
     }
 

@@ -143,6 +143,5 @@ public class DeckMenuController {
             alert.setContentText("Please select a deck!");
             alert.show();
         }
-
     }
 }

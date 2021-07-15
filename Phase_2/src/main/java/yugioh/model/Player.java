@@ -3,16 +3,13 @@ package yugioh.model;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import yugioh.model.cards.Card;
-
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
 
 public class Player {
     private static ArrayList<Player> players = new ArrayList<>();
@@ -22,7 +19,7 @@ public class Player {
     private String nickname;
     private int money;
     private Board board;
-    public transient ArrayList<Deck> decks = new ArrayList<>();
+    public ArrayList<Deck> decks;
     private ArrayList<Card> cards;
     private Deck activeDeck;
     public String profilePhotoPath;
@@ -156,18 +153,40 @@ public class Player {
         return null;
     }
 
-    public void showDecks(){
+    public void clearDecks(){
+        decks = null;
+        activeDeck = null;
+    }
 
+    public void setDefaultDeck(){
+        try{
+            String json = new String(Files.readAllBytes(Paths.get("src/main/resources/yugioh/defaultDeckCards.json")));
+            ArrayList<Card> cards = new Gson().fromJson(json, new TypeToken<List<Card>>(){}.getType());
+            Deck deck = new Deck("Default", this);
+            int size = cards.size();
+            for(int i = 0; i < size-5; i++)
+                deck.addCardToMainDeck(cards.get(i));
+            for(int i = size-5; i < size; i++)
+                deck.addCardToSideDeck(cards.get(i));
+            decks = new ArrayList<>();
+            decks.add(deck);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    public void showDecks(){
     }
     public static void writePlayers(){
         try {
+            for(Player player: players)
+                player.clearDecks();
             FileWriter fileWriter = new FileWriter("src/main/resources/yugioh/players.json");
             fileWriter.write(new Gson().toJson(players));
             fileWriter.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
     public static void readPlayers(){
         try {
@@ -177,6 +196,8 @@ public class Player {
             if (playerArrayList == null)
                 playerArrayList = new ArrayList<>();
             players.addAll(playerArrayList);
+            for(Player player: players)
+                player.setDefaultDeck();
         } catch (IOException e) {
             e.printStackTrace();
         }
