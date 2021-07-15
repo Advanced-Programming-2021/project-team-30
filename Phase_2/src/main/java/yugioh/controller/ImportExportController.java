@@ -112,9 +112,9 @@ public class ImportExportController {
             Card card = CardInitializer.cardToBuild(cardName);
             String path = "";
             if (monsterCard != null){
-                path = "src/main/resources/cards/Monster/" + cardName + ".json";
+                path = "src/main/resources/yugioh/cards/Monster/" + cardName + ".json";
             } else if (spellTrapCard != null){
-                path = "src/main/resources/cards/SpellTrap/" + cardName + ".json";
+                path = "src/main/resources/yugioh/cards/SpellTrap/" + cardName + ".json";
             }
             try {
                 FileWriter fileWriter = new FileWriter(path);
@@ -169,9 +169,9 @@ public class ImportExportController {
             Card card = CardInitializer.cardToBuild(cardName);
             String path = "";
             if (monsterCard != null){
-                path = "src/main/resources/cards/Monster/" + cardName + ".csv";
+                path = "src/main/resources/yugioh/cards/Monster/" + cardName + ".csv";
             } else if (spellTrapCard != null){
-                path = "src/main/resources/cards/SpellTrap/" + cardName + ".csv";
+                path = "src/main/resources/yugioh/cards/SpellTrap/" + cardName + ".csv";
             }
             try {
                 CSVWriter writer = new CSVWriter(new FileWriter(path));

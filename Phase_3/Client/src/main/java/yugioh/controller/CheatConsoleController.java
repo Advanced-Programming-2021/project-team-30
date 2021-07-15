@@ -29,10 +29,13 @@ public class CheatConsoleController {
                 NewDuelController.currentPlayerLP += amount;
         } else if (setWinner.find()){
             String nickName = setWinner.group(1);
+            /*
             Player player = Player.getPlayerByNickname(nickName);
             if (player != null){
                 NewDuelController.winnerPlayer = player;
             }
+
+             */
         }
         NewDuelView.cheatConsoleStage.close();
     }

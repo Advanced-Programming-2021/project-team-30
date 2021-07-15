@@ -1,5 +1,9 @@
 package yugioh.view;
+import static yugioh.controller.MainController.*;
 
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.application.Application;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -15,10 +19,10 @@ import yugioh.controller.MainMenuController;
 import yugioh.model.Player;
 import yugioh.model.PlayerForScoreBoard;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ScoreBoardView extends Application {
     public static int userRank = -1;
@@ -27,34 +31,18 @@ public class ScoreBoardView extends Application {
     public Label label = new Label();
     public Button button = new Button();
     public ArrayList<PlayerForScoreBoard> returnBestPlayers(){
-        ArrayList<Player> sortedUsers = new ArrayList<>(Player.getPlayers());
-        ArrayList<PlayerForScoreBoard> sortedPlayers = new ArrayList<>();
-        Comparator<Player> playerComparator = Comparator.comparing(Player::getScore, Comparator.reverseOrder()).thenComparing(Player::getNickname);
-        List<Player> sortedAccounts = sortedUsers.stream().sorted(playerComparator).collect(Collectors.toList());
-        int rank = 1;
-        int counter = 1;
-        for (int i = 0; i < sortedAccounts.size(); i++) {
-            Player sortedAccount = sortedAccounts.get(i);
-            sortedPlayers.add(new PlayerForScoreBoard(rank, sortedAccount.getNickname(), sortedAccount.getScore()));
-            if (i < sortedAccounts.size() - 1) {
-                if (sortedAccount.getScore() != sortedAccounts.get(i + 1).getScore()) {
-                    rank += counter;
-                    counter = 1;
-                }
-                else{
-                    counter++;
-                }
-            }
+        ArrayList<PlayerForScoreBoard> bestPlayers = new ArrayList<>();
+        try {
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            String string = "Show Scoreboard";
+            dataOutputStream.writeUTF(string);
+            dataOutputStream.flush();
+            DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+            String result = dataInputStream.readUTF();
+            bestPlayers = new Gson().fromJson(result, new TypeToken<List<PlayerForScoreBoard>>(){}.getType());
+        } catch (Exception ignored){
         }
-        ArrayList<PlayerForScoreBoard> topTwentyBestPlayers = new ArrayList<>();
-        if (sortedPlayers.size() > 20){
-            for (int i = 0; i < 20; i++) {
-                topTwentyBestPlayers.add(sortedPlayers.get(i));
-            }
-        } else {
-            topTwentyBestPlayers.addAll(sortedPlayers);
-        }
-        return topTwentyBestPlayers;
+        return bestPlayers;
     }
     public void labelAndButtonInit(){
         label.setLayoutX(660);

@@ -1,6 +1,7 @@
 package yugioh.controller;
 
 
+import com.google.gson.Gson;
 import yugioh.model.Player;
 
 import java.util.UUID;
@@ -19,21 +20,22 @@ public class MainController {
         }
     }
 
-    private static Object login(String[] userInfos) {
+    private static String login(String[] userInfos) {
         String username = userInfos[1];
         String password = userInfos[2];
         Player player = RegisterAndLoginController.getPlayerByUsername(username);
         if (player == null){
-            return null;
+            return "";
         } else if (!player.getPassword().equals(password)) {
-            return null;
+            return "";
         } else {
             String token = UUID.randomUUID().toString();
             RegisterAndLoginController.loggedInPlayers.put(token, player);
-            return new Object[]{player, token};
+            String json = new Gson().toJson(player);
+            return json + ",,," + token;
         }
     }
-    private static Object changeNickname(String[] userInfos) {
+    private static String changeNickname(String[] userInfos) {
         Player player = RegisterAndLoginController.loggedInPlayers.get(userInfos[1]);
         String newNickname = userInfos[2];
         if (RegisterAndLoginController.getPlayerByNickname(newNickname) != null){
@@ -45,7 +47,7 @@ public class MainController {
 
     }
 
-    private static Object changePassword(String[] userInfos) {
+    private static String changePassword(String[] userInfos) {
         Player player = RegisterAndLoginController.loggedInPlayers.get(userInfos[1]);
         String oldPassword = userInfos[2];
         String newPassword = userInfos[3];
@@ -57,21 +59,20 @@ public class MainController {
         }
     }
 
-    public static Object process(Object input) {
-        if (input instanceof String[]){
-            String[] userInfos = (String[]) input;
+    public static String process(String input) {
+        if (input.startsWith("Register") || input.startsWith("Login")
+                || input.startsWith("ChangePassword") || input.startsWith("ChangeNickname")){
+            String[] userInfos = input.split(",");
             switch (userInfos[0]){
                 case "Register" -> {return register(userInfos);}
                 case "Login" -> {return login(userInfos);}
                 case "ChangePassword" -> {return changePassword(userInfos);}
                 case "ChangeNickname" -> {return changeNickname(userInfos);}
             }
-
-
-
-
+        } else if (input.equals("Show Scoreboard")){
+            return new Gson().toJson(ScoreboardController.returnBestPlayers());
         }
-        return null;
+        return "";
     }
 
 

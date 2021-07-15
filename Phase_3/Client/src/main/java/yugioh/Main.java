@@ -8,7 +8,7 @@ import yugioh.view.LoginMenuView;
 
 public class Main{
     public static void main(String[] args) {
-        Player.readPlayers();
+        //Player.readPlayers();
         MainController.initializeNetwork();
         LoginMenuView.main(args);
     }

@@ -1,6 +1,7 @@
 package yugioh.controller;
 import static yugioh.controller.MainController.*;
 
+import com.google.gson.Gson;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -11,7 +12,7 @@ import yugioh.model.Player;
 import yugioh.view.LoginMenuView;
 import yugioh.view.MainMenuView;
 
-import java.io.IOException;
+import java.io.*;
 
 public class LoginMenuController {
     public Button Register;
@@ -32,18 +33,21 @@ public class LoginMenuController {
             alert.setContentText("Please fill the fields!");
             alert.show();
         } else {
-            objectOutputStream.writeObject(new String[]{"Login", username, password});
-            objectOutputStream.flush();
-            Object object = objectInputStream.readObject();
-            if (object == null) {
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            String string = "Login," + username + "," + password;
+            dataOutputStream.writeUTF(string);
+            dataOutputStream.flush();
+            DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+            String result = dataInputStream.readUTF();
+            if (result.equals("")) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Login failed!");
                 alert.setContentText("Username and password didn't match!");
                 alert.show();
             } else {
-                Object[] objects = (Object[]) object;
-                MainMenuController.currentUser = (Player) objects[0];
-                MainMenuController.currentUserToken = (String) objects[1];
+                String[] results = result.split(",,,");
+                MainMenuController.currentUser = new Gson().fromJson(results[0], Player.class);
+                MainMenuController.currentUserToken = results[1];
                 new MainMenuView().start(LoginMenuView.stage);
             }
         }
@@ -60,9 +64,12 @@ public class LoginMenuController {
             alert.setContentText("Please fill the fields!");
             alert.show();
         } else {
-            objectOutputStream.writeObject(new String[]{"Register", username, password, nickName});
-            objectOutputStream.flush();
-            String result = (String) objectInputStream.readObject();
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            String string = "Register," + username + "," + password + "," + nickName;
+            dataOutputStream.writeUTF(string);
+            dataOutputStream.flush();
+            DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+            String result = dataInputStream.readUTF();
             Alert alert;
             if (!result.equals("success")) {
                 alert = new Alert(Alert.AlertType.ERROR);
@@ -79,8 +86,10 @@ public class LoginMenuController {
     }
 
     public void exit(MouseEvent mouseEvent) throws IOException {
-        objectOutputStream.writeObject("Exit");
-        objectOutputStream.flush();
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        String string = "Exit";
+        dataOutputStream.writeUTF(string);
+        dataOutputStream.flush();
         System.exit(0);
     }
 }

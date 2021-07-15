@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import yugioh.model.CardInitializer;
 import yugioh.model.Player;
@@ -62,6 +63,7 @@ public class MainMenuController {
                 if (result.isPresent()) {
                     entered = result.get();
                 }
+                /*
                 Player player = Player.getPlayerByUsername(entered);
                 if (player == null){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -74,6 +76,8 @@ public class MainMenuController {
                     RockScissorPaperController.secondPlayer = player;
                     new RockScissorPaperView().start(rockScissorPaperStage);
                 }
+
+                 */
             } else {
                 NewDuelController.is2Player = false;
                 RockScissorPaperController.is2Player = false;
@@ -105,5 +109,9 @@ public class MainMenuController {
 
     public void gotoProfile(ActionEvent actionEvent) throws Exception {
         new ProfileMenuView().start(LoginMenuView.stage);
+    }
+
+    public void chat(MouseEvent mouseEvent) throws Exception {
+        new ChatView().start(LoginMenuView.stage);
     }
 }

@@ -15,6 +15,8 @@ import yugioh.model.Player;
 import yugioh.view.LoginMenuView;
 import yugioh.view.MainMenuView;
 
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -52,9 +54,12 @@ public class ProfileMenuController {
     public void changePassword(ActionEvent actionEvent) throws Exception {
         String oldPassword = oldPasswordField.getText();
         String newPassword = newPasswordField.getText();
-        objectOutputStream.writeObject(new String[]{"ChangePassword", MainMenuController.currentUserToken, oldPassword, newPassword});
-        objectOutputStream.flush();
-        String result = (String) objectInputStream.readObject();
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        String string = "ChangePassword," + MainMenuController.currentUserToken + "," + oldPassword + "," + newPassword;
+        dataOutputStream.writeUTF(string);
+        dataOutputStream.flush();
+        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+        String result = dataInputStream.readUTF();
         if (oldPassword.equals(newPassword)){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Password change failed!");
@@ -77,9 +82,12 @@ public class ProfileMenuController {
     }
     public void changeNickname(ActionEvent actionEvent) throws Exception{
         String newNickname = newNicknameField.getText();
-        objectOutputStream.writeObject(new String[]{"ChangeNickname", MainMenuController.currentUserToken, newNickname});
-        objectOutputStream.flush();
-        String result = (String) objectInputStream.readObject();
+        DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        String string = "ChangeNickname," + MainMenuController.currentUserToken + "," + newNickname;
+        dataOutputStream.writeUTF(string);
+        dataOutputStream.flush();
+        DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
+        String result = dataInputStream.readUTF();
         Alert alert;
         if (!result.equals("success")){
             alert = new Alert(Alert.AlertType.ERROR);
