@@ -46,6 +46,7 @@ public class Deck {
     public ArrayList<Card> getAllCards(){
         ArrayList<Card> allCards = new ArrayList<>(getMainDeck());
         allCards.addAll(getSideDeck());
+        System.out.println(allCards);
         return allCards;
     }
     public int returnCardCountMain(String cardName){

@@ -4,14 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import model.board.Board;
 import model.cards.Card;
-
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+
 
 public class Player {
     private static ArrayList<Player> players = new ArrayList<>();
@@ -30,8 +29,15 @@ public class Player {
         setNickname(nickname);
         setScore(0);
         setMoney(0);
-        decks = new ArrayList<>();
         cards = new ArrayList<>();
+        try{
+            String json = new String(Files.readAllBytes(Paths.get("src/main/resources/defaultDeckCards.json")));
+            ArrayList<Card> cards = new Gson().fromJson(json, new TypeToken<List<Card>>(){}.getType());
+            this.cards.addAll(cards);
+            setDefaultDeck();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         players.add(this);
     }
 
@@ -147,8 +153,34 @@ public class Player {
     public void showDecks(){
 
     }
+
+    public void setDefaultDeck(){
+        try{
+            String json = new String(Files.readAllBytes(Paths.get("src/main/resources/defaultDeckCards.json")));
+            ArrayList<Card> cards = new Gson().fromJson(json, new TypeToken<List<Card>>(){}.getType());
+            Deck deck = new Deck("Default", this);
+            int size = cards.size();
+            for(int i = 0; i < size-5; i++)
+                deck.addCardToMainDeck(cards.get(i));
+            for(int i = size-5; i < size; i++)
+                deck.addCardToSideDeck(cards.get(i));
+            decks = new ArrayList<>();
+            decks.add(deck);
+            setActiveDeck(deck);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clearDecks(){
+        decks = null;
+        activeDeck = null;
+    }
+
     public static void writePlayers(){
         try {
+            for(Player player: players)
+                player.clearDecks();
             FileWriter fileWriter = new FileWriter("src/main/resources/players.json");
             fileWriter.write(new Gson().toJson(players));
             fileWriter.close();
@@ -165,6 +197,8 @@ public class Player {
             if (playerArrayList == null)
                 playerArrayList = new ArrayList<>();
             players.addAll(playerArrayList);
+            for(Player player: players)
+                player.setDefaultDeck();
         } catch (IOException e) {
             e.printStackTrace();
         }

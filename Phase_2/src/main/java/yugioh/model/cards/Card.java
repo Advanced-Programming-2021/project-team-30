@@ -1,7 +1,5 @@
 package yugioh.model.cards;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
 
 public class Card {
     private String name;

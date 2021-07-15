@@ -9,7 +9,6 @@ import model.regex.Regex;
 import model.response.MenuResponse;
 import view.Main;
 
-import java.util.Scanner;
 
 public class Controller {
     public static Menu currentMenu = Menu.REGISTER;

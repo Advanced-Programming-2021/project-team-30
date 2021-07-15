@@ -4,11 +4,9 @@ import model.Ground;
 import model.Prototype;
 import java.lang.String;
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.regex.Matcher;
 import model.effect.Effect;
 import model.effect.event.*;
-import model.effect.requirements.Requirement;
 
 public class Card implements Prototype {
 
@@ -17,26 +15,26 @@ public class Card implements Prototype {
     protected Type cardType;
     protected Attribute status;
     protected int price, speed, cardNumber, quantity ;
-    protected String name, details;
+    protected String name, description;
     protected Ground ground;
     protected int location;
-    public Card(String name , int price ,String details) {
-        setDetails(details);
+    public Card(String name , int price ,String description) {
+        setDetails(description);
         setName(name);
         setPrice(price);
     }
 
     @Override
     public Prototype getClone(){
-        return new Card(name, price, details);
+        return new Card(name, price, description);
     }
 
     private void setName(String name) {
         this.name = name;
     }
 
-    private void setDetails(String details) {
-        this.details = details;
+    private void setDetails(String description) {
+        this.description = description;
     }
 
     private void setPrice(int price) {
@@ -48,7 +46,7 @@ public class Card implements Prototype {
     }
 
     public String getDetails() {
-        return details;
+        return description;
     }
     public String getName() {
         return name ;
@@ -133,7 +131,6 @@ public class Card implements Prototype {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Card card = (Card) o;
-        return price == card.price && name.equals(card.name) && details.equals(card.details);
+        return price == card.price && name.equals(card.name) && description.equals(card.description);
     }
-
 }
