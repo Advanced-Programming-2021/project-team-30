@@ -19,7 +19,11 @@ public class BattlePhase extends Phase {
                 Command.selectOpponentMonster,
                 Command.selectOpponentSpell,
                 Command.cardShow,
-                Command.cardShowSelected
+                Command.cardShowSelected,
+                //Command.flipSummon,
+                Command.showGraveyard,
+                Command.setCardPositionAttack,
+                Command.setCardPositionDefense,
         };
     }
 }

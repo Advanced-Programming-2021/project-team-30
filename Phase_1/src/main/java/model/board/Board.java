@@ -14,8 +14,6 @@ import java.util.ArrayList;
 
 public class Board{
 
-	final String[] monsterCodes = {"E", "OO", "DO", "DH"};
-	final String[] spellTrapCodes = {"E", "O", "H"};
 	final Duel duel;
 	final FieldZone fieldZone;
 	final Hand hand;
@@ -24,17 +22,10 @@ public class Board{
 	final MonsterPlayground monsterPlayGround;
 	final SpellTrapPlayground spellTrapPlayGround;
 	final int player;
-	private Card selectedCard = null;
-	private int selectedCardLocation, selectedCardOwner;
-	private String selectedCardPosition;
-	private Ground selectedCardOrigin;
-	private static final String[] selectCardOptions =
-	{"monster",
-	 "spell-trap",
-	 "hand",
-	 "field",
- 	 "graveyard",
-	 "deck"};
+	private static Card selectedCard = null;
+	private static int selectedCardLocation, selectedCardOwner;
+	private static String selectedCardPosition;
+	private static Ground selectedCardOrigin;
 
 	public ArrayList<Card> cloneArrayList(ArrayList<Card> original){
 		ArrayList<Card> copy = new ArrayList<>();
@@ -49,7 +40,7 @@ public class Board{
 		fieldZone = new FieldZone();
 		hand = new Hand();
 		graveYard = new Graveyard();
-		mainDeck = new MainDeck(cloneArrayList(player.getActiveDeck().getAllCards()));
+		mainDeck = new MainDeck(player.getActiveDeck().getAllCards());
 		monsterPlayGround = new MonsterPlayground();
 		spellTrapPlayGround = new SpellTrapPlayground();
 		this.player = boardPlayer;
@@ -179,20 +170,20 @@ public class Board{
 			Main.outputToUser(DuelMenuResponse.cardDeselected);
 	}
 
-	public void set(){
+	public boolean set(){
 		if(selectedCard == null){
 			Main.outputToUser(DuelMenuResponse.noCardSelected);
-			return;
+			return false;
 		}
 
 		if(selectedCardOrigin != Ground.handGround){
 			Main.outputToUser(DuelMenuResponse.cantSet);
-			return;
+			return false;
 		}
 		if(selectedCard instanceof MonsterCard){
 			if(monsterPlayGround.total() == 5){
 				Main.outputToUser(DuelMenuResponse.monsterZoneFull);
-				return;
+				return false;
 			}
 			monsterPlayGround.addCard((MonsterCard) selectedCard, "DH");
 			Main.outputToUser(DuelMenuResponse.setSuccessful);
@@ -200,13 +191,13 @@ public class Board{
 		else{
 			if(spellTrapPlayGround.total() == 5){
 				Main.outputToUser(DuelMenuResponse.monsterZoneFull);
-				return;
+				return false;
 			}
 			spellTrapPlayGround.addCard(selectedCard, "H");
 			Main.outputToUser(DuelMenuResponse.spellSet);
 		}
 		hand.removeCard(getSelectedCardLocation());
-		deselect(false);
+		return true;
 	}
 
 	public int getNumberOfCards(Ground from){
@@ -257,9 +248,12 @@ public class Board{
 			int location = Integer.parseInt(DuelMenuRegex.getDesiredInput(DuelMenuResponse.askForTribute, new String[]{
 					"1", "2", "3", "4", "5"
 			})) - 1;
-			if(monsterPlayGround.isThereCardOnLocation(location)){
+			if(mark[location])
+				Main.outputToUser("Already picked this card for tribute");
+			else if(monsterPlayGround.isThereCardOnLocation(location)){
 				mark[location] = true;
 				tributes--;
+				Main.outputToUser("Card added");
 			}
 			else
 				Main.outputToUser(DuelMenuResponse.noCardFound);
@@ -293,7 +287,7 @@ public class Board{
 			Main.outputToUser(DuelMenuResponse.cantChangePosition);
 			return false;
 		}
-		if(askPositionChange(Ground.monsterGround, getSelectedCardLocation()) || getPosition(getSelectedCardLocation(), Ground.monsterGround).equals("DH")){
+		if(askPositionChange(Ground.monsterGround, getSelectedCardLocation()) || !getPosition(getSelectedCardLocation(), Ground.monsterGround).equals("DH")){
 			Main.outputToUser(DuelMenuResponse.cantFlipSummon);
 			return false;
 		}
@@ -352,22 +346,20 @@ public class Board{
     }
 
     public void removeCard(Ground from, int location){
-    	switch(from) {
-			case monsterGround:
-				monsterPlayGround.removeCard(location);
+		if(from == Ground.monsterGround)
+			monsterPlayGround.removeCard(location);
 
-			case spellTrapGround:
-				spellTrapPlayGround.removeCard(location);
+		if(from == Ground.spellTrapGround)
+			spellTrapPlayGround.removeCard(location);
 
-			case handGround:
-				hand.removeCard(location);
+		if(from == Ground.handGround)
+			hand.removeCard(location);
 
-			case fieldGround:
-				fieldZone.removeCard();
+		if(from == Ground.fieldGround)
+			fieldZone.removeCard();
 
-			case graveyardGround:
-				graveYard.removeCard(location);
-		}
+		if(from == Ground.graveyardGround)
+			graveYard.removeCard(location);
     }
 
     public void addCard(Ground to, Card card, String position){
@@ -382,7 +374,7 @@ public class Board{
     }
 
     public void showCard(){
-    	if(getSelectedCard() == null){
+    	if(selectedCard == null){
 			Main.outputToUser(DuelMenuResponse.noCardSelected);
     		return;
     	}
@@ -390,8 +382,8 @@ public class Board{
     		Main.outputToUser(DuelMenuResponse.cardInvisible);
     		return;
     	}
-		if(getSelectedCard() instanceof MonsterCard)
-			Main.outputToUser(DuelMenuResponse.showMonsterCard((MonsterCard)getSelectedCard()));
+		if(selectedCard instanceof MonsterCard)
+			Main.outputToUser(DuelMenuResponse.showMonsterCard((MonsterCard)selectedCard));
 		else
 			Main.outputToUser(DuelMenuResponse.showSpellTrapCard((NonMonsterCard)getSelectedCard()));
     }
@@ -405,18 +397,23 @@ public class Board{
 					Main.outputToUser(DuelMenuResponse.showMonsterCard((MonsterCard) card));
 				else
 					Main.outputToUser(DuelMenuResponse.showSpellTrapCard((NonMonsterCard) card));
+				return;
 			}
 		}
 		for(int location = 0; location < 5; location++) {
 			card = monsterPlayGround.getCard(location);
-			if (card.getName().equals(name))
-					Main.outputToUser(DuelMenuResponse.showMonsterCard((MonsterCard) card));
+			if (card != null && card.getName().equals(name)) {
+				Main.outputToUser(DuelMenuResponse.showMonsterCard((MonsterCard) card));
+				return;
+			}
 		}
 
 		for(int location = 0; location < 5; location++) {
 			card = spellTrapPlayGround.getCard(location);
-			if (card.getName().equals(name))
+			if (card != null && card.getName().equals(name)) {
 				Main.outputToUser(DuelMenuResponse.showSpellTrapCard((NonMonsterCard) card));
+				return;
+			}
 		}
 		Main.outputToUser("no card found with the given name");
 	}

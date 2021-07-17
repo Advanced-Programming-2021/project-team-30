@@ -44,8 +44,12 @@ public class DuelMenuRegex {
     };
 
     public static HashMap<Command, String[]> patterns = new HashMap<>(){{
+        put(Command.cardShowSelected, new String[]{
+                "^card show --selected$",
+                "^card show -s$"
+        });
         put(Command.cardShow, new String[]{
-                "^card show (?<cardName>.*)$"
+                "^card show (?<cardName>[^-]+)$"
         });
         put(Command.selectMonster, new String[]{
                 "^\\s*select --monster (\\d)\\s*$",
@@ -98,10 +102,6 @@ public class DuelMenuRegex {
         put(Command.set, new String[]{
                 "^\\s*set\\s*$"
         });
-        put(Command.cardShowSelected, new String[]{
-                "^\\s*card show --selected\\s*$",
-                "^\\s*card show -s\\s*$"
-        });
         put(Command.nextPhase, new String[]{
                 "^\\s*next phase\\s*$"
         });
@@ -122,6 +122,10 @@ public class DuelMenuRegex {
         });
         put(Command.showGraveyard, new String[]{
                 "^\\s*show graveyard$"
+        });
+        put(Command.showGraveyardOpponent, new String[]{
+                "^\\s*show graveyard --opponent$",
+                "^\\s*show graveyard -o$"
         });
         put(Command.surrender, new String[]{
                 "^\\s*surrender\\s*$"

@@ -1,14 +1,21 @@
 package model;
 
 import com.opencsv.CSVReader;
+import model.cards.Attribute;
 import model.cards.Card;
+import model.cards.MonsterCard.MonsterCard;
+import model.cards.Type;
+import model.cards.nonMonsterCard.NonMonsterCard;
+import model.cards.nonMonsterCard.Spell.Spell;
+import model.cards.nonMonsterCard.Trap.Trap;
 
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class Initializer {
-    public static ArrayList<Card> monsterCards = new ArrayList<>();
-    public static ArrayList<Card> spellTrapCards = new ArrayList<>();
+    public static ArrayList<MonsterCard> monsterCards = new ArrayList<>();
+    public static ArrayList<NonMonsterCard> spellTrapCards = new ArrayList<>();
     public static void readCardsFromCSV(){
         monsterCards = new ArrayList<>();
         spellTrapCards = new ArrayList<>();
@@ -17,15 +24,23 @@ public class Initializer {
             String[] reader;
             reader = csvReader.readNext();
             reader = csvReader.readNext();
+            Type type;
+            if(reader[3].equals("Beast-Warrior"))
+                type = Type.Beast_Warrior;
+            else type = Type.valueOf(reader[3]);
             while (reader != null) {
-                monsterCards.add(new Card(reader[0], Integer.parseInt(reader[reader.length - 1]), reader[reader.length - 2]));
+                MonsterCard card = new MonsterCard(reader[0], Integer.parseInt(reader[8]), reader[7], Integer.parseInt(reader[5]), Integer.parseInt(reader[6]), Integer.parseInt(reader[1]), new ArrayList<Type>(Collections.singleton(type)), Attribute.valueOf(reader[2]));
+                monsterCards.add(card);
                 reader = csvReader.readNext();
             }
             csvReader = new CSVReader(new FileReader("src/main/resources/CSV/SpellTrap.csv"));
             reader = csvReader.readNext();
             reader = csvReader.readNext();
             while (reader != null) {
-                spellTrapCards.add(new Card(reader[0], Integer.parseInt(reader[5]), reader[3]));
+                if(reader[1].equals("Trap"))
+                    spellTrapCards.add(new Trap(reader[0], Integer.parseInt(reader[5]), reader[3]));
+                else
+                    spellTrapCards.add(new Spell(reader[0], Integer.parseInt(reader[5]), reader[3]));
                 reader = csvReader.readNext();
             }
         } catch (Exception e) {

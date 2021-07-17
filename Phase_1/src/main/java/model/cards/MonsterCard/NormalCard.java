@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 
 public class NormalCard extends MonsterCard {
-    public NormalCard(String name, int price, String details, int health , int attackDamage , int defenseDamage , int level , ArrayList<Type> types , Attribute attribute) {
-        super(name, price, details, health, attackDamage, defenseDamage, level, types, attribute);
+    public NormalCard(String name, int price, String details, int attackDamage , int defenseDamage , int level , ArrayList<Type> types , Attribute attribute) {
+        super(name, price, details, attackDamage, defenseDamage, level, types, attribute);
     }
 }
