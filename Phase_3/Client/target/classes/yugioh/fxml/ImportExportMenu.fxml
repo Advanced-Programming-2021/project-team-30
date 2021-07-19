@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1590.0" style="-fx-background-color: #5c9111;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.ImportExportController">
+   <children>
+      <Button layoutX="293.0" layoutY="115.0" mnemonicParsing="false" onMouseClicked="#chooseFile" text="Choose File">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Button>
+      <Label layoutX="1100.0" layoutY="41.0" text="Export" textFill="WHITE">
+         <font>
+            <Font size="39.0" />
+         </font>
+      </Label>
+      <Label layoutX="335.0" layoutY="41.0" text="Import" textFill="WHITE">
+         <font>
+            <Font size="39.0" />
+         </font>
+      </Label>
+      <Button layoutX="1046.0" layoutY="115.0" mnemonicParsing="false" onMouseClicked="#chooseCard" text="Choose Card">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Button>
+      <ImageView fx:id="cardImageImport" fitHeight="431.0" fitWidth="357.0" layoutX="216.0" layoutY="198.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="cardImageExport" fitHeight="454.0" fitWidth="392.0" layoutX="992.0" layoutY="198.0" pickOnBounds="true" preserveRatio="true" />
+      <Button layoutX="326.0" layoutY="704.0" mnemonicParsing="false" onMouseClicked="#importCard" text="Import">
+         <font>
+            <Font size="31.0" />
+         </font>
+      </Button>
+      <Button layoutX="954.0" layoutY="718.0" mnemonicParsing="false" onMouseClicked="#exportCardToCSV" text="Export To CSV">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Button>
+      <Label fx:id="cardNameLabelImport" layoutX="346.0" layoutY="652.0" textFill="WHITE">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+      <Label fx:id="cardNameLabelExport" layoutX="1101.0" layoutY="652.0" textFill="WHITE">
+         <font>
+            <Font size="32.0" />
+         </font>
+      </Label>
+      <Button layoutX="703.0" layoutY="460.0" mnemonicParsing="false" onMouseClicked="#back" text="Back">
+         <font>
+            <Font size="38.0" />
+         </font>
+      </Button>
+      <Button layoutX="1176.0" layoutY="718.0" mnemonicParsing="false" onMouseClicked="#exportCardToJSON" text="Export To JSON">
+         <font>
+            <Font size="26.0" />
+         </font>
+      </Button>
+      <Button layoutX="609.0" layoutY="356.0" mnemonicParsing="false" onMouseClicked="#createNewCard" text="Create New Card">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

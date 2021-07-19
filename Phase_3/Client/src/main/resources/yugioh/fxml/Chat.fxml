@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="850.0" prefWidth="1590.0" style="-fx-background-color: #8562c6;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.ChatController">
+   <children>
+      <ScrollPane layoutX="209.0" layoutY="73.0" prefHeight="500.0" prefWidth="1076.0">
+        <content>
+          <AnchorPane fx:id="pane" minHeight="0.0" minWidth="0.0" prefHeight="495.0" prefWidth="1076.0" />
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
