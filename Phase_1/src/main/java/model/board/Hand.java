@@ -48,6 +48,7 @@ public class Hand{
 
     public void addCard(Card card){
         cards.add(card);
+        isRequirementsDone.add(true);
     }
 
     public ArrayList<MonsterCard> getAllMonsterCards(){

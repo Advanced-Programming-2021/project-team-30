@@ -134,6 +134,8 @@ public class Duel{
 
 	private void turn(){
 		while(!isTurnFinished){
+			if(lp[0] <= 0 || lp[1] <= 0)
+				break;
 			if(currentPhase == 0){
 				Card card = draw();
 				if(card != null)
@@ -141,16 +143,16 @@ public class Duel{
 				nextPhase();
 			}
 			if(currentPhase == 1){
-				OnStandByPhase.isCalled = true;
-				for(int location: getTriggeredCardLocations(currentPlayer, Ground.monsterGround)){
-					Card card = getCard(Ground.monsterGround, location, currentPlayer);
-					card.doEffect(card.getEffect());
-				}
-				for(int location: getTriggeredCardLocations(currentPlayer, Ground.spellTrapGround)){
-					Card card = getCard(Ground.monsterGround, location, currentPlayer);
-					card.doEffect(card.getEffect());
-				}
-				OnStandByPhase.isCalled = false;
+//				OnStandByPhase.isCalled = true;
+//				for(int location: getTriggeredCardLocations(currentPlayer, Ground.monsterGround)){
+//					Card card = getCard(Ground.monsterGround, location, currentPlayer);
+//					card.doEffect(card.getEffect());
+//				}
+//				for(int location: getTriggeredCardLocations(currentPlayer, Ground.spellTrapGround)){
+//					Card card = getCard(Ground.monsterGround, location, currentPlayer);
+//					card.doEffect(card.getEffect());
+//				}
+//				OnStandByPhase.isCalled = false;
 				nextPhase();
 			}
 			DuelMenuResponse.showBoard(new int[]{lp[currentPlayer], lp[1 - currentPlayer]}
@@ -269,7 +271,9 @@ public class Duel{
 		else if(command == Command.ritualSummon)
 			ritualSummon();
 		else if(command == Command.showGraveyard)
-			showGraveYard();
+			showGraveYard(currentPlayer);
+		else if(command == Command.showGraveyardOpponent)
+			showGraveYard(1 - currentPlayer);
 		else if(command == Command.cardShowSelected)
 			showCard();
 		else if(command == Command.surrender)
@@ -322,7 +326,7 @@ public class Duel{
 			return;
 		}
 
-		if(getSelectedCardOrigin() != Ground.monsterGround || !(getSelectedCard() instanceof NormalCard)){
+		if(getSelectedCardOrigin() != Ground.handGround || !(getSelectedCard() instanceof MonsterCard)){
 			Main.outputToUser(DuelMenuResponse.cantSummon);
 			return;
 		}
@@ -359,6 +363,7 @@ public class Duel{
 		if(board[currentPlayer].flipSummon()){
 			didItChangePosition[0][board[currentPlayer].getSelectedCardLocation()] = true;
 			deselect(false);
+			didItSummon = true;
 		}
 	}
 
@@ -395,7 +400,10 @@ public class Duel{
 	}
 
 	public void set(){
-		board[currentPlayer].set();
+		if(board[currentPlayer].set()){
+			didItChangePosition[0][getSelectedCardLocation()] = true;
+			deselect(false);
+		}
 	}
 
 	public void setPosition(String newPosition){
@@ -456,7 +464,7 @@ public class Duel{
 		}
 
 		int atk_dmg = myCard.getAttackDamage(), defender_dmg;
-		runChain(OnGettingAttacked.getInstance());
+		//runChain(OnGettingAttacked.getInstance());
 
 		if(isAttackBlocked){
 			isAttackBlocked = false;
@@ -506,12 +514,12 @@ public class Duel{
 				Main.outputToUser(DuelMenuResponse.noCardDestroyedWithDamage(defender_dmg - atk_dmg));
 			}
 		}
-		deselect(false);
 		didItAttack[getSelectedCardLocation()] = true;
+		deselect(false);
 	}
 
 	private void runChain(Event event) {
-		event.isCalled = true;
+		//event.isCalled = true;
 		int askedPlayer = 1 - currentPlayer;
 		Card card1 = getSelectedCard();
 		chain.add(card1);
@@ -599,6 +607,7 @@ public class Duel{
 
 		MonsterCard attacker = (MonsterCard) getSelectedCard();
 		lp[1 - currentPlayer] -= attacker.getAttackDamage();
+		didItAttack[getSelectedCardLocation()] = true;
 		deselect(false);
 		Main.outputToUser(DuelMenuResponse.opponentReceiveDamage(attacker.getAttackDamage()));
 	}
@@ -626,8 +635,8 @@ public class Duel{
 		}
 	}
 
-	public void showGraveYard(){
-		board[currentPlayer].showGraveYard();
+	public void showGraveYard(int player){
+		board[player].showGraveYard();
 	}
 
 	public void showCard(){

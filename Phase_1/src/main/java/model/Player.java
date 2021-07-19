@@ -2,13 +2,23 @@ package model;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.opencsv.CSVReader;
 import model.board.Board;
+import model.cards.Attribute;
 import model.cards.Card;
+import model.cards.MonsterCard.MonsterCard;
+import model.cards.Type;
+import model.cards.nonMonsterCard.NonMonsterCard;
+import model.cards.nonMonsterCard.Spell.Spell;
+import model.cards.nonMonsterCard.Trap.Trap;
+
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -22,6 +32,7 @@ public class Player {
     private Board board;
     private ArrayList<Deck> decks;
     private ArrayList<Card> cards;
+    private ArrayList<Card> defaultCards;
     private Deck activeDeck;
     public Player(String username, String password, String nickname){
         setUsername(username);
@@ -33,7 +44,39 @@ public class Player {
         try{
             String json = new String(Files.readAllBytes(Paths.get("src/main/resources/defaultDeckCards.json")));
             ArrayList<Card> cards = new Gson().fromJson(json, new TypeToken<List<Card>>(){}.getType());
-            this.cards.addAll(cards);
+            try {
+                CSVReader csvReader = new CSVReader(new FileReader("src/main/resources/CSV/Monster.csv"));
+                String[] reader;
+                reader = csvReader.readNext();
+                reader = csvReader.readNext();
+                defaultCards = new ArrayList<>();
+                Type type;
+                if(reader[3].equals("Beast-Warrior"))
+                    type = Type.Beast_Warrior;
+                else type = Type.valueOf(reader[3]);
+                while (reader != null) {
+                    String name = reader[0];
+                    for(Card card: cards)
+                        if(card.getName().equals(name))
+                            defaultCards.add(new MonsterCard(reader[0], Integer.parseInt(reader[8]), reader[7], Integer.parseInt(reader[5]), Integer.parseInt(reader[6]), Integer.parseInt(reader[1]), new ArrayList<>(Collections.singleton(type)), Attribute.valueOf(reader[2])));
+                    reader = csvReader.readNext();
+                }
+                csvReader = new CSVReader(new FileReader("src/main/resources/CSV/SpellTrap.csv"));
+                reader = csvReader.readNext();
+                reader = csvReader.readNext();
+                while (reader != null) {
+                    String name = reader[0];
+                    for(Card card: cards)
+                        if(card.getName().equals(name))
+                            if (reader[1].equals("Trap"))
+                                defaultCards.add(new Trap(reader[0], Integer.parseInt(reader[5]), reader[3]));
+                            else
+                                defaultCards.add(new Spell(reader[0], Integer.parseInt(reader[5]), reader[3]));
+                    reader = csvReader.readNext();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             setDefaultDeck();
         } catch (Exception e) {
             e.printStackTrace();
@@ -156,14 +199,12 @@ public class Player {
 
     public void setDefaultDeck(){
         try{
-            String json = new String(Files.readAllBytes(Paths.get("src/main/resources/defaultDeckCards.json")));
-            ArrayList<Card> cards = new Gson().fromJson(json, new TypeToken<List<Card>>(){}.getType());
             Deck deck = new Deck("Default", this);
-            int size = cards.size();
+            int size = defaultCards.size();
             for(int i = 0; i < size-5; i++)
-                deck.addCardToMainDeck(cards.get(i));
+                deck.addCardToMainDeck(defaultCards.get(i));
             for(int i = size-5; i < size; i++)
-                deck.addCardToSideDeck(cards.get(i));
+                deck.addCardToSideDeck(defaultCards.get(i));
             decks = new ArrayList<>();
             decks.add(deck);
             setActiveDeck(deck);
