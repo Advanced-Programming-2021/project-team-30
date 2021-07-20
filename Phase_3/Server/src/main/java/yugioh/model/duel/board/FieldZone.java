@@ -1,8 +1,6 @@
 package yugioh.model.duel.board;
-
-
 import yugioh.model.cards.Card;
-import yugioh.Main;
+
 
 public class FieldZone{
     private Card field;
@@ -25,10 +23,6 @@ public class FieldZone{
     }
 
     public void removeCard(){
-        if(field == null){
-            Main.outputToUser(DuelMenuResponse.fieldZoneEmpty);
-            return;
-        }
         field.undoEffect();
         field = null;
     }

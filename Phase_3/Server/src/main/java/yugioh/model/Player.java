@@ -2,22 +2,23 @@ package yugioh.model;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import yugioh.model.cards.Card;
-
-
-import java.io.File;
+import yugioh.model.cards.Card;import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+
 public class Player implements Serializable {
     private String username;
     private String password;
+    private String token;
+    private Socket socket;
     private int score;
     private String nickname;
     private int money;
@@ -133,7 +134,15 @@ public class Player implements Serializable {
         return null;
     }
 
+    public void setToken(String token){ this.token = token; }
 
+    public void removeToken(){ token = null; }
 
+    public String getToken(){ return token; }
 
+    public void setSocket(Socket socket){ this.socket = socket; }
+
+    public void removeSocket(){ socket = null; }
+
+    public Socket getSocket(){ return socket; }
 }

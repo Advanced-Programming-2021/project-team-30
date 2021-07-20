@@ -1,29 +1,41 @@
 package yugioh.model.duel.response;
 
+import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
 
 public class Response {
-    final static private DataOutputStream[] dataOutputStream = new DataOutputStream[2];
+    final private DataOutputStream[] dataOutputStreams = new DataOutputStream[2];
+    final private DataInputStream[] dataInputStreams = new DataInputStream[2];
 
-    public static void setSockets(Socket[] sockets){
+    public Response(Socket[] sockets){
         try{
-            for (int i = 0; i < 2; i++)
-                dataOutputStream[i] = new DataOutputStream(sockets[i].getOutputStream());
+            for (int i = 0; i < 2; i++) {
+                dataOutputStreams[i] = new DataOutputStream(sockets[i].getOutputStream());
+                dataInputStreams[i] = new DataInputStream(sockets[i].getInputStream());
+            }
         } catch (IOException e){
             e.printStackTrace();
         }
     }
 
-    public static boolean writeMessage(int player, String message){
+    public boolean writeMessage(int player, String message){
         try{
-            dataOutputStream[player].writeUTF("<$alert$>" + message);
-            dataOutputStream[player].flush();
+            dataOutputStreams[player].writeUTF("<$alert$>" + message);
+            dataOutputStreams[player].flush();
             return true;
         } catch (IOException e){
             return false;
+        }
+    }
+
+    public String listen(int player){
+        try{
+            return dataInputStreams[player].readUTF();
+        } catch (IOException e){
+            return "fail";
         }
     }
 }

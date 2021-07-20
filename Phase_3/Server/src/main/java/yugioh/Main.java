@@ -22,7 +22,7 @@ public class Main {
                         while (true) {
                             String input = dataInputStream.readUTF();
                             if (input.equals("Exit")) break;
-                            String result = MainController.process(input);
+                            String result = MainController.process(input, socket);
                             dataOutputStream.writeUTF(result);
                             dataOutputStream.flush();
                         }

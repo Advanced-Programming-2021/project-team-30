@@ -1,13 +1,12 @@
-package model.effect.action;
+package yugioh.model.duel.effect.action;
 
-import model.Ground;
-import model.cards.Card;
-import model.cards.MonsterCard.MonsterCard;
-import model.cards.nonMonsterCard.Spell.FieldSpell;
-import model.cards.nonMonsterCard.Spell.Spell;
-import model.cards.nonMonsterCard.Trap.Trap;
+import yugioh.model.duel.Ground;
+import yugioh.model.cards.Card;
+import yugioh.model.cards.MonsterCard.MonsterCard;
+import yugioh.model.cards.nonMonsterCard.Spell.FieldSpell;
+import yugioh.model.cards.nonMonsterCard.Spell.Spell;
+import yugioh.model.cards.nonMonsterCard.Trap.Trap;
 import yugioh.model.duel.response.Response;
-import view.Main;
 
 import java.util.ArrayList;
 

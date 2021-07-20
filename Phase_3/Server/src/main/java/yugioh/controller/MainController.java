@@ -4,6 +4,7 @@ package yugioh.controller;
 import com.google.gson.Gson;
 import yugioh.model.Player;
 
+import java.net.Socket;
 import java.util.UUID;
 
 public class MainController {
@@ -20,17 +21,20 @@ public class MainController {
         }
     }
 
-    private static String login(String[] userInfos) {
+    private static String login(String[] userInfos, Socket socket) {
         String username = userInfos[1];
         String password = userInfos[2];
         Player player = RegisterAndLoginController.getPlayerByUsername(username);
-        if (player == null){
-            return "";
-        } else if (!player.getPassword().equals(password)) {
+        if (player == null || !player.getPassword().equals(password)){
             return "";
         } else {
             String token = UUID.randomUUID().toString();
             RegisterAndLoginController.loggedInPlayers.put(token, player);
+            player.setToken(token);
+            try {
+                socket.setSoTimeout(30000);
+            } catch (Exception ignored){}
+            player.setSocket(socket);
             String json = new Gson().toJson(player);
             return json + ",,," + token;
         }
@@ -59,13 +63,13 @@ public class MainController {
         }
     }
 
-    public static String process(String input) {
+    public static String process(String input, Socket socket) {
         if (input.startsWith("Register") || input.startsWith("Login")
                 || input.startsWith("ChangePassword") || input.startsWith("ChangeNickname")){
             String[] userInfos = input.split(",");
             switch (userInfos[0]){
                 case "Register" -> {return register(userInfos);}
-                case "Login" -> {return login(userInfos);}
+                case "Login" -> {return login(userInfos, socket);}
                 case "ChangePassword" -> {return changePassword(userInfos);}
                 case "ChangeNickname" -> {return changeNickname(userInfos);}
             }

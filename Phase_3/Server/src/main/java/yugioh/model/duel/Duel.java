@@ -27,6 +27,17 @@ public class Duel extends Thread{
             "<main phase 2>",
             "<end phase>"
     };
+    final static String[] commands = {
+            "p-defense-(\\d+)",
+            "p-attack-(\\d+)",
+            "attack-(\\d+)-(\\d+)",
+            "attack-d",
+            "summon-(\\d+)",
+            "flip-summon-(\\d+)",
+            "set-(\\d+)",
+            "phase-next",
+            "surrender"
+    };
     final int[] rotation = {0, 1, 2, 3, 4};
     // rotates the location; input: location as index, output: rotation of location
 
@@ -35,6 +46,7 @@ public class Duel extends Thread{
     private final Stack<Card> chain = new Stack<>();
     private final Stack<Integer> locations = new Stack<>();
     private final Stack<Effect> effectStack = new Stack<>();
+    private final Response response;
     final Board[] board = new Board[2];
     private int currentPlayer, currentPhase, rounds, p1win, p2win;
     private final int[] lp = new int[2];
@@ -49,17 +61,17 @@ public class Duel extends Thread{
     public Duel(Player[] player, int rounds){
         //NOTE: taking clones!!!!!
         //initialize
+        response = new Response(new Socket[]{
+                player[0].getSocket(),
+                player[1].getSocket()
+        });
         for(int i = 0; i < 2; i++){
             this.player[i] = player[i];
-            this.board[i] = new Board(this, player[i], i);
+            this.board[i] = new Board(this, player[i], i, response);
         }
         this.rounds = rounds;
         Duel.duels.add(this);
         Phase.createPhases();
-        Response.setSockets(new Socket[]{
-                player[0].getSocket(),
-                player[1].getSocket()
-        });
         p1win = 0;
         p2win = 0;
     }
@@ -101,7 +113,7 @@ public class Duel extends Thread{
             this.didItChangePosition[1][i] = false;
         }
         isTurnFinished = false;
-        Response.writeMessage(currentPlayer, phaseNames[0]);
+        response.writeMessage(currentPlayer, phaseNames[0]);
     }
 
     public void run(){
@@ -144,7 +156,7 @@ public class Duel extends Thread{
             if(currentPhase == 0){
                 Card card = draw();
                 if(card != null)
-                    Response.writeMessage(currentPlayer, DuelMessageTexts.newCardAdded(card.getName()));
+                    response.writeMessage(currentPlayer, DuelMessageTexts.newCardAdded(card.getName()));
                 nextPhase();
             }
             if(currentPhase == 1){
@@ -160,12 +172,7 @@ public class Duel extends Thread{
 //				OnStandByPhase.isCalled = false;
                 nextPhase();
             }
-//            DuelMenuResponse.showBoard(new int[]{lp[currentPlayer], lp[1 - currentPlayer]}
-//                    ,new int[]{board[currentPlayer].getNumberOfCards(Ground.handGround), board[1 - currentPlayer].getNumberOfCards(Ground.handGround)}
-//                    ,new String[][]{getPositions(currentPlayer, Ground.monsterGround), getPositions(1 - currentPlayer, Ground.monsterGround)}
-//                    ,new String[][]{getPositions(currentPlayer, Ground.spellTrapGround), getPositions(1 - currentPlayer, Ground.spellTrapGround)}
-//                    ,new String[]{player[currentPlayer].getNickname(), player[1 - currentPlayer].getNickname()});
-//            listen(true, null, null);
+            listen(true, null, null);
         }
     }
 
@@ -175,13 +182,13 @@ public class Duel extends Thread{
 
         if(p1) {
             p2win++;
-            Response.writeMessage(currentPlayer, "player 1 lost this round");
-            Response.writeMessage(1 - currentPlayer, "player 1 lost this round");
+            response.writeMessage(currentPlayer, "player 1 lost this round");
+            response.writeMessage(1 - currentPlayer, "player 1 lost this round");
         }
         else if(p2) {
             p1win++;
-            Response.writeMessage(currentPlayer, "player 2 lost this round");
-            Response.writeMessage(1 - currentPlayer, "player 2 lost this round");
+            response.writeMessage(currentPlayer, "player 2 lost this round");
+            response.writeMessage(1 - currentPlayer, "player 2 lost this round");
         }
         return !(p1 || p2);
     }
@@ -204,14 +211,15 @@ public class Duel extends Thread{
     }
 
     public String listen(boolean getCommand, String question, String[] desiredOutputs){
+        //todo modify listen
         if(getCommand)
             while(true){
+                String input = response.listen(currentPlayer);
+                if(input.equals("fail"))return input;
                 DuelMenuRegex.setCommandValues(Main.getInput());
                 if(DuelMenuCommand.isSet){
-                    if(checkPhaseValidity(DuelMenuCommand.commandName, currentPhase)){
-                        callForMethod();
-                        return null;
-                    }
+                    callForMethod();
+                    return null;
                 }
             }
         return DuelMenuRegex.getDesiredInput(question, desiredOutputs);
@@ -224,7 +232,7 @@ public class Duel extends Thread{
     private void callForMethod() {
         Command command = DuelMenuCommand.commandName;
         if(!checkPhaseValidity(command, currentPhase)) {
-            Main.outputToUser(Response.actionNotAllowedInPhase);
+            response.writeMessage(currentPlayer, DuelMessageTexts.actionNotAllowedInPhase);
             return;
         }
         Matcher matcher = DuelMenuCommand.matcher;
@@ -294,16 +302,16 @@ public class Duel extends Thread{
     public void surrender(){
         didSurrender[currentPlayer] = true;
         isTurnFinished = true;
-        Response.writeMessage(currentPlayer, String.format("Player <%s> surrendered", player[currentPlayer].getUsername()));
-        Response.writeMessage(1 - currentPlayer, String.format("Player <%s> surrendered", player[currentPlayer].getUsername()));
+        response.writeMessage(currentPlayer, String.format("Player <%s> surrendered", player[currentPlayer].getUsername()));
+        response.writeMessage(1 - currentPlayer, String.format("Player <%s> surrendered", player[currentPlayer].getUsername()));
     }
 
     public void nextPhase(){
         currentPhase++;
-        Response.writeMessage(currentPlayer, phaseNames[currentPhase]);
+        response.writeMessage(currentPlayer, phaseNames[currentPhase]);
         if(currentPhase == 5){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.playerTurn(player[1 - currentPlayer].getNickname()));
-            Response.writeMessage(1 - currentPlayer, DuelMessageTexts.playerTurn(player[1 - currentPlayer].getNickname()));
+            response.writeMessage(currentPlayer, DuelMessageTexts.playerTurn(player[1 - currentPlayer].getNickname()));
+            response.writeMessage(1 - currentPlayer, DuelMessageTexts.playerTurn(player[1 - currentPlayer].getNickname()));
             isTurnFinished = true;
         }
     }
@@ -331,27 +339,27 @@ public class Duel extends Thread{
     public void summon(){
 
         if(getSelectedCard() == null){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.noCardSelected);
+            response.writeMessage(currentPlayer, DuelMessageTexts.noCardSelected);
             return;
         }
 
         if(getSelectedCardOrigin() != Ground.handGround || !(getSelectedCard() instanceof MonsterCard)){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.cantSummon);
+            response.writeMessage(currentPlayer, DuelMessageTexts.cantSummon);
             return;
         }
 
         if(getNumberOfCards(Ground.monsterGround, currentPlayer) == 5){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.monsterZoneFull);
+            response.writeMessage(currentPlayer, DuelMessageTexts.monsterZoneFull);
             return;
         }
 
         if(didItSummon) {
-            Response.writeMessage(currentPlayer, DuelMessageTexts.alreadySummoned);
+            response.writeMessage(currentPlayer, DuelMessageTexts.alreadySummoned);
             return;
         }
 
         if(!((MonsterCard)getSelectedCard()).isItPossibleToTribute(board[currentPlayer].getNumberOfCards(Ground.monsterGround))){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.notEnoughTribute);
+            response.writeMessage(currentPlayer, DuelMessageTexts.notEnoughTribute);
             return;
         }
 
@@ -378,10 +386,10 @@ public class Duel extends Thread{
 
     public void ritualSummon(){
         if(!board[currentPlayer].isRitualSummonPossible()){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.cantRitualSummon);
+            response.writeMessage(currentPlayer, DuelMessageTexts.cantRitualSummon);
             return;
         }
-        Response.writeMessage(currentPlayer, "select location of monster cards which you want to sacrifice");
+        response.writeMessage(currentPlayer, "select location of monster cards which you want to sacrifice");
         //todo here
         boolean[] mark = new boolean[]{false, false, false, false, false};
         int sum = 0;
@@ -391,14 +399,14 @@ public class Duel extends Thread{
                 break;
             int location = Integer.parseInt(ask) - 1;
             if(mark[location]){
-                Response.writeMessage(currentPlayer, "already selected this card for sacrifice");
+                response.writeMessage(currentPlayer, "already selected this card for sacrifice");
                 continue;
             }
             mark[location] = true;
             sum += board[currentPlayer].getCardLevel(location);
         }
         if(sum != ((MonsterCard)getSelectedCard()).getLevel()){
-            Response.writeMessage(currentPlayer, "the sum of the selected card levels doesn't match the monster's level");
+            response.writeMessage(currentPlayer, "the sum of the selected card levels doesn't match the monster's level");
             return;
         }
         for(int location = 0; location < 5; location++)
@@ -406,7 +414,7 @@ public class Duel extends Thread{
                 killCard(location, Ground.monsterGround, currentPlayer);
         board[currentPlayer].killAdvancedRitualCard();
         board[currentPlayer].summonFromHand();
-        Response.writeMessage(currentPlayer, DuelMessageTexts.summonSuccessful);
+        response.writeMessage(currentPlayer, DuelMessageTexts.summonSuccessful);
     }
 
     public void set(){
@@ -418,7 +426,7 @@ public class Duel extends Thread{
 
     public void setPosition(String newPosition){
         if(askPositionChange(Ground.monsterGround, getSelectedCardLocation())){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.alreadyChangedPos);
+            response.writeMessage(currentPlayer, DuelMessageTexts.alreadyChangedPos);
             return;
         }
         if(board[currentPlayer].setPosition(newPosition)){ didItChangePosition[0][getSelectedCardLocation()] = true; }
@@ -436,22 +444,22 @@ public class Duel extends Thread{
 
     public void attack(int defenderLocation){
         if(defenderLocation < 0 || defenderLocation > 4){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.invalidInput);
+            response.writeMessage(currentPlayer, DuelMessageTexts.invalidInput);
             return;
         }
 
         if(getSelectedCard() == null){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.noCardSelected);
+            response.writeMessage(currentPlayer, DuelMessageTexts.noCardSelected);
             return;
         }
 
         if(getSelectedCardOrigin() != Ground.monsterGround){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.cantAttack);
+            response.writeMessage(currentPlayer, DuelMessageTexts.cantAttack);
             return;
         }
 
         if(didItAttack[getSelectedCardLocation()]){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.alreadyAttacked);
+            response.writeMessage(currentPlayer, DuelMessageTexts.alreadyAttacked);
             return;
         }
 
@@ -461,7 +469,7 @@ public class Duel extends Thread{
         Duel.defenderLocation = defenderLocation;
 
         if(enemyCard == null){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.noCardToAttack);
+            response.writeMessage(currentPlayer, DuelMessageTexts.noCardToAttack);
             return;
         }
 
@@ -469,7 +477,7 @@ public class Duel extends Thread{
         String enemyPosition = getPosition(1 - currentPlayer , defenderLocation, Ground.monsterGround);
 
         if(!myPosition.equals("OO")){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.cantAttack);
+            response.writeMessage(currentPlayer, DuelMessageTexts.cantAttack);
             return;
         }
 
@@ -496,32 +504,32 @@ public class Duel extends Thread{
                 else{
                     lp[1 - currentPlayer] -= atk_dmg - defender_dmg;
                     board[1 - currentPlayer].removeCard(Ground.monsterGround, defenderLocation);
-                    Response.writeMessage(currentPlayer, DuelMessageTexts.opponentMonsterDestroyed(atk_dmg - defender_dmg));
+                    response.writeMessage(currentPlayer, DuelMessageTexts.opponentMonsterDestroyed(atk_dmg - defender_dmg));
                 }
             } else if (defender_dmg == atk_dmg) {
                 board[currentPlayer].removeCard(Ground.monsterGround, getSelectedCardLocation());
                 board[1 - currentPlayer].removeCard(Ground.monsterGround, defenderLocation);
-                Response.writeMessage(currentPlayer, DuelMessageTexts.bothMonsterDestroyed);
+                response.writeMessage(currentPlayer, DuelMessageTexts.bothMonsterDestroyed);
             } else {
                 board[currentPlayer].removeCard(Ground.monsterGround, getSelectedCardLocation());
                 lp[currentPlayer] -= defender_dmg - atk_dmg;
-                Response.writeMessage(currentPlayer, DuelMessageTexts.yourMonsterDestroyed(defender_dmg - atk_dmg));
+                response.writeMessage(currentPlayer, DuelMessageTexts.yourMonsterDestroyed(defender_dmg - atk_dmg));
             }
         } else{
             if(enemyPosition.equals("DH")){
-                Response.writeMessage(currentPlayer, String.format("opponent’s monster card was <%s> and ", enemyCard.getName()));
+                response.writeMessage(currentPlayer, String.format("opponent’s monster card was <%s> and ", enemyCard.getName()));
                 // we add this string to the first of every coming output, if the enemy card is hidden (DH mode)
             }
 
             defender_dmg = myCard.getDefenseDamage();
             if(defender_dmg < atk_dmg){
                 board[1 - currentPlayer].removeCard(Ground.monsterGround, defenderLocation);
-                Response.writeMessage(currentPlayer, DuelMessageTexts.defenseDestroyed);
+                response.writeMessage(currentPlayer, DuelMessageTexts.defenseDestroyed);
             } else if(defender_dmg == atk_dmg){
-                Response.writeMessage(currentPlayer, DuelMessageTexts.noCardDestroyed);
+                response.writeMessage(currentPlayer, DuelMessageTexts.noCardDestroyed);
             } else{
                 lp[currentPlayer] -= defender_dmg - atk_dmg;
-                Response.writeMessage(currentPlayer, DuelMessageTexts.noCardDestroyedWithDamage(defender_dmg - atk_dmg));
+                response.writeMessage(currentPlayer, DuelMessageTexts.noCardDestroyedWithDamage(defender_dmg - atk_dmg));
             }
         }
         didItAttack[getSelectedCardLocation()] = true;
@@ -595,23 +603,23 @@ public class Duel extends Thread{
 
     public void directAttack(){
         if(getSelectedCard() == null){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.noCardSelected);
+            response.writeMessage(currentPlayer, DuelMessageTexts.noCardSelected);
             return;
         }
 
         if(getSelectedCardOrigin() != Ground.monsterGround
                 || !getPosition(currentPlayer, getSelectedCardLocation(), Ground.monsterGround).equals("OO")){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.cantAttack);
+            response.writeMessage(currentPlayer, DuelMessageTexts.cantAttack);
             return;
         }
 
         if(didItAttack[getSelectedCardLocation()]){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.alreadyAttacked);
+            response.writeMessage(currentPlayer, DuelMessageTexts.alreadyAttacked);
             return;
         }
 
         if(getNumberOfCards(Ground.monsterGround, 1 - currentPlayer) != 0){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.cantAttackDirect);
+            response.writeMessage(currentPlayer, DuelMessageTexts.cantAttackDirect);
             return;
         }
 
@@ -619,28 +627,28 @@ public class Duel extends Thread{
         lp[1 - currentPlayer] -= attacker.getAttackDamage();
         didItAttack[getSelectedCardLocation()] = true;
         deselect(false);
-        Response.writeMessage(currentPlayer, DuelMessageTexts.opponentReceiveDamage(attacker.getAttackDamage()));
+        response.writeMessage(currentPlayer, DuelMessageTexts.opponentReceiveDamage(attacker.getAttackDamage()));
     }
 
     public void activateSpell(){
         if(getSelectedCard() == null){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.noCardSelected);
+            response.writeMessage(currentPlayer, DuelMessageTexts.noCardSelected);
             return;
         }
 
         if(getSelectedCardOrigin() != Ground.handGround){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.cantSummon);
+            response.writeMessage(currentPlayer, DuelMessageTexts.cantSummon);
             return;
         }
 
         if(getNumberOfCards(Ground.spellTrapGround, currentPlayer) == 5){
-            Response.writeMessage(currentPlayer, DuelMessageTexts.spellZoneFull);
+            response.writeMessage(currentPlayer, DuelMessageTexts.spellZoneFull);
             return;
         }
 
         if(board[currentPlayer].activateSpell()){
             didItChangePosition[1][getSelectedCardLocation()] = true;
-            Response.writeMessage(currentPlayer, DuelMessageTexts.spellActivated);
+            response.writeMessage(currentPlayer, DuelMessageTexts.spellActivated);
             //runChain(OnSpellActivation.getInstance());
             // TODO: 7/19/2021
         }

@@ -7,6 +7,9 @@ import yugioh.model.cards.*;
 import yugioh.model.cards.MonsterCard.*;
 import yugioh.model.cards.nonMonsterCard.NonMonsterCard;
 import yugioh.Main;
+import yugioh.model.duel.response.DuelMessageTexts;
+import yugioh.model.duel.response.Response;
+
 import java.util.ArrayList;
 
 
@@ -19,6 +22,7 @@ public class Board{
 	final MainDeck mainDeck;
 	final MonsterPlayground monsterPlayGround;
 	final SpellTrapPlayground spellTrapPlayGround;
+	final Response response;
 	final int player;
 	private static Card selectedCard = null;
 	private static int selectedCardLocation, selectedCardOwner;
@@ -33,7 +37,7 @@ public class Board{
 		//needs to get deeper about type of card(e.g. monsterCard, TrapCard, etc). waiting for cards to be updated
 	}
 
-	public Board(Duel duel, Player player, int boardPlayer){
+	public Board(Duel duel, Player player, int boardPlayer, Response response){
 		this.duel = duel;
 		fieldZone = new FieldZone();
 		hand = new Hand();
@@ -42,6 +46,7 @@ public class Board{
 		monsterPlayGround = new MonsterPlayground();
 		spellTrapPlayGround = new SpellTrapPlayground();
 		this.player = boardPlayer;
+		this.response = response;
 	}
 
 	public void reset(){
@@ -59,7 +64,7 @@ public class Board{
 
 	public boolean isRitualSummonPossible(){
 		if(!spellTrapPlayGround.searchAdvancedRitual() || !(getSelectedCard() instanceof RitualCard)){
-			Main.outputToUser(DuelMenuResponse.noWayRitual);
+			response.writeMessage(player, DuelMessageTexts.noWayRitual);
 			return false;
 		}
 		//checks if sum of some card levels equals to wanted one
@@ -70,7 +75,7 @@ public class Board{
 		if(selectedCardOrigin == Ground.handGround)location = selectedCardLocation;
 		else location = -1;
 		if(!checkCardLevels(levels, ((MonsterCard)selectedCard).getLevel(), location)){
-			Main.outputToUser(DuelMenuResponse.noWayRitual);
+			response.writeMessage(player, DuelMessageTexts.noWayRitual);
 			return false;
 		}
 		return true;
@@ -95,7 +100,7 @@ public class Board{
 
 	public void selectCard(Ground from, int location){
 		if(location < 0){
-			Main.outputToUser(DuelMenuResponse.invalidInput);
+			response.writeMessage(player, DuelMessageTexts.invalidInput);
 			return;
 		}
 		
@@ -103,31 +108,31 @@ public class Board{
 
 		if(from == Ground.monsterGround) {
 			if (location > 4) {
-				Main.outputToUser(DuelMenuResponse.invalidInput);
+				response.writeMessage(player, DuelMessageTexts.invalidInput);
 				return;
 			}
 			selectedCard = monsterPlayGround.getCard(location);
 			if (selectedCard == null) {
-				Main.outputToUser(DuelMenuResponse.noCardFound);
+				response.writeMessage(player, DuelMessageTexts.noCardFound);
 				return;
 			}
 			selectedCardPosition = getPosition(location, Ground.monsterGround);
 		}
 		else if(from == Ground.spellTrapGround) {
 			if (location > 4) {
-				Main.outputToUser(DuelMenuResponse.invalidInput);
+				response.writeMessage(player, DuelMessageTexts.invalidInput);
 				return;
 			}
 			selectedCard = spellTrapPlayGround.getCard(location);
 			if (selectedCard == null) {
-				Main.outputToUser(DuelMenuResponse.noCardFound);
+				response.writeMessage(player, DuelMessageTexts.noCardFound);
 				return;
 			}
 			selectedCardPosition = getPosition(location, Ground.spellTrapGround);
 		}
 		else if(from == Ground.handGround) {
 			if (location >= hand.total()) {
-				Main.outputToUser(DuelMenuResponse.invalidInput);
+				response.writeMessage(player, DuelMessageTexts.invalidInput);
 				return;
 			}
 			selectedCard = hand.getCard(location);
@@ -135,13 +140,13 @@ public class Board{
 		else if(from == Ground.fieldGround) {
 			selectedCard = fieldZone.getCard();
 			if (selectedCard == null) {
-				Main.outputToUser(DuelMenuResponse.fieldZoneEmpty);
+				response.writeMessage(player, DuelMessageTexts.fieldZoneEmpty);
 				return;
 			}
 		}
 		else if(from == Ground.graveyardGround){
 			if(location >= graveYard.total()){
-				Main.outputToUser(DuelMenuResponse.invalidInput);
+				response.writeMessage(player, DuelMessageTexts.invalidInput);
 				return;
 			}
 			selectedCard = graveYard.getCard(location);
@@ -149,14 +154,14 @@ public class Board{
 		selectedCardOrigin = from;
 		selectedCardOwner = player;
 		selectedCardLocation = location;
-		Main.outputToUser(DuelMenuResponse.cardSelected);
+		response.writeMessage(player, DuelMessageTexts.cardSelected);
 	}
 
 
 	public void deselect(boolean msg){
 		if(selectedCard == null) {
 			if(msg)
-				Main.outputToUser(DuelMenuResponse.noCardSelected);
+				response.writeMessage(player, DuelMessageTexts.noCardSelected);
 			return;
 		}
 		selectedCard = null;
@@ -165,34 +170,34 @@ public class Board{
 		selectedCardOwner = -1;
 		
 		if(msg)
-			Main.outputToUser(DuelMenuResponse.cardDeselected);
+			response.writeMessage(player, DuelMessageTexts.cardDeselected);
 	}
 
 	public boolean set(){
 		if(selectedCard == null){
-			Main.outputToUser(DuelMenuResponse.noCardSelected);
+			response.writeMessage(player, DuelMessageTexts.noCardSelected);
 			return false;
 		}
 
 		if(selectedCardOrigin != Ground.handGround){
-			Main.outputToUser(DuelMenuResponse.cantSet);
+			response.writeMessage(player, DuelMessageTexts.cantSet);
 			return false;
 		}
 		if(selectedCard instanceof MonsterCard){
 			if(monsterPlayGround.total() == 5){
-				Main.outputToUser(DuelMenuResponse.monsterZoneFull);
+				response.writeMessage(player, DuelMessageTexts.monsterZoneFull);
 				return false;
 			}
 			monsterPlayGround.addCard((MonsterCard) selectedCard, "DH");
-			Main.outputToUser(DuelMenuResponse.setSuccessful);
+			response.writeMessage(player, DuelMessageTexts.setSuccessful);
 		}
 		else{
 			if(spellTrapPlayGround.total() == 5){
-				Main.outputToUser(DuelMenuResponse.monsterZoneFull);
+				response.writeMessage(player, DuelMessageTexts.monsterZoneFull);
 				return false;
 			}
 			spellTrapPlayGround.addCard(selectedCard, "H");
-			Main.outputToUser(DuelMenuResponse.spellSet);
+			response.writeMessage(player, DuelMessageTexts.spellSet);
 		}
 		hand.removeCard(getSelectedCardLocation());
 		return true;
@@ -247,14 +252,14 @@ public class Board{
 					"1", "2", "3", "4", "5"
 			})) - 1;
 			if(mark[location])
-				Main.outputToUser("Already picked this card for tribute");
+				response.writeMessage(player, "Already picked this card for tribute");
 			else if(monsterPlayGround.isThereCardOnLocation(location)){
 				mark[location] = true;
 				tributes--;
-				Main.outputToUser("Card added");
+				response.writeMessage(player, "Card added");
 			}
 			else
-				Main.outputToUser(DuelMenuResponse.noCardFound);
+				response.writeMessage(player, DuelMessageTexts.noCardFound);
 		}
 		for(int i = 0; i < 5; i++)
 			if(mark[i])
@@ -263,12 +268,12 @@ public class Board{
 
 	public boolean setPosition(String newPosition){
 		if(selectedCard == null){
-			Main.outputToUser(DuelMenuResponse.noCardSelected);
+			response.writeMessage(player, DuelMessageTexts.noCardSelected);
 			return false;
 		}
 
 		if(selectedCardOrigin != Ground.monsterGround){
-			Main.outputToUser(DuelMenuResponse.cantChangePosition);
+			response.writeMessage(player, DuelMessageTexts.cantChangePosition);
 			return false;
 		}
 
@@ -277,16 +282,16 @@ public class Board{
 
 	public boolean flipSummon(){
 		if(selectedCard == null){
-			Main.outputToUser(DuelMenuResponse.noCardSelected);
+			response.writeMessage(player, DuelMessageTexts.noCardSelected);
 			return false;
 		}
 
 		if(selectedCardOrigin != Ground.monsterGround){
-			Main.outputToUser(DuelMenuResponse.cantChangePosition);
+			response.writeMessage(player, DuelMessageTexts.cantChangePosition);
 			return false;
 		}
 		if(askPositionChange(Ground.monsterGround, getSelectedCardLocation()) || !getPosition(getSelectedCardLocation(), Ground.monsterGround).equals("DH")){
-			Main.outputToUser(DuelMenuResponse.cantFlipSummon);
+			response.writeMessage(player, DuelMessageTexts.cantFlipSummon);
 			return false;
 		}
 
@@ -296,19 +301,19 @@ public class Board{
 
 	public boolean activateSpell(){
 		if(!hand.getRequirementsStatus(getSelectedCardLocation())){
-			Main.outputToUser(DuelMenuResponse.preparationNotDone);
+			response.writeMessage(player, DuelMessageTexts.preparationNotDone);
 			return false;
 		}
 
 		removeCard(Ground.handGround, getSelectedCardLocation());
 		addCard(Ground.spellTrapGround, getSelectedCard(), "O");
-		Main.outputToUser(DuelMenuResponse.spellActivated);
+		response.writeMessage(player, DuelMessageTexts.spellActivated);
 		return true;
 	}
 
     public void showGraveYard(){
     	Card[] cards = graveYard.getAll().toArray(new Card[graveYard.total()]);
-    	Main.outputToUser(DuelMenuResponse.showGraveYard(cards));
+		response.writeMessage(player, DuelMessageTexts.showGraveYard(cards));
     	while(true){
     		String ask = Main.getInput();
     		if(ask.equals("back"))
@@ -353,8 +358,13 @@ public class Board{
 		if(from == Ground.handGround)
 			hand.removeCard(location);
 
-		if(from == Ground.fieldGround)
+		if(from == Ground.fieldGround) {
+			if(fieldZone.getCard() == null){
+				response.writeMessage(player, DuelMessageTexts.fieldZoneEmpty);
+				return;
+			}
 			fieldZone.removeCard();
+		}
 
 		if(from == Ground.graveyardGround)
 			graveYard.removeCard(location);
@@ -373,17 +383,17 @@ public class Board{
 
     public void showCard(){
     	if(selectedCard == null){
-			Main.outputToUser(DuelMenuResponse.noCardSelected);
+			response.writeMessage(player, DuelMessageTexts.noCardSelected);
     		return;
     	}
     	if(selectedCardOwner != duel.getCurrentPlayer() && (selectedCardPosition.equals("DH") || selectedCardPosition.equals("H"))){
-    		Main.outputToUser(DuelMenuResponse.cardInvisible);
+			response.writeMessage(player, DuelMessageTexts.cardInvisible);
     		return;
     	}
 		if(selectedCard instanceof MonsterCard)
-			Main.outputToUser(DuelMenuResponse.showMonsterCard((MonsterCard)selectedCard));
+			response.writeMessage(player, DuelMessageTexts.showMonsterCard((MonsterCard)selectedCard));
 		else
-			Main.outputToUser(DuelMenuResponse.showSpellTrapCard((NonMonsterCard)getSelectedCard()));
+			response.writeMessage(player, DuelMessageTexts.showSpellTrapCard((NonMonsterCard)getSelectedCard()));
     }
 
     public void showCard(String name){
@@ -392,16 +402,16 @@ public class Board{
 			card = hand.getCard(location);
 			if (card.getName().equals(name)) {
 				if(card instanceof MonsterCard)
-					Main.outputToUser(DuelMenuResponse.showMonsterCard((MonsterCard) card));
+					response.writeMessage(player, DuelMessageTexts.showMonsterCard((MonsterCard) card));
 				else
-					Main.outputToUser(DuelMenuResponse.showSpellTrapCard((NonMonsterCard) card));
+					response.writeMessage(player, DuelMessageTexts.showSpellTrapCard((NonMonsterCard) card));
 				return;
 			}
 		}
 		for(int location = 0; location < 5; location++) {
 			card = monsterPlayGround.getCard(location);
 			if (card != null && card.getName().equals(name)) {
-				Main.outputToUser(DuelMenuResponse.showMonsterCard((MonsterCard) card));
+				response.writeMessage(player, DuelMessageTexts.showMonsterCard((MonsterCard) card));
 				return;
 			}
 		}
@@ -409,11 +419,11 @@ public class Board{
 		for(int location = 0; location < 5; location++) {
 			card = spellTrapPlayGround.getCard(location);
 			if (card != null && card.getName().equals(name)) {
-				Main.outputToUser(DuelMenuResponse.showSpellTrapCard((NonMonsterCard) card));
+				response.writeMessage(player, DuelMessageTexts.showSpellTrapCard((NonMonsterCard) card));
 				return;
 			}
 		}
-		Main.outputToUser("no card found with the given name");
+		response.writeMessage(player, "no card found with the given name");
 	}
 
     public void killCard(int location, Ground ground){
