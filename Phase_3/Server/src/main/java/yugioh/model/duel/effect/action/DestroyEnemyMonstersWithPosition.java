@@ -1,6 +1,6 @@
-package model.effect.action;
+package yugioh.model.duel.effect.action;
 
-import model.Ground;
+import yugioh.model.duel.Ground;
 
 
 public class DestroyEnemyMonstersWithPosition extends Action{

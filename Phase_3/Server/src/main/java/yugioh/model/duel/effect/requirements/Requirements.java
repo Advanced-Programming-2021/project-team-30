@@ -1,4 +1,4 @@
-package model.effect.requirements;
+package yugioh.model.duel.effect.requirements;
 
 public enum Requirements {
     CheckTargets,

@@ -1,6 +1,6 @@
-package model.effect.requirements;
+package yugioh.model.duel.effect.requirements;
 
-import model.effect.event.OnSpellActivation;
+import yugioh.model.duel.effect.event.OnSpellActivation;
 
 public class DoesRecentSpellCauseDamage extends Requirement{
 

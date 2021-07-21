@@ -48,16 +48,16 @@ public class ChangeTargetDamage extends Action{
                     attackDamage.set(index, card.getDefenseDamage());
                     defenseDamage.set(index, card.getAttackDamage());
                 }
-                if(!cards.contains(card)
-                &&(targets.get(index) == Type.any || card.getCardType() == targets.get(index))){
-                    if(myIndex.contains(index))
-                        card.addAttackDamage(damage.get(index));
-                    else{
-                        card.addAttackDamage(attackDamage.get(index));
-                        card.addDefenseDamage(defenseDamage.get(index));
-                    }
-                    cards.add(card);
-                }
+//                if(!cards.contains(card)
+//                &&(targets.get(index) == Type.any || card.getCardType() == targets.get(index))){
+//                    if(myIndex.contains(index))
+//                        card.addAttackDamage(damage.get(index));
+//                    else{
+//                        card.addAttackDamage(attackDamage.get(index));
+//                        card.addDefenseDamage(defenseDamage.get(index));
+//                    }
+//                    cards.add(card);
+//                }
             }
     }
 
@@ -65,14 +65,14 @@ public class ChangeTargetDamage extends Action{
     public void undoEffect() {
         for(int index = 0; index < targets.size(); index++)
             for(MonsterCard card: cards)
-                if(card.getCardType() == targets.get(index)) {
-                    if(myIndex.contains(index)){
-                        card.addAttackDamage(-damage.get(index));
-                        continue;
-                    }
-                    card.addAttackDamage(-attackDamage.get(index));
-                    card.addDefenseDamage(-defenseDamage.get(index));
-                }
+//                if(card.getCardType() == targets.get(index)) {
+//                    if(myIndex.contains(index)){
+//                        card.addAttackDamage(-damage.get(index));
+//                        continue;
+//                    }
+//                    card.addAttackDamage(-attackDamage.get(index));
+//                    card.addDefenseDamage(-defenseDamage.get(index));
+//                }
         cards.clear();
     }
 

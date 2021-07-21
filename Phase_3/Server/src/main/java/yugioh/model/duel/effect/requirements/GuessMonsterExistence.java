@@ -1,6 +1,6 @@
-package model.effect.requirements;
+package yugioh.model.duel.effect.requirements;
 
-import model.Ground;
+import yugioh.model.duel.Ground;
 
 public class GuessMonsterExistence extends Requirement{
 

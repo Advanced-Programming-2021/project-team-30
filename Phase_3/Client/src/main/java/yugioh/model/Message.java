@@ -1,20 +1,30 @@
 package yugioh.model;
 
 public class Message {
-    private Player sender;
+    private String senderUsername;
+    private String senderPhoto;
     private String messageString;
 
-    public Message(Player sender, String messageString) {
-        setSender(sender);
+    public Message(String senderUsername, String senderPhoto, String messageString) {
+        setSenderUsername(senderUsername);
+        setSenderPhoto(senderPhoto);
         setMessageString(messageString);
     }
 
-    public Player getSender() {
-        return sender;
+    public String getSenderUsername() {
+        return senderUsername;
     }
 
-    public void setSender(Player sender) {
-        this.sender = sender;
+    public void setSenderUsername(String senderUsername) {
+        this.senderUsername = senderUsername;
+    }
+
+    public String getSenderPhoto() {
+        return senderPhoto;
+    }
+
+    public void setSenderPhoto(String senderPhoto) {
+        this.senderPhoto = senderPhoto;
     }
 
     public String getMessageString() {
@@ -23,5 +33,13 @@ public class Message {
 
     public void setMessageString(String messageString) {
         this.messageString = messageString;
+    }
+
+    @Override
+    public String toString() {
+        return "Message{" +
+                "senderUsername='" + senderUsername + '\'' +
+                ", messageString='" + messageString + '\'' +
+                '}';
     }
 }

@@ -1,4 +1,4 @@
-package model.effect.event;
+package yugioh.model.duel.effect.event;
 
 public enum Events {
     OnDeath,

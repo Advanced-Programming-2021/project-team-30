@@ -1,6 +1,5 @@
-package model.effect.action;
+package yugioh.model.duel.effect.action;
 
-import view.Main;
 
 public class SkipEnemyBattlePhase extends Action{
     public SkipEnemyBattlePhase(int ownerPlayer, boolean canBeUsedOncePerRound, String ownerCard) {
@@ -10,7 +9,7 @@ public class SkipEnemyBattlePhase extends Action{
     @Override
     public void doEffect() {
         duel.blockAttack();
-        Main.outputToUser("the attack phase finished because of a card's effect");
+//        Main.outputToUser("the attack phase finished because of a card's effect");
         duel.nextPhase();
     }
 

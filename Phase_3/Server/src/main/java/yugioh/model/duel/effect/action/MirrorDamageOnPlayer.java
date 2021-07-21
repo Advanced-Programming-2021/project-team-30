@@ -1,8 +1,8 @@
-package model.effect.action;
+package yugioh.model.duel.effect.action;
 
-import model.Duel;
-import model.Ground;
-import model.cards.MonsterCard.MonsterCard;
+import yugioh.model.duel.Duel;
+import yugioh.model.duel.Ground;
+import yugioh.model.cards.MonsterCard.MonsterCard;
 
 public class MirrorDamageOnPlayer extends Action{
     public MirrorDamageOnPlayer(int ownerPlayer, boolean canBeUsedOncePerRound, String ownerCard) {

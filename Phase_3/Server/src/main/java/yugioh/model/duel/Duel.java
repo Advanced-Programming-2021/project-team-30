@@ -1,21 +1,20 @@
 package yugioh.model.duel;
 
+import yugioh.controller.RegisterAndLoginController;
 import yugioh.model.Player;
 import yugioh.model.duel.board.Board;
 import yugioh.model.duel.effect.Effect;
 import yugioh.model.duel.phase.Phase;
 import yugioh.model.cards.*;
 import yugioh.model.cards.MonsterCard.*;
-import yugioh.Main;
 import yugioh.model.duel.response.Response;
 import yugioh.model.duel.response.DuelMessageTexts;
-
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Stack;
 import java.lang.Math;
 import java.util.regex.Matcher;
-
+import java.util.regex.Pattern;
 
 
 public class Duel extends Thread{
@@ -31,7 +30,7 @@ public class Duel extends Thread{
             "p-defense-(\\d+)",
             "p-attack-(\\d+)",
             "attack-(\\d+)-(\\d+)",
-            "attack-d",
+            "attack-(\\d+)-d",
             "summon-(\\d+)",
             "flip-summon-(\\d+)",
             "set-(\\d+)",
@@ -61,9 +60,10 @@ public class Duel extends Thread{
     public Duel(Player[] player, int rounds){
         //NOTE: taking clones!!!!!
         //initialize
+        String token1 = player[0].getToken(), token2 = player[1].getToken();
         response = new Response(new Socket[]{
-                player[0].getSocket(),
-                player[1].getSocket()
+                RegisterAndLoginController.socketHashMap.get(token1),
+                RegisterAndLoginController.socketHashMap.get(token2)
         });
         for(int i = 0; i < 2; i++){
             this.player[i] = player[i];
@@ -172,7 +172,7 @@ public class Duel extends Thread{
 //				OnStandByPhase.isCalled = false;
                 nextPhase();
             }
-            listen(true, null, null);
+            listen();
         }
     }
 
@@ -210,92 +210,93 @@ public class Duel extends Thread{
         return rotation[location];
     }
 
-    public String listen(boolean getCommand, String question, String[] desiredOutputs){
+    public String listen(){
         //todo modify listen
-        if(getCommand)
-            while(true){
-                String input = response.listen(currentPlayer);
-                if(input.equals("fail"))return input;
-                DuelMenuRegex.setCommandValues(Main.getInput());
-                if(DuelMenuCommand.isSet){
-                    callForMethod();
-                    return null;
-                }
+        int count = 3;
+        while(count > 0){
+            String input = response.listen(currentPlayer);
+            if(input.equals("fail")) {
+                count--;
+                continue;
             }
-        return DuelMenuRegex.getDesiredInput(question, desiredOutputs);
+            callForMethod(input);
+        }
+        return "fail";
     }
 
-    private boolean checkPhaseValidity(Command command, int phaseNum) {
-        return Phase.checkPhaseValidity(phaseNum, command);
+    private boolean checkPhaseInvalidity(Command command, int phaseNum) {
+        return !Phase.checkPhaseValidity(phaseNum, command);
     }
 
-    private void callForMethod() {
-        Command command = DuelMenuCommand.commandName;
-        if(!checkPhaseValidity(command, currentPhase)) {
-            response.writeMessage(currentPlayer, DuelMessageTexts.actionNotAllowedInPhase);
-            return;
-        }
-        Matcher matcher = DuelMenuCommand.matcher;
-        int location;
-        if(command == Command.selectMonster){
-            location = Integer.parseInt(matcher.group(1)) - 1;
-            selectCard(Ground.monsterGround, location, false, currentPlayer);
-        }
-        else if(command == Command.selectOpponentMonster){
-            location = Integer.parseInt(matcher.group(1)) - 1;
-            selectCard(Ground.monsterGround, location, true, currentPlayer);
-        }
-        else if(command == Command.selectSpell){
-            location = Integer.parseInt(matcher.group(1)) - 1;
-            selectCard(Ground.spellTrapGround, location, false, currentPlayer);
-        }
-        else if(command == Command.selectOpponentSpell){
-            location = Integer.parseInt(matcher.group(1)) - 1;
-            selectCard(Ground.spellTrapGround, location, true, currentPlayer);
-        }
-        else if(command == Command.selectField)
-            selectCard(Ground.fieldGround, 0, false, currentPlayer);
-        else if(command == Command.selectOpponentField)
-            selectCard(Ground.fieldGround, 0, true, currentPlayer);
-        else if(command == Command.selectHand){
-            location = Integer.parseInt(matcher.group(1)) - 1;
-            selectCard(Ground.handGround, location, false, currentPlayer);
-        }
-        else if(command == Command.deselect)
-            deselect(true);
-        else if(command == Command.nextPhase)
-            nextPhase();
-        else if(command == Command.summon)
-            summon();
-        else if(command == Command.set)
-            set();
-        else if(command == Command.setCardPositionAttack)
-            setPosition("OO");
-        else if(command == Command.setCardPositionDefense)
-            setPosition("DO");
-        else if(command == Command.flipSummon)
-            flipSummon();
-        else if(command == Command.attack){
-            location = Integer.parseInt(matcher.group(1)) - 1;
-            attack(location);
-        }
-        else if(command == Command.directAttack)
-            directAttack();
-        else if(command == Command.activateEffect)
-            activateSpell();
-        else if(command == Command.ritualSummon)
-            ritualSummon();
-        else if(command == Command.showGraveyard)
-            showGraveYard(currentPlayer);
-        else if(command == Command.showGraveyardOpponent)
-            showGraveYard(1 - currentPlayer);
-        else if(command == Command.cardShowSelected)
-            showCard();
-        else if(command == Command.surrender)
-            surrender();
-        else if(command == Command.cardShow) {
-            String name = matcher.group(1);
-            showCard(name);
+    private void callForMethod(String input) {
+        Pattern pattern;
+        Matcher matcher;
+        for(int i = 0; i < commands.length; i++){
+            pattern = Pattern.compile(commands[i]);
+            matcher = pattern.matcher(input);
+            if(matcher.find()){
+                if(i == 0){
+                    if(checkPhaseInvalidity(Command.setCardPositionDefense, currentPhase)){
+                        response.writeMessage(currentPlayer, DuelMessageTexts.actionNotAllowedInPhase);
+                        return;
+                    }
+                    selectCard(Ground.monsterGround, (Integer.parseInt(matcher.group(1)) - 1), currentPlayer);
+                    setPosition("DO");
+                    return;
+                } else if(i == 1){
+                    if(checkPhaseInvalidity(Command.setCardPositionAttack, currentPhase)){
+                        response.writeMessage(currentPlayer, DuelMessageTexts.actionNotAllowedInPhase);
+                        return;
+                    }
+                    selectCard(Ground.monsterGround, (Integer.parseInt(matcher.group(1)) - 1), currentPlayer);
+                    setPosition("OO");
+                    return;
+                } else if(i == 2){
+                    if(checkPhaseInvalidity(Command.attack, currentPhase)){
+                        response.writeMessage(currentPlayer, DuelMessageTexts.actionNotAllowedInPhase);
+                        return;
+                    }
+                    int attacker = Integer.parseInt(matcher.group(1)) - 1;
+                    int defender = Integer.parseInt(matcher.group(2)) - 1;
+                    selectCard(Ground.monsterGround, attacker, currentPlayer);
+                    attack(defender);
+                    return;
+                } else if(i == 3){
+                    if(checkPhaseInvalidity(Command.directAttack, currentPhase)){
+                        response.writeMessage(currentPlayer, DuelMessageTexts.actionNotAllowedInPhase);
+                        return;
+                    }
+                    int attacker = Integer.parseInt(matcher.group(1)) - 1;
+                    selectCard(Ground.monsterGround, attacker, currentPlayer);
+                    directAttack();
+                } else if(i == 4){
+                    if(checkPhaseInvalidity(Command.summon, currentPhase)){
+                        response.writeMessage(currentPlayer, DuelMessageTexts.actionNotAllowedInPhase);
+                        return;
+                    }
+                    int location = Integer.parseInt(matcher.group(1)) - 1;
+                    selectCard(Ground.handGround, location, currentPlayer);
+                    summon();
+                } else if(i == 5){
+                    if(checkPhaseInvalidity(Command.flipSummon, currentPhase)){
+                        response.writeMessage(currentPlayer, DuelMessageTexts.actionNotAllowedInPhase);
+                        return;
+                    }
+                    int location = Integer.parseInt(matcher.group(1)) - 1;
+                    selectCard(Ground.handGround, location, currentPlayer);
+                    flipSummon();
+                } else if(i == 6){
+                    if(checkPhaseInvalidity(Command.set, currentPhase)){
+                        response.writeMessage(currentPlayer, DuelMessageTexts.actionNotAllowedInPhase);
+                        return;
+                    }
+                    int location = Integer.parseInt(matcher.group(1)) - 1;
+                    selectCard(Ground.handGround, location, currentPlayer);
+                    set();
+                } else if(i == 7)
+                    nextPhase();
+                else surrender();
+            }
         }
     }
 
@@ -316,11 +317,7 @@ public class Duel extends Thread{
         }
     }
 
-    public void selectCard(Ground from, int location, boolean enemy, int callerPlayer){
-        if(enemy){
-            board[1 - callerPlayer].selectCard(from, getRotationLocation(location));
-            return;
-        }
+    public void selectCard(Ground from, int location, int callerPlayer){
         board[callerPlayer].selectCard(from, location);
     }
 
@@ -394,7 +391,7 @@ public class Duel extends Thread{
         boolean[] mark = new boolean[]{false, false, false, false, false};
         int sum = 0;
         while(true){
-            String ask = listen(false, "", new String[]{"1", "2", "3", "4", "5", "done"});
+            String ask = listen();
             if(ask.equals("done"))
                 break;
             int location = Integer.parseInt(ask) - 1;
@@ -652,18 +649,6 @@ public class Duel extends Thread{
             //runChain(OnSpellActivation.getInstance());
             // TODO: 7/19/2021
         }
-    }
-
-    public void showGraveYard(int player){
-        board[player].showGraveYard();
-    }
-
-    public void showCard(){
-        board[currentPlayer].showCard();
-    }
-
-    public void showCard(String name){
-        board[currentPlayer].showCard(name);
     }
 
     public int getCurrentPlayer(){

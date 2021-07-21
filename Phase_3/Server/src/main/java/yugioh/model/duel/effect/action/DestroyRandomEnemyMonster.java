@@ -1,8 +1,6 @@
-package model.effect.action;
+package yugioh.model.duel.effect.action;
 
-import model.Ground;
-import model.effect.event.OnFlip;
-import model.effect.event.OnSpellActivation;
+import yugioh.model.duel.Ground;
 
 public class DestroyRandomEnemyMonster extends Action{
     public DestroyRandomEnemyMonster(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName) {

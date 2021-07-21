@@ -16,15 +16,16 @@ public class ChatPane extends AnchorPane {
         setPrefWidth(200);
         imageView.setFitWidth(50);
         imageView.setFitHeight(70);
-        usernameLabel.setLayoutX(50);
-        messageText.setLayoutX(50);
-        messageText.setLayoutY(30);
+        usernameLabel.setLayoutX(53);
+        usernameLabel.setLayoutY(3);
+        messageText.setLayoutX(53);
+        messageText.setLayoutY(33);
         try {
             imageView.setImage(new Image(profilePath));
         } catch (Exception ignored){
         }
         messageText.setText(message);
-        messageText.setWrappingWidth(300);
+        messageText.setWrappingWidth(400);
         messageText.setTextAlignment(TextAlignment.JUSTIFY);
         usernameLabel.setText(username);
         this.getChildren().addAll(imageView, usernameLabel, messageText);

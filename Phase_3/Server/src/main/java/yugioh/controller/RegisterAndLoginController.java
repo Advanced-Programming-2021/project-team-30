@@ -6,6 +6,7 @@ import yugioh.model.Player;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.Socket;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import java.util.List;
 public class RegisterAndLoginController {
     public static ArrayList<Player> players = new ArrayList<>();
     public static HashMap<String, Player> loggedInPlayers = new HashMap<>();
+    public static HashMap<String, Socket> socketHashMap = new HashMap<>();
 
     public static Player getPlayerByUsername(String username){
         for (Player player : players) {

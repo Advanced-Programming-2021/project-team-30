@@ -1,9 +1,8 @@
-package model.effect.action;
+package yugioh.model.duel.effect.action;
 
-import model.Ground;
-import model.cards.Card;
-import model.cards.MonsterCard.MonsterCard;
-import view.Main;
+import yugioh.model.duel.Ground;
+import yugioh.model.cards.Card;
+import yugioh.model.cards.MonsterCard.MonsterCard;
 
 public class ScannerOnThisRound extends Action {
     public ScannerOnThisRound(int ownerPlayer, boolean canBeUsedOncePerRound, String cardName) {
@@ -12,9 +11,7 @@ public class ScannerOnThisRound extends Action {
 
     @Override
     public void doEffect() {
-        int location = Integer.parseInt(duel.listen(false, "choose a card location from enemy graveyard", new String[]{
-                "1", "2", "3", "4", "5"
-        }));
+        int location = 0;
         Card card = duel.getCard(Ground.graveyardGround, location, 1 - ownerPlayer);
         duel.setScanner((MonsterCard) card, ownerPlayer);
     }

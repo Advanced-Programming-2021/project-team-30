@@ -1,8 +1,8 @@
-package model.effect.requirements;
+package yugioh.model.duel.effect.requirements;
 
-import model.Ground;
-import model.cards.MonsterCard.MonsterCard;
-import model.effect.event.OnSummon;
+import yugioh.model.duel.Ground;
+import yugioh.model.cards.MonsterCard.MonsterCard;
+import yugioh.model.duel.effect.event.OnSummon;
 
 public class MinAttackDamage extends Requirement {
     final int damage;

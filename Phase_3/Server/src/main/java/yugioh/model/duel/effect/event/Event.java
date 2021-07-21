@@ -1,8 +1,7 @@
-package model.effect.event;
+package yugioh.model.duel.effect.event;
 
 import java.util.ArrayList;
-import model.Dto;
-import model.effect.Effect;
+import yugioh.model.duel.effect.Effect;
 
 public abstract class Event {
 
@@ -14,15 +13,15 @@ public abstract class Event {
     public void addEffect(Effect effect){ registeredEffects.add(effect); }
 
     public abstract Object decode(int index, int check);
-    public abstract Event setParams(Dto data);
-    public boolean checkParams(Dto data) {
-        this.data[1] = data.getData();
-        int size = this.data[1].size();
-        if(size != this.data[0].size()) return false;
-        for(int i = 0; i < size; i++)
-            if(decode(i, 0) != decode(i, 1)) return false;
-        return true;
-    }
+//    public abstract Event setParams(Dto data);
+//    public boolean checkParams(Dto data) {
+//        this.data[1] = data.getData();
+//        int size = this.data[1].size();
+//        if(size != this.data[0].size()) return false;
+//        for(int i = 0; i < size; i++)
+//            if(decode(i, 0) != decode(i, 1)) return false;
+//        return true;
+//    }
 
     public ArrayList<Effect> getRegisteredEffects(){
         return  registeredEffects;

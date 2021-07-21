@@ -1,8 +1,7 @@
-package model.effect.action;
+package yugioh.model.duel.effect.action;
 
-import model.Ground;
-import model.cards.MonsterCard.MonsterCard;
-import model.regex.DuelMenuRegex;
+import yugioh.model.duel.Ground;
+import yugioh.model.cards.MonsterCard.MonsterCard;
 
 
 public class MessengerEffect extends Action{
@@ -12,9 +11,7 @@ public class MessengerEffect extends Action{
 
     @Override
     public void doEffect() {
-        String answer = DuelMenuRegex.getDesiredInput("do you want to pay 100 lp for the effect of card 'Messenger of peace'?", new String[]{
-                "yes", "no"
-        });
+        String answer = "yes";
         if(answer.equals("no")) {
             duel.killCard(ownerCard, Ground.spellTrapGround, ownerPlayer);
             return;

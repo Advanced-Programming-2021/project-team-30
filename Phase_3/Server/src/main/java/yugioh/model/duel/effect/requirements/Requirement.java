@@ -1,6 +1,6 @@
-package model.effect.requirements;
+package yugioh.model.duel.effect.requirements;
 
-import model.Duel;
+import yugioh.model.duel.Duel;
 
 public abstract class Requirement {
     final static Duel duel = Duel.getRecentDuel();

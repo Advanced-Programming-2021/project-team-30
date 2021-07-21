@@ -1,6 +1,6 @@
-package model.effect.requirements;
+package yugioh.model.duel.effect.requirements;
 
-import model.effect.event.OnGettingAttacked;
+import yugioh.model.duel.effect.event.OnGettingAttacked;
 
 public class IsRecentAttackedMe extends Requirement{
     public IsRecentAttackedMe(int myLocation, int ownerPlayer){

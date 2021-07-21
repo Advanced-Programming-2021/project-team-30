@@ -34,7 +34,7 @@ public class MainController {
             try {
                 socket.setSoTimeout(30000);
             } catch (Exception ignored){}
-            player.setSocket(socket);
+            RegisterAndLoginController.socketHashMap.put(token, socket);
             String json = new Gson().toJson(player);
             return json + ",,," + token;
         }
@@ -73,8 +73,26 @@ public class MainController {
                 case "ChangePassword" -> {return changePassword(userInfos);}
                 case "ChangeNickname" -> {return changeNickname(userInfos);}
             }
-        } else if (input.equals("Show Scoreboard")){
+        }  else if (input.equals("Show Scoreboard")){
             return new Gson().toJson(ScoreboardController.returnBestPlayers());
+        } else if (input.startsWith("Send")){
+            ChatController.addToMessage(input);
+            return new Gson().toJson(ChatController.returnMessages());
+        } else if (input.startsWith("Edit")){
+            ChatController.editMessage(input);
+            return new Gson().toJson(ChatController.returnMessages());
+        } else if (input.startsWith("Delete")){
+            ChatController.deleteMessage(input);
+            return new Gson().toJson(ChatController.returnMessages());
+        } else if (input.startsWith("Pin")){
+            ChatController.pinMessage(input);
+            return new Gson().toJson(ChatController.pinnedMessage);
+        } else if (input.equals("Show Pinned")){
+            return new Gson().toJson(ChatController.pinnedMessage);
+        } else if (input.equals("Show Online")){
+            return String.valueOf(RegisterAndLoginController.loggedInPlayers.size());
+        } else if (input.equals("Show Messages")){
+            return new Gson().toJson(ChatController.returnMessages());
         }
         return "";
     }

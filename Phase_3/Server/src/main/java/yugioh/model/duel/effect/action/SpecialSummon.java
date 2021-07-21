@@ -1,13 +1,12 @@
-package model.effect.action;
+package yugioh.model.duel.effect.action;
 
-import model.Ground;
-import model.cards.Card;
-import model.cards.MonsterCard.MonsterCard;
-import model.cards.Type;
-import model.cards.nonMonsterCard.Spell.Spell;
-import model.cards.nonMonsterCard.Trap.Trap;
+import yugioh.model.duel.Ground;
+import yugioh.model.cards.Card;
+import yugioh.model.cards.MonsterCard.MonsterCard;
+import yugioh.model.cards.Type;
+import yugioh.model.cards.nonMonsterCard.Spell.Spell;
+import yugioh.model.cards.nonMonsterCard.Trap.Trap;
 import yugioh.model.duel.response.Response;
-import view.Main;
 import java.util.ArrayList;
 
 
@@ -30,18 +29,10 @@ public class SpecialSummon extends Action{
     public void doEffect() {
         Ground ground;
         int location;
-        Main.outputToUser(String.format("it is player <%d>'s choice for special summon", ownerPlayer));
+//        Main.outputToUser(String.format("it is player <%d>'s choice for special summon", ownerPlayer));
         while(true){
-            ground = Ground.valueOf(duel.listen(false, "which ground?", new String[]{
-                Ground.monsterGround.toString(),
-                Ground.spellTrapGround.toString(),
-                Ground.handGround.toString(),
-                Ground.mainDeckGround.toString(),
-                Ground.graveyardGround.toString()
-            }));
-            location = Integer.parseInt(duel.listen(false, "which location?", new String[]{
-                    "1", "2", "3", "4", "5"
-            })) - 1;
+            ground = Ground.monsterGround;
+            location = 0;
             boolean isValid = false;
             for(Ground ground1: grounds)
                 if (ground1 == ground) {
@@ -49,22 +40,22 @@ public class SpecialSummon extends Action{
                     break;
                 }
             if(!isValid) {
-                Main.outputToUser(Response.invalidInput);
+//                Main.outputToUser(Response.invalidInput);
                 continue;
             }
             if(!duel.isThereCardOnLocation(ownerPlayer, ground, location)){
-                Main.outputToUser(Response.noCardFound);
+//                Main.outputToUser(Response.noCardFound);
                 continue;
             }
             Card card = duel.getCard(ground, location, ownerPlayer);
             if(cardType.equals("monster")){
                 if(!(card instanceof MonsterCard) || ((MonsterCard)card).getLevel() < minLevel || ((MonsterCard)card).getLevel() > maxLevel){
-                    Main.outputToUser("invalid card for the given effect");
+//                    Main.outputToUser("invalid card for the given effect");
                     continue;
                 }
             } else if(cardType.equals("spellTrap")){
                 if(!(card instanceof Spell || card instanceof Trap)){
-                    Main.outputToUser("invalid card for the given effect");
+//                    Main.outputToUser("invalid card for the given effect");
                     continue;
                 }
             }

@@ -2,13 +2,36 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="850.0" prefWidth="1590.0" style="-fx-background-color: #8562c6;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.ChatController">
+<AnchorPane fx:id="parentPane" prefHeight="850.0" prefWidth="1590.0" style="-fx-background-color: #8562c6;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.ChatController">
    <children>
-      <ScrollPane layoutX="209.0" layoutY="73.0" prefHeight="500.0" prefWidth="1076.0">
+      <ScrollPane layoutX="50" layoutY="26.0" prefHeight="547.0" prefWidth="1076.0" vvalue="600">
         <content>
-          <AnchorPane fx:id="pane" minHeight="0.0" minWidth="0.0" prefHeight="495.0" prefWidth="1076.0" />
+          <AnchorPane fx:id="pane" minHeight="0.0" minWidth="0.0" prefHeight="4000.0" prefWidth="1076.0">
+          </AnchorPane>
         </content>
       </ScrollPane>
+       <TextArea fx:id="userNewMessage" layoutX="50" layoutY="585" prefHeight="173" prefWidth="800" />
+       <Button layoutX="866" layoutY="585" onMouseClicked="#send" prefWidth="250" text="Send">
+           <font>
+               <Font size="37.0" />
+           </font>
+       </Button>
+       <Button layoutX="866" layoutY="680" onMouseClicked="#back" prefWidth="250" text="Back">
+           <font>
+               <Font size="37.0" />
+           </font>
+       </Button>
+      <Label fx:id="onlineLabel" layoutX="1144.0" layoutY="26.0" prefHeight="53.0" prefWidth="400.0" text="Number of Online People : " textFill="WHITE">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
+      <Label fx:id="pinnedLabel" layoutX="1144.0" layoutY="80.0" prefHeight="53.0" prefWidth="400.0" text="Pinned Message : " textFill="WHITE">
+         <font>
+            <Font size="27.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>

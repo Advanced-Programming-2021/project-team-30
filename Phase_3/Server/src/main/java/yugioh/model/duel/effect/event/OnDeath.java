@@ -1,6 +1,5 @@
-package model.effect.event;
+package yugioh.model.duel.effect.event;
 
-import model.Dto;
 
 public class OnDeath extends Event{
     private static OnDeath instance;
@@ -19,14 +18,14 @@ public class OnDeath extends Event{
         this.isDoneByEffect = (boolean)decode(1, 0);
     }
 
-    @Override
-    public Event setParams(Dto data){
-        this.data[0] = data.getData();
-        if(instance == null) return instance = (new OnDeath());
-        instance.location = (int)decode(0, 0);
-        instance.isDoneByEffect = (boolean)decode(1, 0);
-        return instance;
-    }
+//    @Override
+//    public Event setParams(Dto data){
+//        this.data[0] = data.getData();
+//        if(instance == null) return instance = (new OnDeath());
+//        instance.location = (int)decode(0, 0);
+//        instance.isDoneByEffect = (boolean)decode(1, 0);
+//        return instance;
+//    }
 
     @Override
     public Object decode(int index, int check){

@@ -1,7 +1,6 @@
-package model.effect.event;
+package yugioh.model.duel.effect.event;
 
-import model.Dto;
-import model.Ground;
+import yugioh.model.duel.Ground;
 
 public class OnFlip extends Event{
     private static OnFlip instance;
@@ -22,15 +21,15 @@ public class OnFlip extends Event{
         this.ground = (Ground) decode(2, 0);
     }
 
-    @Override
-    public Event setParams(Dto data) {
-        this.data[1] = data.getData();
-        if(instance == null) return instance = new OnFlip();
-        instance.location = (int) decode(0, 0);
-        instance.player = (int) decode(1, 0);
-        instance.ground = (Ground) decode(2, 0);
-        return instance;
-    }
+//    @Override
+//    public Event setParams(Dto data) {
+//        this.data[1] = data.getData();
+//        if(instance == null) return instance = new OnFlip();
+//        instance.location = (int) decode(0, 0);
+//        instance.player = (int) decode(1, 0);
+//        instance.ground = (Ground) decode(2, 0);
+//        return instance;
+//    }
 
     @Override
     public Object decode(int index, int check) {

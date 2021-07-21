@@ -1,6 +1,5 @@
-package model.effect.event;
+package yugioh.model.duel.effect.event;
 
-import model.Dto;
 
 public class OnSpellActivation extends Event{
     private static OnSpellActivation instance;
@@ -24,15 +23,15 @@ public class OnSpellActivation extends Event{
         return instance;
     }
 
-    @Override
-    public Event setParams(Dto data) {
-        this.data[0] = data.getData();
-        if(instance == null) return instance = new OnSpellActivation();
-        instance.location = (int)decode(0, 0);
-        instance.player = (int)decode(1, 0);
-        instance.causesDamage = (boolean)decode(2, 0);
-        return instance;
-    }
+//    @Override
+//    public Event setParams(Dto data) {
+//        this.data[0] = data.getData();
+//        if(instance == null) return instance = new OnSpellActivation();
+//        instance.location = (int)decode(0, 0);
+//        instance.player = (int)decode(1, 0);
+//        instance.causesDamage = (boolean)decode(2, 0);
+//        return instance;
+//    }
 
     @Override
     public Object decode(int index, int check) {

@@ -11,8 +11,8 @@ public class DestroyCardWithGuessedName extends Action{
 
     @Override
     public void doEffect() {
-        Response.writeMessage(ownerPlayer, "Guess a card's name");
-        String ask = Main.getInput();
+//        Response.writeMessage(ownerPlayer, "Guess a card's name");
+        String ask = "ye string";
         boolean find = false;
         for(int location = 0; location < duel.getNumberOfCards(Ground.handGround, 1 - ownerPlayer); location++)
             if(duel.getCard(Ground.handGround, location, 1 - ownerPlayer).getName().equals(ask)){

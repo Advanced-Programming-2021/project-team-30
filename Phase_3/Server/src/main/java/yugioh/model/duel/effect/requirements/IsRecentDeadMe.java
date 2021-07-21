@@ -1,6 +1,6 @@
-package model.effect.requirements;
+package yugioh.model.duel.effect.requirements;
 
-import model.effect.event.OnDeath;
+import yugioh.model.duel.effect.event.OnDeath;
 
 public class IsRecentDeadMe extends Requirement{
     final int myLocation;

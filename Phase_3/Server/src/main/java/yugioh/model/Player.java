@@ -18,7 +18,6 @@ public class Player implements Serializable {
     private String username;
     private String password;
     private String token;
-    private Socket socket;
     private int score;
     private String nickname;
     private int money;
@@ -35,6 +34,8 @@ public class Player implements Serializable {
         cards = new ArrayList<>();
         setProfilePhotoPath();
     }
+
+    public Player(){}
 
     public String getUsername() {
         return username;
@@ -139,10 +140,4 @@ public class Player implements Serializable {
     public void removeToken(){ token = null; }
 
     public String getToken(){ return token; }
-
-    public void setSocket(Socket socket){ this.socket = socket; }
-
-    public void removeSocket(){ socket = null; }
-
-    public Socket getSocket(){ return socket; }
 }

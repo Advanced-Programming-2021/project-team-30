@@ -23,7 +23,7 @@ public class FieldZone{
     }
 
     public void removeCard(){
-        field.undoEffect();
+        //field.undoEffect();
         field = null;
     }
 
@@ -32,10 +32,10 @@ public class FieldZone{
     }
 
     public void change(Card card){
-        if(field != null)
-            field.undoEffect();
+//        if(field != null)
+//            field.undoEffect();
         field = card;
-        field.doEffect(field.getEffect());
+//        field.doEffect(field.getEffect());
     }
 
     public boolean isFull() {

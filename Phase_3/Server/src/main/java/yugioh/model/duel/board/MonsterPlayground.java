@@ -1,15 +1,20 @@
 package yugioh.model.duel.board;
 
+import yugioh.model.duel.Command;
 import yugioh.model.duel.Ground;
 import yugioh.model.cards.Card;
 import yugioh.model.cards.MonsterCard.MonsterCard;
 import yugioh.Main;
+import yugioh.model.duel.response.DuelMessageTexts;
+import yugioh.model.duel.response.Response;
 
 
 public class MonsterPlayground{
 
     private final MonsterCard[] cards = new MonsterCard[5];
     private final String[] position = new String[5];
+    private final Response response;
+    private final int player;
 
     public void reset() {
         for(int i = 0; i < 5; i++){
@@ -18,7 +23,11 @@ public class MonsterPlayground{
         }
     }
 
-    public MonsterPlayground(){ reset(); }
+    public MonsterPlayground(Response response, int player){
+        this.response = response;
+        this.player = player;
+        reset();
+    }
 
     public void set(MonsterCard card){
         addCard(card, "DH");
@@ -43,19 +52,19 @@ public class MonsterPlayground{
 
     public void flipSummon(int location){
         position[location] = "OO";
-        Main.outputToUser(DuelMenuResponse.flipSummonSuccessful);
+        response.writeMessage(player, DuelMessageTexts.flipSummonSuccessful);
     }
 
     public boolean setPosition(String newPosition, int location){
         if(newPosition.equals(position[location])){
-            Main.outputToUser(DuelMenuResponse.alreadyInWantedPos);
+            response.writeMessage(player, DuelMessageTexts.alreadyInWantedPos);
             return false;
         }
         if(position[location].equals("DH")){
-            Main.outputToUser(DuelMenuResponse.invalidCommand(Command.flipSummon));
+            response.writeMessage(player, DuelMessageTexts.invalidCommand(Command.flipSummon));
             return false;
         }
-        Main.outputToUser(DuelMenuResponse.changePosSuccessful);
+        response.writeMessage(player, DuelMessageTexts.changePosSuccessful);
         position[location] = newPosition;
         return true;
     }
@@ -71,7 +80,7 @@ public class MonsterPlayground{
     }
 
     public void removeCard(int location){
-        cards[location].undoEffect();
+        //cards[location].undoEffect();
         cards[location] = null;
         position[location] = "E";
     }
@@ -111,8 +120,8 @@ public class MonsterPlayground{
     }
 
     public void setCardBlockedStatus(int location, boolean status) {
-        if(cards[location] != null)
-            cards[location].setCardBlockedStatus(status);
+//        if(cards[location] != null)
+//            cards[location].setCardBlockedStatus(status);
     }
 
     public int getCardLevel(int location) {

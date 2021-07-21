@@ -1,9 +1,7 @@
-package model.effect.requirements;
+package yugioh.model.duel.effect.requirements;
 
-import model.Ground;
-import model.regex.DuelMenuRegex;
+import yugioh.model.duel.Ground;
 import yugioh.model.duel.response.Response;
-import view.Main;
 
 import java.util.ArrayList;
 
@@ -20,23 +18,24 @@ public class SacrificeCards extends Requirement{
     public boolean check(){
         boolean[] mark = {false, false, false, false, false};
         int x = neededCards;
-        Main.outputToUser("please select the cards you like for sacrifice\noptions:");
+//        Main.outputToUser("please select the cards you like for sacrifice\noptions:");
         while (x > 0){
             int location;
             try{
-                location = Integer.parseInt(DuelMenuRegex.getDesiredInput("location?", new String[]{
-                        "1", "2", "3", "4", "5", "cancel"
-                })) - 1;
+//                location = Integer.parseInt(DuelMenuRegex.getDesiredInput("location?", new String[]{
+//                        "1", "2", "3", "4", "5", "cancel"
+//                })) - 1;
+                location = 0;
             }catch (Exception e){
-                Main.outputToUser("sacrifice canceled");
+//                Main.outputToUser("sacrifice canceled");
                 return false;
             }
             if(duel.getCard(Ground.monsterGround, location, ownerPlayer) == null) {
-                Main.outputToUser(Response.noCardFound);
+//                Main.outputToUser(Response.noCardFound);
                 continue;
             }
             else if(mark[location]){
-                Main.outputToUser("Card is already selected");
+//                Main.outputToUser("Card is already selected");
                 continue;
             }
             x--;
@@ -45,7 +44,7 @@ public class SacrificeCards extends Requirement{
         for(int location = 0; location < 5; location++)
             if(mark[location])
                 duel.killCard(location, Ground.monsterGround, ownerPlayer);
-        Main.outputToUser("sacrifice done successfully");
+//        Main.outputToUser("sacrifice done successfully");
         return true;
     }
 }

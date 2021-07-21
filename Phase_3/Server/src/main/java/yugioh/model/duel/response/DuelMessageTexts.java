@@ -1,5 +1,7 @@
 package yugioh.model.duel.response;
 
+import yugioh.model.duel.Command;
+
 public class DuelMessageTexts {
     public static String noPlayer = "there is no player with this username";
     public static String invalidLocation = "the given location has no card on it!";
@@ -88,4 +90,8 @@ public class DuelMessageTexts {
     public static String fieldZoneEmpty = "selected field zone is empty";
     public static String cardInvisible = "card is not visible";
     public static String askForEffectActivation = "you can activate the effect of a card now; do you want to do it?";
+
+    public static String invalidCommand(Command command){
+        return String.format("invalid command; did you mean <%s>", command.toString());
+    }
 }

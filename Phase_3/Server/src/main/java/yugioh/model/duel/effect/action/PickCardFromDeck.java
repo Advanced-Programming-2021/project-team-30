@@ -27,32 +27,32 @@ public class PickCardFromDeck extends Action{
         for(size = 0; size < duel.getNumberOfCards(Ground.mainDeckGround, ownerPlayer); size++)
             locations.add(Integer.toString(size));
         while(total > 0){
-            location = Integer.parseInt(duel.listen(false, "which location?", (String[])locations.toArray())) - 1;
+            location = Integer.parseInt(duel.listen()) - 1;
             Card card = duel.getCard(Ground.mainDeckGround, location, ownerPlayer);
-            if(cardType.equals("field")){
-                if(!(card instanceof FieldSpell)) {
-                    Main.outputToUser(Response.invalidSelection);
-                    continue;
-                }
-            }
-            if(cardType.equals("monster")){
-                if(!(card instanceof MonsterCard)) {
-                    Main.outputToUser(Response.invalidSelection);
-                    continue;
-                }
-            }
-            if(cardType.equals("spell")){
-                if(!(card instanceof Spell)) {
-                    Main.outputToUser(Response.invalidSelection);
-                    continue;
-                }
-            }
-            if(cardType.equals("Trap")){
-                if(!(card instanceof Trap)) {
-                    Main.outputToUser(Response.invalidSelection);
-                    continue;
-                }
-            }
+//            if(cardType.equals("field")){
+//                if(!(card instanceof FieldSpell)) {
+//                    Main.outputToUser(Response.invalidSelection);
+//                    continue;
+//                }
+//            }
+//            if(cardType.equals("monster")){
+//                if(!(card instanceof MonsterCard)) {
+//                    Main.outputToUser(Response.invalidSelection);
+//                    continue;
+//                }
+//            }
+//            if(cardType.equals("spell")){
+//                if(!(card instanceof Spell)) {
+//                    Main.outputToUser(Response.invalidSelection);
+//                    continue;
+//                }
+//            }
+//            if(cardType.equals("Trap")){
+//                if(!(card instanceof Trap)) {
+//                    Main.outputToUser(Response.invalidSelection);
+//                    continue;
+//                }
+//            }
             duel.addCard(ownerPlayer, Ground.handGround, card, "");
             duel.removeCard(ownerPlayer, Ground.mainDeckGround, location);
             locations.remove(--size);

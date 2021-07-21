@@ -1,7 +1,7 @@
-package model.effect.requirements;
+package yugioh.model.duel.effect.requirements;
 
-import model.Ground;
-import model.effect.event.OnGettingAttacked;
+import yugioh.model.duel.Ground;
+import yugioh.model.duel.effect.event.OnGettingAttacked;
 
 public class CommandKnight extends Requirement{
     final Ground ground;

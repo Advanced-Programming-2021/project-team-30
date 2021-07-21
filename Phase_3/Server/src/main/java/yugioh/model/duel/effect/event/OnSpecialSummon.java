@@ -1,7 +1,6 @@
-package model.effect.event;
+package yugioh.model.duel.effect.event;
 
-import model.Dto;
-import model.Ground;
+import yugioh.model.duel.Ground;
 
 public class OnSpecialSummon extends Event{
     private static OnSpecialSummon instance;
@@ -17,15 +16,15 @@ public class OnSpecialSummon extends Event{
         };
     }
 
-    @Override
-    public Event setParams(Dto data) {
-        this.data[0] = data.getData();
-        if(instance == null) return instance = (new OnSpecialSummon());
-        else{
-            instance.location = (int) decode(0, 0);
-            instance.ground = (Ground) decode(1, 0);
-            instance.player = (int) decode(2, 0);
-            return instance;
-        }
-    }
+//    @Override
+//    public Event setParams(Dto data) {
+//        this.data[0] = data.getData();
+//        if(instance == null) return instance = (new OnSpecialSummon());
+//        else{
+//            instance.location = (int) decode(0, 0);
+//            instance.ground = (Ground) decode(1, 0);
+//            instance.player = (int) decode(2, 0);
+//            return instance;
+//        }
+//    }
 }

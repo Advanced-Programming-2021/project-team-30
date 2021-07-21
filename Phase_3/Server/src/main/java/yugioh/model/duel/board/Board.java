@@ -5,8 +5,6 @@ import yugioh.model.duel.Ground;
 import yugioh.model.Player;
 import yugioh.model.cards.*;
 import yugioh.model.cards.MonsterCard.*;
-import yugioh.model.cards.nonMonsterCard.NonMonsterCard;
-import yugioh.Main;
 import yugioh.model.duel.response.DuelMessageTexts;
 import yugioh.model.duel.response.Response;
 
@@ -29,24 +27,16 @@ public class Board{
 	private static String selectedCardPosition;
 	private static Ground selectedCardOrigin;
 
-	public ArrayList<Card> cloneArrayList(ArrayList<Card> original){
-		ArrayList<Card> copy = new ArrayList<>();
-		for(Card card : original)
-			copy.add((Card) card.getClone());
-		return copy;
-		//needs to get deeper about type of card(e.g. monsterCard, TrapCard, etc). waiting for cards to be updated
-	}
-
 	public Board(Duel duel, Player player, int boardPlayer, Response response){
 		this.duel = duel;
 		fieldZone = new FieldZone();
 		hand = new Hand();
 		graveYard = new Graveyard();
 		mainDeck = new MainDeck(player.getActiveDeck().getAllCards());
-		monsterPlayGround = new MonsterPlayground();
-		spellTrapPlayGround = new SpellTrapPlayground();
 		this.player = boardPlayer;
 		this.response = response;
+		monsterPlayGround = new MonsterPlayground(response, this.player);
+		spellTrapPlayGround = new SpellTrapPlayground(response, this.player);
 	}
 
 	public void reset(){
@@ -247,10 +237,15 @@ public class Board{
 
 	private void askForTributes(int tributes) {
 		boolean[] mark = {false, false, false, false, false};
-		while (tributes > 0){
-			int location = Integer.parseInt(DuelMenuRegex.getDesiredInput(DuelMenuResponse.askForTribute, new String[]{
-					"1", "2", "3", "4", "5"
-			})) - 1;
+		int count = 3;
+		response.writeMessage(player, DuelMessageTexts.askForTribute);
+		while (tributes > 0 && count > 0){
+			String input = response.listen(player);
+			if(input.equals("fail")) {
+				count--;
+				continue;
+			}
+			int location = Integer.parseInt(input);
 			if(mark[location])
 				response.writeMessage(player, "Already picked this card for tribute");
 			else if(monsterPlayGround.isThereCardOnLocation(location)){
@@ -261,6 +256,8 @@ public class Board{
 			else
 				response.writeMessage(player, DuelMessageTexts.noCardFound);
 		}
+		if(tributes > 0)
+			return;
 		for(int i = 0; i < 5; i++)
 			if(mark[i])
 				killCard(i, Ground.monsterGround);
@@ -310,16 +307,6 @@ public class Board{
 		response.writeMessage(player, DuelMessageTexts.spellActivated);
 		return true;
 	}
-
-    public void showGraveYard(){
-    	Card[] cards = graveYard.getAll().toArray(new Card[graveYard.total()]);
-		response.writeMessage(player, DuelMessageTexts.showGraveYard(cards));
-    	while(true){
-    		String ask = Main.getInput();
-    		if(ask.equals("back"))
-    			break;
-		}
-    }
 
     public Card draw(){
 		Card drawn = getCard(Ground.mainDeckGround, 0);
@@ -380,51 +367,6 @@ public class Board{
 		else if(to == Ground.handGround)
 			hand.addCard(card);
     }
-
-    public void showCard(){
-    	if(selectedCard == null){
-			response.writeMessage(player, DuelMessageTexts.noCardSelected);
-    		return;
-    	}
-    	if(selectedCardOwner != duel.getCurrentPlayer() && (selectedCardPosition.equals("DH") || selectedCardPosition.equals("H"))){
-			response.writeMessage(player, DuelMessageTexts.cardInvisible);
-    		return;
-    	}
-		if(selectedCard instanceof MonsterCard)
-			response.writeMessage(player, DuelMessageTexts.showMonsterCard((MonsterCard)selectedCard));
-		else
-			response.writeMessage(player, DuelMessageTexts.showSpellTrapCard((NonMonsterCard)getSelectedCard()));
-    }
-
-    public void showCard(String name){
-		Card card;
-		for(int location = 0; location < hand.total(); location++) {
-			card = hand.getCard(location);
-			if (card.getName().equals(name)) {
-				if(card instanceof MonsterCard)
-					response.writeMessage(player, DuelMessageTexts.showMonsterCard((MonsterCard) card));
-				else
-					response.writeMessage(player, DuelMessageTexts.showSpellTrapCard((NonMonsterCard) card));
-				return;
-			}
-		}
-		for(int location = 0; location < 5; location++) {
-			card = monsterPlayGround.getCard(location);
-			if (card != null && card.getName().equals(name)) {
-				response.writeMessage(player, DuelMessageTexts.showMonsterCard((MonsterCard) card));
-				return;
-			}
-		}
-
-		for(int location = 0; location < 5; location++) {
-			card = spellTrapPlayGround.getCard(location);
-			if (card != null && card.getName().equals(name)) {
-				response.writeMessage(player, DuelMessageTexts.showSpellTrapCard((NonMonsterCard) card));
-				return;
-			}
-		}
-		response.writeMessage(player, "no card found with the given name");
-	}
 
     public void killCard(int location, Ground ground){
 		Card card;

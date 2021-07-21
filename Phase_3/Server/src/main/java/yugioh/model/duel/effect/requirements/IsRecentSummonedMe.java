@@ -1,6 +1,6 @@
-package model.effect.requirements;
+package yugioh.model.duel.effect.requirements;
 
-import model.effect.event.OnSummon;
+import yugioh.model.duel.effect.event.OnSummon;
 
 public class IsRecentSummonedMe extends Requirement{
     public IsRecentSummonedMe(int myLocation, int ownerPlayer){

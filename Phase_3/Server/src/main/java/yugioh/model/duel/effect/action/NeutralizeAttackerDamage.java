@@ -1,4 +1,4 @@
-package model.effect.action;
+package yugioh.model.duel.effect.action;
 
 public class NeutralizeAttackerDamage extends Action {
 

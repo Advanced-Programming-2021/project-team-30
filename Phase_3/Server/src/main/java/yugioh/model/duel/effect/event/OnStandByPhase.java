@@ -1,6 +1,5 @@
-package model.effect.event;
+package yugioh.model.duel.effect.event;
 
-import model.Dto;
 
 public class OnStandByPhase extends Event{
     private static OnStandByPhase instance;
@@ -10,11 +9,11 @@ public class OnStandByPhase extends Event{
         return instance;
     }
 
-    @Override
-    public Event setParams(Dto data) {
-        if(instance == null) return instance = new OnStandByPhase();
-        return instance;
-    }
+//    @Override
+//    public Event setParams(Dto data) {
+//        if(instance == null) return instance = new OnStandByPhase();
+//        return instance;
+//    }
 
     public Object decode(int index, int check){
         return null;

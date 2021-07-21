@@ -1,13 +1,20 @@
 package yugioh.model.duel.board;
 
 import yugioh.model.cards.Card;
+import yugioh.model.duel.response.Response;
 
 
 public class SpellTrapPlayground{
     private final Card[] cards = new Card[5];
     private final String[] position = new String[5];
+    private final Response response;
+    private final int player;
 
-    public SpellTrapPlayground(){ reset(); }
+    public SpellTrapPlayground(Response response, int player){
+        this.response = response;
+        this.player = player;
+        reset();
+    }
 
     public void reset() {
         for(int i = 0; i < 5; i++){
@@ -54,7 +61,7 @@ public class SpellTrapPlayground{
     }
 
     public void removeCard(int location){
-        cards[location].undoEffect();
+        //cards[location].undoEffect();
         cards[location] = null;
         position[location] = "E";
     }
@@ -76,8 +83,8 @@ public class SpellTrapPlayground{
     }
 
     public void setCardBlockedStatus(int location, boolean status) {
-        if(cards[location] != null)
-            cards[location].setCardBlockedStatus(status);
+        //if(cards[location] != null)
+            //cards[location].setCardBlockedStatus(status);
     }
 
     public void killAdvancedRitualCard() {

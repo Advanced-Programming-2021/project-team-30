@@ -1,7 +1,7 @@
-package model.effect.action;
+package yugioh.model.duel.effect.action;
 
-import model.Ground;
-import model.effect.event.OnSummon;
+import yugioh.model.duel.Ground;
+import yugioh.model.duel.effect.event.OnSummon;
 
 public class DestroyRecentMonster extends Action{
 

@@ -1,10 +1,8 @@
-package model.effect.action;
+package yugioh.model.duel.effect.action;
 
-import model.Command;
-import model.Ground;
-import model.regex.DuelMenuRegex;
+import yugioh.model.duel.Command;
+import yugioh.model.duel.Ground;
 import yugioh.model.duel.response.Response;
-import view.Main;
 import java.util.regex.Matcher;
 
 
@@ -17,19 +15,19 @@ public class DestroyEnemySpells extends Action{
 
     @Override
     public void doEffect() {
-        int x = totalCards;
-        Matcher matcher;
-        int location;
-        while(x > 0) {
-            matcher = DuelMenuRegex.getInputForCommand(Command.selectSpell);
-            location = Integer.parseInt(matcher.group(1)) - 1;
-            if(duel.getCard(Ground.spellTrapGround, location, 1 - ownerPlayer) == null) {
-                Main.outputToUser(Response.noCardFound);
-                continue;
-            }
-            duel.removeCard(1 - ownerPlayer, Ground.spellTrapGround, location);
-            x--;
-        }
+//        int x = totalCards;
+//        Matcher matcher;
+//        int location;
+//        while(x > 0) {
+//            matcher = DuelMenuRegex.getInputForCommand(Command.selectSpell);
+//            location = Integer.parseInt(matcher.group(1)) - 1;
+//            if(duel.getCard(Ground.spellTrapGround, location, 1 - ownerPlayer) == null) {
+//                Main.outputToUser(Response.noCardFound);
+//                continue;
+//            }
+//            duel.removeCard(1 - ownerPlayer, Ground.spellTrapGround, location);
+//            x--;
+//        }
     }
 
     @Override

@@ -1,12 +1,13 @@
 package yugioh.model.cards;
 
-import java.util.ArrayList;
-import java.util.regex.Matcher;
+import yugioh.model.duel.Ground;
 
 public class Card {
     private String name;
     private int price;
     private String description;
+    private int location;
+    private Ground ground;
 
 
     public Card(String name, int price, String description) {
@@ -56,4 +57,11 @@ public class Card {
         return price == card.price && name.equals(card.name) && description.equals(card.description);
     }
 
+    public void setLocation(int location){ this.location = location; }
+
+    public void setGround(Ground ground){ this.ground = ground; }
+
+    public int getLocation(){ return location; }
+
+    public Ground getGround(){ return ground; }
 }

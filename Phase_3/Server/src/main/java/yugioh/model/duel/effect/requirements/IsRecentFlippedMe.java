@@ -1,6 +1,6 @@
-package model.effect.requirements;
+package yugioh.model.duel.effect.requirements;
 
-import model.effect.event.OnFlip;
+import yugioh.model.duel.effect.event.OnFlip;
 
 public class IsRecentFlippedMe extends Requirement{
     final int myLocation;
