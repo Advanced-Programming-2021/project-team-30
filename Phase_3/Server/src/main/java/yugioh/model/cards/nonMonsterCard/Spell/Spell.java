@@ -5,7 +5,6 @@ import yugioh.model.cards.Type;
 import yugioh.model.cards.nonMonsterCard.NonMonsterCard;
 
 public class Spell extends NonMonsterCard {
-    private String icon ;
 
     public Spell(String name, boolean isSpell, Icon icon, String details, boolean isLimited, int price) {
         super(name, isSpell, icon, details, isLimited, price);

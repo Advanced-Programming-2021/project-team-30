@@ -23,7 +23,7 @@ public class Response {
 
     public boolean writeMessage(int player, String message){
         try{
-            dataOutputStreams[player].writeUTF("<$alert$>" + message);
+            dataOutputStreams[player].writeUTF(message);
             dataOutputStreams[player].flush();
             return true;
         } catch (IOException e){

@@ -1,5 +1,7 @@
 package yugioh.controller;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -11,10 +13,7 @@ import yugioh.model.CardInitializer;
 import yugioh.model.Player;
 import yugioh.view.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class MainMenuController {
     public static Player currentUser;
@@ -55,29 +54,48 @@ public class MainMenuController {
         if (strings.contains(selected)) {
             RockScissorPaperController.firstPlayer = MainMenuController.currentUser;
             if (selected.equals("2 Player")){
-                dialog = new TextInputDialog("Username");
+                dialog = new TextInputDialog("Rounds");
                 dialog.setTitle("Start New 2 Player Duel");
-                dialog.setHeaderText("Enter the second player's username");
+                dialog.setHeaderText("Enter the number of rounds");
                 result = dialog.showAndWait();
                 String entered = "";
                 if (result.isPresent()) {
                     entered = result.get();
                 }
-                /*
-                Player player = Player.getPlayerByUsername(entered);
-                if (player == null){
+                if(!entered.equals("1") && !entered.equals("3")) {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setHeaderText("Start New Duel Failed!");
                     alert.setContentText("There is no player with this username!");
                     alert.show();
-                } else {
-                    NewDuelController.is2Player = true;
-                    RockScissorPaperController.is2Player = true;
-                    RockScissorPaperController.secondPlayer = player;
-                    new RockScissorPaperView().start(rockScissorPaperStage);
+                    return;
                 }
-
-                 */
+                MainController.write(String.format("NewDuel,%s,%s", currentUserToken, entered));
+                String res = MainController.read();
+                if (res == null || res.equals("fail")){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Start New Duel Failed!");
+                    alert.setContentText("An error occurred, please try restarting the game.");
+                    alert.show();
+                } else {
+                    new LobbyView().start(MainMenuView.stage);
+                    res = MainController.read();
+                    Player opponent = new Gson().fromJson(res, new TypeToken<Player>(){}.getType());
+                    NewDuelController.is2Player = true;
+//                    RockScissorPaperController.is2Player = true;
+                    RockScissorPaperController.secondPlayer = opponent;
+//                    new RockScissorPaperView().start(rockScissorPaperStage);
+                    NewDuelController.currentPlayer = currentUser;
+                    NewDuelController.oppositePlayer = opponent;
+                    int me = Integer.parseInt(Objects.requireNonNull(MainController.read()));
+                    if(me == 0) {
+                        NewDuelController.firstPlayer = currentUser;
+                        NewDuelController.secondPlayer = opponent;
+                    } else{
+                        NewDuelController.secondPlayer = currentUser;
+                        NewDuelController.firstPlayer = opponent;
+                    }
+                    new NewDuelView().start(MainMenuView.stage);
+                }
             } else {
                 NewDuelController.is2Player = false;
                 RockScissorPaperController.is2Player = false;
@@ -103,7 +121,9 @@ public class MainMenuController {
     }
 
     public void back(ActionEvent actionEvent) throws Exception {
+        MainController.write("Logout," + MainMenuController.currentUserToken);
         MainMenuController.currentUser = null;
+        MainMenuController.currentUserToken = null;
         new LoginMenuView().start(LoginMenuView.stage);
     }
 

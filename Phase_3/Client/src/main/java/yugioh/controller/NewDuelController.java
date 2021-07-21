@@ -128,6 +128,7 @@ public class NewDuelController {
         }
     }
     public void changePhase(){
+        MainController.write("phase-next");
         switch (currentPhase){
             case DRAW -> currentPhase = Phase.STANDBY;
             case STANDBY -> currentPhase = Phase.MAIN1;

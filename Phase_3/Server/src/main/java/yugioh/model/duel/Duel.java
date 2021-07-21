@@ -1,5 +1,6 @@
 package yugioh.model.duel;
 
+import com.google.gson.Gson;
 import yugioh.controller.RegisterAndLoginController;
 import yugioh.model.Player;
 import yugioh.model.duel.board.Board;
@@ -117,6 +118,10 @@ public class Duel extends Thread{
     }
 
     public void run(){
+        response.writeMessage(0, new Gson().toJson(player[1]));
+        response.writeMessage(0, "0");
+        response.writeMessage(1, new Gson().toJson(player[0]));
+        response.writeMessage(1, "1");
         int maxHealth1 = 0, maxHealth2 = 0, r = rounds;
         while(rounds > 0){
             //here we design the end of each round

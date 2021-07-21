@@ -16,6 +16,8 @@ public class Card {
         setDescription(description);
     }
 
+    public Card(){}
+
     public String getName() {
         return name;
     }

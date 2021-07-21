@@ -16,6 +16,7 @@ public class Deck {
         mainDeck = new ArrayList<>();
         sideDeck = new ArrayList<>();
     }
+    public Deck(){}
     public void setName(String name) {
         this.name = name;
     }
@@ -74,7 +75,10 @@ public class Deck {
 
     public void addCardToMainDeck(Card card){
         Player owner = RegisterAndLoginController.getPlayerByUsername(ownerUsername);
-        if (owner == null) return;
+        if (owner == null) {
+            System.out.println(":(");
+            return;
+        }
         owner.removeFromCards(card);
         mainDeck.add(card);
     }

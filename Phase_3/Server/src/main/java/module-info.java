@@ -7,4 +7,6 @@ module Client {
     opens yugioh.model.cards to com.google.gson;
     opens yugioh.model.cards.MonsterCard to com.google.gson;
     opens yugioh.model.cards.nonMonsterCard to com.google.gson;
+    opens yugioh.model.cards.nonMonsterCard.Trap to com.google.gson;
+    opens yugioh.model.cards.nonMonsterCard.Spell to com.google.gson;
 }

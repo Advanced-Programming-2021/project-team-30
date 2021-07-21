@@ -84,7 +84,7 @@ public class DeckMenuController {
             alert.setContentText("Deck with this name already exists!");
             alert.show();
         } else {
-            MainMenuController.currentUser.addToDecks(new Deck(deckName, MainMenuController.currentUser));
+            MainMenuController.currentUser.addToDecks(new Deck(deckName, MainMenuController.currentUser.getUsername()));
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setX(550);
             alert.setY(300);

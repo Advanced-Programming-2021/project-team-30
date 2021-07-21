@@ -100,15 +100,7 @@ public class MonsterCard extends Card {
         return "";
     }
     public String attributeToString(){
-        switch (attribute){
-            case DARK -> {return "DARK";}
-            case EARTH -> {return "EARTH";}
-            case FIRE -> {return "FIRE";}
-            case LIGHT -> {return "LIGHT";}
-            case WATER -> {return "WATER";}
-            case WIND -> {return "WIND";}
-            default -> {return "";}
-        }
+        return attribute.toString();
     }
 
     public static boolean stringToHasEffect(String string){

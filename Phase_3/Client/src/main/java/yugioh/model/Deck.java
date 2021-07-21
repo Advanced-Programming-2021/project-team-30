@@ -1,5 +1,6 @@
 package yugioh.model;
 
+import yugioh.Main;
 import yugioh.model.cards.Card;
 
 import java.util.ArrayList;
@@ -8,13 +9,14 @@ public class Deck {
     private ArrayList<Card> mainDeck;
     private ArrayList<Card> sideDeck;
     private String name;
-    private Player owner;
-    public Deck(String name, Player owner){
+    private String ownerUsername;
+    public Deck(String name, String ownerUsername){
         setName(name);
-        setOwner(owner);
+        setOwnerUsername(ownerUsername);
         mainDeck = new ArrayList<>();
         sideDeck = new ArrayList<>();
     }
+    public Deck(){}
     public void setName(String name) {
         this.name = name;
     }
@@ -22,12 +24,12 @@ public class Deck {
         return name;
     }
 
-    public void setOwner(Player owner) {
-        this.owner = owner;
+    public void setOwnerUsername(String ownerUsername) {
+        this.ownerUsername = ownerUsername;
     }
 
-    public Player getOwner() {
-        return owner;
+    public String getOwnerUsername() {
+        return ownerUsername;
     }
 
     public boolean isValid() {
@@ -72,6 +74,8 @@ public class Deck {
     }
 
     public void addCardToMainDeck(Card card){
+        Player owner = Main.getPlayerByUsername(ownerUsername);
+        if (owner == null) return;
         owner.removeFromCards(card);
         mainDeck.add(card);
     }
@@ -83,10 +87,14 @@ public class Deck {
         return null;
     }
     public void removeCardFromMainDeck(Card card){
+        Player owner = Main.getPlayerByUsername(ownerUsername);
+        if (owner == null) return;
         owner.addCard(card);
         mainDeck.remove(card);
     }
     public void addCardToSideDeck(Card card){
+        Player owner = Main.getPlayerByUsername(ownerUsername);
+        if (owner == null) return;
         owner.removeFromCards(card);
         sideDeck.add(card);
     }
@@ -98,6 +106,8 @@ public class Deck {
         return null;
     }
     public void removeCardFromSideDeck(Card card){
+        Player owner = Main.getPlayerByUsername(ownerUsername);
+        if (owner == null) return;
         owner.addCard(card);
         sideDeck.remove(card);
     }

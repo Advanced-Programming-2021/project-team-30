@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1590.0" style="-fx-background-color: #3c1191;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yugioh.controller.LobbyController">
+    <children>
+        <Label layoutX="19.0" layoutY="21.0" text="Waiting ..." textFill="WHITE">
+            <font>
+                <Font size="31.0" />
+            </font></Label>
+    </children>
+</AnchorPane>

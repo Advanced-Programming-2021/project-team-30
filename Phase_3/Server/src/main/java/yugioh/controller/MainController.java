@@ -3,7 +3,10 @@ package yugioh.controller;
 
 import com.google.gson.Gson;
 import yugioh.model.Player;
+import yugioh.model.duel.Duel;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.Socket;
 import java.util.UUID;
 
@@ -15,7 +18,7 @@ public class MainController {
         if (RegisterAndLoginController.getPlayerByUsername(username) != null || RegisterAndLoginController.getPlayerByNickname(nickname) != null){
             return "fail";
         } else {
-            RegisterAndLoginController.players.add(new Player(username, password, nickname));
+            new Player(username, password, nickname);
             RegisterAndLoginController.writePlayers();
             return "success";
         }
@@ -31,9 +34,6 @@ public class MainController {
             String token = UUID.randomUUID().toString();
             RegisterAndLoginController.loggedInPlayers.put(token, player);
             player.setToken(token);
-            try {
-                socket.setSoTimeout(30000);
-            } catch (Exception ignored){}
             RegisterAndLoginController.socketHashMap.put(token, socket);
             String json = new Gson().toJson(player);
             return json + ",,," + token;
@@ -63,17 +63,42 @@ public class MainController {
         }
     }
 
-    public static String process(String input, Socket socket) {
+    public static String startNewDuel(String[] userInfos) {
+        System.out.println(userInfos[1]);
+        Player player = RegisterAndLoginController.loggedInPlayers.get(userInfos[1]);
+        for(String token: RegisterAndLoginController.loggedInPlayers.keySet())
+            System.out.println(token);
+        if(player == null || player.getActiveDeck() == null || !player.getActiveDeck().isValid()) {
+            System.out.println(player == null);
+            if(player != null)
+                System.out.println(player.getActiveDeck());
+            return "fail";
+        }
+        int rounds = Integer.parseInt(userInfos[2]);
+        DuelController.addPlayer(rounds, player);
+        return "success";
+    }
+
+    public static String logout(String[] userInfos){
+        String token = userInfos[1];
+        RegisterAndLoginController.loggedInPlayers.remove(token);
+        return "success";
+    }
+
+    public static String process(String input, Socket socket) throws IOException {
         if (input.startsWith("Register") || input.startsWith("Login")
-                || input.startsWith("ChangePassword") || input.startsWith("ChangeNickname")){
+                || input.startsWith("ChangePassword") || input.startsWith("ChangeNickname")
+                || input.startsWith("NewDuel") || input.startsWith("Logout")){
             String[] userInfos = input.split(",");
             switch (userInfos[0]){
                 case "Register" -> {return register(userInfos);}
                 case "Login" -> {return login(userInfos, socket);}
                 case "ChangePassword" -> {return changePassword(userInfos);}
                 case "ChangeNickname" -> {return changeNickname(userInfos);}
+                case "NewDuel" -> { return startNewDuel(userInfos); }
+                case "Logout" -> { return logout(userInfos); }
             }
-        }  else if (input.equals("Show Scoreboard")){
+        } else if (input.equals("Show Scoreboard")){
             return new Gson().toJson(ScoreboardController.returnBestPlayers());
         } else if (input.startsWith("Send")){
             ChatController.addToMessage(input);

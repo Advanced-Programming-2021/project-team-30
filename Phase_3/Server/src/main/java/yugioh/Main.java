@@ -1,5 +1,6 @@
 package yugioh;
 
+import yugioh.controller.DuelController;
 import yugioh.controller.MainController;
 import yugioh.controller.RegisterAndLoginController;
 
@@ -17,9 +18,11 @@ public class Main {
                 Socket socket = serverSocket.accept();
                 new Thread(() -> {
                     try {
+                        socket.setSoTimeout(300000);
                         DataInputStream dataInputStream = new DataInputStream(socket.getInputStream());
                         DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
                         while (true) {
+                            DuelController.matchPlayers();
                             String input = dataInputStream.readUTF();
                             if (input.equals("Exit")) break;
                             String result = MainController.process(input, socket);

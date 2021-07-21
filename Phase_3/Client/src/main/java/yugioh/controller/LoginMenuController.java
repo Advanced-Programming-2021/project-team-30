@@ -27,7 +27,7 @@ public class LoginMenuController {
     public void login(ActionEvent actionEvent) throws Exception {
         String username = usernameField.getText();
         String password = passwordField.getText();
-        if (username.isEmpty() && password.isEmpty()){
+        if (username.isEmpty() || password.isEmpty()){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setHeaderText("Login failed!");
             alert.setContentText("Please fill the fields!");
@@ -90,6 +90,7 @@ public class LoginMenuController {
         String string = "Exit";
         dataOutputStream.writeUTF(string);
         dataOutputStream.flush();
+        socket.close();
         System.exit(0);
     }
 }
